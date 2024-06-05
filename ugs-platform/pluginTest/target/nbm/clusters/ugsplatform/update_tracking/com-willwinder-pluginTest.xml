@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?><module codename="com.willwinder.pluginTest">
+    <module_version install_time="1717563477179" last="true" origin="installer" specification_version="2.0">
+        <file crc="3654522273" name="config/Modules/com-willwinder-pluginTest.xml"/>
+        <file crc="2924170866" name="modules/com-willwinder-pluginTest.jar"/>
+        <file crc="890465788" name="update_tracking/com-willwinder-pluginTest.xml"/>
+    </module_version>
+</module>
