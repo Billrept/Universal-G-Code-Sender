@@ -23,12 +23,15 @@ import com.willwinder.universalgcodesender.model.File;
 import com.willwinder.universalgcodesender.uielements.components.GcodeFileTypeFilter;
 import com.willwinder.universalgcodesender.utils.Settings;
 import java.awt.event.ActionEvent;
+import java.util.HashSet;
+import java.util.Set;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
+import org.openide.util.Exceptions;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 
@@ -115,9 +118,12 @@ public final class pluginTestTopComponent extends TopComponent
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             JOptionPane.showMessageDialog(new JFrame(), "File Chosen", "File chooser", JOptionPane.PLAIN_MESSAGE);
-            java.io.File gcodeFile = fileChooser.getSelectedFile();
+            try {
+                backend.setGcodeFile(fileChooser.getSelectedFile());
+            } catch (Exception ex) {
+                Exceptions.printStackTrace(ex);
+            }
             
-            settings.setLastOpenedFilename(gcodeFile.getParent());
         }
     }//GEN-LAST:event_uploadButtonActionPerformed
 
