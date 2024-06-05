@@ -19,6 +19,7 @@ package com.willwinder.plugintest;
 import com.willwinder.ugs.nbp.lib.lookup.CentralLookup;
 import com.willwinder.universalgcodesender.listeners.UGSEventListener;
 import com.willwinder.universalgcodesender.model.BackendAPI;
+import com.willwinder.universalgcodesender.model.File;
 import com.willwinder.universalgcodesender.uielements.components.GcodeFileTypeFilter;
 import com.willwinder.universalgcodesender.utils.Settings;
 import java.awt.event.ActionEvent;
@@ -45,7 +46,7 @@ import org.openide.util.NbBundle.Messages;
 )
 @TopComponent.Registration(mode = "editor", openAtStartup = false)
 @ActionID(category = "Window", id = "com.willwinder.plugintest.pluginTestTopComponent")
-@ActionReference(path = "Menu/Window" /*, position = 333 */)
+@ActionReference(path = "Menu/Window/Plugins" /*, position = 333 */)
 @TopComponent.OpenActionRegistration(
         displayName = "#CTL_pluginTestAction",
         preferredID = "pluginTestTopComponent"
@@ -114,6 +115,9 @@ public final class pluginTestTopComponent extends TopComponent
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
             JOptionPane.showMessageDialog(new JFrame(), "File Chosen", "File chooser", JOptionPane.PLAIN_MESSAGE);
+            java.io.File gcodeFile = fileChooser.getSelectedFile();
+            
+            settings.setLastOpenedFilename(gcodeFile.getParent());
         }
     }//GEN-LAST:event_uploadButtonActionPerformed
 
