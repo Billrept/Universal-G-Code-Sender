@@ -16,6 +16,15 @@
  */
 package com.willwinder.plugintest;
 
+import com.willwinder.ugs.nbp.lib.lookup.CentralLookup;
+import com.willwinder.universalgcodesender.listeners.UGSEventListener;
+import com.willwinder.universalgcodesender.model.BackendAPI;
+import com.willwinder.universalgcodesender.uielements.components.GcodeFileTypeFilter;
+import com.willwinder.universalgcodesender.utils.Settings;
+import java.awt.event.ActionEvent;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
@@ -46,13 +55,21 @@ import org.openide.util.NbBundle.Messages;
     "CTL_pluginTestTopComponent=pluginTest Window",
     "HINT_pluginTestTopComponent=This is a pluginTest window"
 })
-public final class pluginTestTopComponent extends TopComponent {
+public final class pluginTestTopComponent extends TopComponent 
+    implements UGSEventListener{
+    
+    private final Settings settings;
+    private final BackendAPI backend;
 
     public pluginTestTopComponent() {
         initComponents();
         setName(Bundle.CTL_pluginTestTopComponent());
         setToolTipText(Bundle.HINT_pluginTestTopComponent());
-
+        
+        settings = CentralLookup.getDefault().lookup(Settings.class);
+        backend = CentralLookup.getDefault().lookup(BackendAPI.class);
+        backend.addUGSEventListener(this);
+        
     }
 
     /**
@@ -63,20 +80,47 @@ public final class pluginTestTopComponent extends TopComponent {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
+        uploadButton = new javax.swing.JButton();
+
+        org.openide.awt.Mnemonics.setLocalizedText(uploadButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.uploadButton.text")); // NOI18N
+        uploadButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                uploadButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(146, 146, 146)
+                .addComponent(uploadButton)
+                .addContainerGap(165, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(131, 131, 131)
+                .addComponent(uploadButton)
+                .addContainerGap(146, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
+    private void uploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadButtonActionPerformed
+        JFileChooser fileChooser = GcodeFileTypeFilter.getGcodeFileChooser(
+            settings.getLastOpenedFilename());
+        
+        int returnVal = fileChooser.showOpenDialog(this);
+        if (returnVal == JFileChooser.APPROVE_OPTION) {
+            JOptionPane.showMessageDialog(new JFrame(), "File Chosen", "File chooser", JOptionPane.PLAIN_MESSAGE);
+        }
+    }//GEN-LAST:event_uploadButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton uploadButton;
     // End of variables declaration//GEN-END:variables
+
     @Override
     public void componentOpened() {
         // TODO add custom code on component opening
@@ -97,5 +141,10 @@ public final class pluginTestTopComponent extends TopComponent {
     void readProperties(java.util.Properties p) {
         String version = p.getProperty("version");
         // TODO read your settings according to their version
+    }
+
+    @Override
+    public void UGSEvent(com.willwinder.universalgcodesender.model.UGSEvent evt) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
