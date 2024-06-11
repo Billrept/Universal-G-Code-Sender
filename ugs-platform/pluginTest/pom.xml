@@ -63,11 +63,5 @@
             <artifactId>ugs-platform-ugslib</artifactId>
             <version>${project.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.apache.xmlgraphics</groupId>
-            <artifactId>batik-svg-dom</artifactId>
-            <version>1.17</version>
-        </dependency>
-
     </dependencies>
 </project>

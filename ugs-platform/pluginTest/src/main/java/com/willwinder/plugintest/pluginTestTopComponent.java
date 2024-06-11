@@ -17,10 +17,10 @@
 package com.willwinder.plugintest;
 
 import com.willwinder.ugs.nbp.lib.lookup.CentralLookup;
+import com.willwinder.universalgcodesender.gcode.util.GcodeParserException;
 import com.willwinder.universalgcodesender.listeners.UGSEventListener;
 import com.willwinder.universalgcodesender.model.BackendAPI;
-import com.willwinder.universalgcodesender.model.File;
-import com.willwinder.universalgcodesender.uielements.components.GcodeFileTypeFilter;
+import com.willwinder.universalgcodesender.model.UGSEvent;
 import com.willwinder.universalgcodesender.utils.Settings;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -31,6 +31,7 @@ import org.openide.awt.ActionReference;
 import org.openide.util.Exceptions;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
+
 
 /**
  * Top component which displays something.
@@ -86,13 +87,17 @@ public final class pluginTestTopComponent extends TopComponent
         jRadioButton1 = new javax.swing.JRadioButton();
         jTabbedPane2 = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
-        uploadButton = new javax.swing.JButton();
         jPanel3 = new javax.swing.JPanel();
         cyanProgress = new javax.swing.JProgressBar();
-        magentaProgress = new javax.swing.JProgressBar();
         yellowProgress = new javax.swing.JProgressBar();
-        keyProgress = new javax.swing.JProgressBar();
-        jLabel1 = new javax.swing.JLabel();
+        blackProgress = new javax.swing.JProgressBar();
+        magentaProgress = new javax.swing.JProgressBar();
+        magentaFinish = new javax.swing.JCheckBox();
+        cyanFinish = new javax.swing.JCheckBox();
+        blackFinish = new javax.swing.JCheckBox();
+        yellowFinish = new javax.swing.JCheckBox();
+        uploadButton = new javax.swing.JButton();
+        runButton = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         jButton2 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
@@ -103,6 +108,24 @@ public final class pluginTestTopComponent extends TopComponent
 
         org.openide.awt.Mnemonics.setLocalizedText(jRadioButton1, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jRadioButton1.text")); // NOI18N
 
+        org.openide.awt.Mnemonics.setLocalizedText(magentaFinish, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.magentaFinish.text")); // NOI18N
+        magentaFinish.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                magentaFinishActionPerformed(evt);
+            }
+        });
+
+        org.openide.awt.Mnemonics.setLocalizedText(cyanFinish, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.cyanFinish.text")); // NOI18N
+
+        org.openide.awt.Mnemonics.setLocalizedText(blackFinish, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.blackFinish.text")); // NOI18N
+        blackFinish.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                blackFinishActionPerformed(evt);
+            }
+        });
+
+        org.openide.awt.Mnemonics.setLocalizedText(yellowFinish, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.yellowFinish.text")); // NOI18N
+
         org.openide.awt.Mnemonics.setLocalizedText(uploadButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.uploadButton.text")); // NOI18N
         uploadButton.setFocusable(false);
         uploadButton.addActionListener(new java.awt.event.ActionListener() {
@@ -111,82 +134,84 @@ public final class pluginTestTopComponent extends TopComponent
             }
         });
 
-        cyanProgress.setForeground(new java.awt.Color(0, 255, 255));
-        cyanProgress.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        cyanProgress.setName(""); // NOI18N
-
-        magentaProgress.setForeground(new java.awt.Color(255, 0, 255));
-        magentaProgress.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        magentaProgress.setName(""); // NOI18N
-
-        yellowProgress.setForeground(new java.awt.Color(255, 255, 0));
-        yellowProgress.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        yellowProgress.setName(""); // NOI18N
-
-        keyProgress.setForeground(new java.awt.Color(0, 0, 0));
-        keyProgress.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
-        keyProgress.setName(""); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(runButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.runButton.text")); // NOI18N
+        runButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                runButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
+                .addGap(20, 20, 20)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(yellowProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(keyProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(magentaProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(cyanProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 201, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(16, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(magentaProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(blackProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(yellowProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cyanProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(28, 28, 28)
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(magentaFinish, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(blackFinish, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(yellowFinish, javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addComponent(cyanFinish))
+                        .addContainerGap(88, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(uploadButton)
+                        .addGap(58, 58, 58)
+                        .addComponent(runButton)
+                        .addGap(109, 109, 109))))
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
-                .addGap(30, 30, 30)
-                .addComponent(cyanProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(magentaProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(26, 26, 26)
-                .addComponent(yellowProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 25, Short.MAX_VALUE)
-                .addComponent(keyProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34))
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(cyanProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(33, 33, 33)
+                        .addComponent(magentaProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(28, 28, 28)
+                        .addComponent(yellowProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(27, 27, 27)
+                        .addComponent(blackProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel3Layout.createSequentialGroup()
+                                .addComponent(cyanFinish)
+                                .addGap(53, 53, 53))
+                            .addComponent(magentaFinish))
+                        .addGap(28, 28, 28)
+                        .addComponent(yellowFinish)
+                        .addGap(27, 27, 27)
+                        .addComponent(blackFinish)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 46, Short.MAX_VALUE)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(uploadButton)
+                    .addComponent(runButton))
+                .addGap(32, 32, 32))
         );
-
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jLabel1.text")); // NOI18N
-        jLabel1.setFocusable(false);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(29, 29, 29)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(20, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(111, 111, 111)
-                        .addComponent(uploadButton)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 74, Short.MAX_VALUE)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 168, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(73, 73, 73))))
+                .addGap(15, 15, 15))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(45, 45, 45)
-                        .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(54, 54, 54)
-                        .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(18, 18, 18)
-                        .addComponent(uploadButton)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                .addContainerGap(28, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(23, 23, 23))
         );
 
         jTabbedPane2.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jPanel1.TabConstraints.tabTitle"), jPanel1); // NOI18N
@@ -205,7 +230,7 @@ public final class pluginTestTopComponent extends TopComponent
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(236, 236, 236)
                 .addComponent(jButton2)
-                .addContainerGap(267, Short.MAX_VALUE))
+                .addContainerGap(126, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -226,7 +251,7 @@ public final class pluginTestTopComponent extends TopComponent
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(222, 222, 222)
                 .addComponent(jToggleButton1)
-                .addContainerGap(245, Short.MAX_VALUE))
+                .addContainerGap(104, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -246,35 +271,83 @@ public final class pluginTestTopComponent extends TopComponent
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jTabbedPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 381, Short.MAX_VALUE)
+            .addComponent(jTabbedPane2)
         );
     }// </editor-fold>//GEN-END:initComponents
 
     private void uploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadButtonActionPerformed
-        JFileChooser fileChooser = GcodeFileTypeFilter.getGcodeFileChooser(
-            settings.getLastOpenedFilename());
-        
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
         int returnVal = fileChooser.showOpenDialog(this);
         if (returnVal == JFileChooser.APPROVE_OPTION) {
-            JOptionPane.showMessageDialog(new JFrame(), "File Chosen!!!" + fileChooser.getSelectedFile().toString(), "File chooser", JOptionPane.PLAIN_MESSAGE);
-            java.io.File gcodeFile = fileChooser.getSelectedFile();
+            JOptionPane.showMessageDialog(new JFrame(), "File Chosen!" + fileChooser.getSelectedFile().toString(), "File chooser", JOptionPane.PLAIN_MESSAGE);
+            java.io.File gcodeFolder = fileChooser.getSelectedFile();
             try {
-                backend.setGcodeFile(gcodeFile);
+                processFilesInFolder(gcodeFolder);
             } catch (Exception ex) {
                 Exceptions.printStackTrace(ex);
             }
         }
     }//GEN-LAST:event_uploadButtonActionPerformed
-
+    private void processFilesInFolder(java.io.File folder) throws Exception{
+        java.io.File[] files = folder.listFiles();
+        if (files != null) {
+            StringBuilder fileList = new StringBuilder("Files in the selected folder:\n");
+            
+            for (java.io.File file : files) {
+                fileList.append(file.getName()).append("\n");
+            }
+            
+            JOptionPane.showMessageDialog(new JFrame(), fileList, "File List", JOptionPane.PLAIN_MESSAGE);
+            for (java.io.File file : files) {
+                if(file.isFile() && backend.isIdle()){
+                    try {
+                        backend.setGcodeFile(file);
+                        backend.send();
+                        //put method to wait until the current running gcode file is finished
+                        backend.unsetGcodeFile();
+                        JOptionPane.showMessageDialog(new JFrame(), "File finished");
+                    } catch (GcodeParserException gEx){
+                        backend.pauseResume();
+                        JOptionPane.showMessageDialog(new JFrame(), "Gcode command error found. Auto-skipping command.");
+                    } catch (Exception ex) {
+                        Exceptions.printStackTrace(ex);
+                    }
+                }
+            }
+            JOptionPane.showMessageDialog(new JFrame(), "Files finished sending", "Files", JOptionPane.PLAIN_MESSAGE);
+        } else {
+            JOptionPane.showMessageDialog(new JFrame(), "The files in this folder are empty or not accessible.", "File List", JOptionPane.PLAIN_MESSAGE);
+        }
+    } 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
+    private void magentaFinishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_magentaFinishActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_magentaFinishActionPerformed
+
+    private void blackFinishActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blackFinishActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_blackFinishActionPerformed
+
+    private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runButtonActionPerformed
+
+        try {
+            backend.send();
+        } catch (Exception ex) {
+            Exceptions.printStackTrace(ex);
+        }
+    }//GEN-LAST:event_runButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JCheckBox blackFinish;
+    private javax.swing.JProgressBar blackProgress;
+    private javax.swing.JCheckBox cyanFinish;
     private javax.swing.JProgressBar cyanProgress;
     private javax.swing.JButton jButton1;
     private javax.swing.JButton jButton2;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
@@ -283,15 +356,17 @@ public final class pluginTestTopComponent extends TopComponent
     private javax.swing.JTabbedPane jTabbedPane1;
     private javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JProgressBar keyProgress;
+    private javax.swing.JCheckBox magentaFinish;
     private javax.swing.JProgressBar magentaProgress;
+    private javax.swing.JButton runButton;
     private javax.swing.JButton uploadButton;
+    private javax.swing.JCheckBox yellowFinish;
     private javax.swing.JProgressBar yellowProgress;
     // End of variables declaration//GEN-END:variables
 
     @Override
     public void componentOpened() {
-        // TODO add custom code on component opening
+        
     }
 
     @Override
@@ -312,7 +387,7 @@ public final class pluginTestTopComponent extends TopComponent
     }
 
     @Override
-    public void UGSEvent(com.willwinder.universalgcodesender.model.UGSEvent evt) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void UGSEvent(UGSEvent event) {
+        
     }
 }
