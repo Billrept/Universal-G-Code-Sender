@@ -20,6 +20,7 @@ import com.willwinder.ugs.nbp.lib.lookup.CentralLookup;
 import com.willwinder.universalgcodesender.gcode.util.GcodeParserException;
 import com.willwinder.universalgcodesender.listeners.UGSEventListener;
 import com.willwinder.universalgcodesender.model.BackendAPI;
+import com.willwinder.universalgcodesender.model.CommunicatorState;
 import com.willwinder.universalgcodesender.model.UGSEvent;
 import com.willwinder.universalgcodesender.utils.Settings;
 import javax.swing.JFileChooser;
@@ -31,6 +32,12 @@ import org.openide.awt.ActionReference;
 import org.openide.util.Exceptions;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
+import java.io.File;
+import com.willwinder.universalgcodesender.listeners.ControllerListener;
+import com.willwinder.universalgcodesender.listeners.ControllerStatus;
+import com.willwinder.universalgcodesender.model.Alarm;
+import com.willwinder.universalgcodesender.model.Position;
+import com.willwinder.universalgcodesender.types.GcodeCommand;
 
 
 /**
@@ -58,10 +65,16 @@ import org.openide.util.NbBundle.Messages;
     "HINT_pluginTestTopComponent=This is a pluginTest window"
 })
 public final class pluginTestTopComponent extends TopComponent 
-    implements UGSEventListener{
+    implements UGSEventListener, ControllerListener{
     
     private final Settings settings;
     private final BackendAPI backend;
+    
+    private boolean isProcessing = false;
+    private int currentFileIndex = 0;
+    private boolean filler;
+    
+    private java.io.File[] files;
 
     public pluginTestTopComponent() {
         initComponents();
@@ -70,7 +83,9 @@ public final class pluginTestTopComponent extends TopComponent
         
         settings = CentralLookup.getDefault().lookup(Settings.class);
         backend = CentralLookup.getDefault().lookup(BackendAPI.class);
+        backend.getController().addListener(this);
         backend.addUGSEventListener(this);
+        
         
     }
 
@@ -202,16 +217,16 @@ public final class pluginTestTopComponent extends TopComponent
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(20, Short.MAX_VALUE)
+                .addGap(237, 237, 237)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(15, 15, 15))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(28, Short.MAX_VALUE)
+                .addContainerGap(42, Short.MAX_VALUE)
                 .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(23, 23, 23))
+                .addGap(31, 31, 31))
         );
 
         jTabbedPane2.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jPanel1.TabConstraints.tabTitle"), jPanel1); // NOI18N
@@ -230,14 +245,14 @@ public final class pluginTestTopComponent extends TopComponent
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(236, 236, 236)
                 .addComponent(jButton2)
-                .addContainerGap(126, Short.MAX_VALUE))
+                .addContainerGap(334, Short.MAX_VALUE))
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(139, 139, 139)
                 .addComponent(jButton2)
-                .addContainerGap(184, Short.MAX_VALUE))
+                .addContainerGap(206, Short.MAX_VALUE))
         );
 
         jTabbedPane2.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
@@ -251,12 +266,12 @@ public final class pluginTestTopComponent extends TopComponent
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addGap(222, 222, 222)
                 .addComponent(jToggleButton1)
-                .addContainerGap(104, Short.MAX_VALUE))
+                .addContainerGap(312, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(183, Short.MAX_VALUE)
+                .addContainerGap(205, Short.MAX_VALUE)
                 .addComponent(jToggleButton1)
                 .addGap(140, 140, 140))
         );
@@ -276,50 +291,55 @@ public final class pluginTestTopComponent extends TopComponent
     }// </editor-fold>//GEN-END:initComponents
 
     private void uploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadButtonActionPerformed
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-        int returnVal = fileChooser.showOpenDialog(this);
-        if (returnVal == JFileChooser.APPROVE_OPTION) {
-            JOptionPane.showMessageDialog(new JFrame(), "File Chosen!" + fileChooser.getSelectedFile().toString(), "File chooser", JOptionPane.PLAIN_MESSAGE);
-            java.io.File gcodeFolder = fileChooser.getSelectedFile();
-            try {
-                processFilesInFolder(gcodeFolder);
-            } catch (Exception ex) {
-                Exceptions.printStackTrace(ex);
+        if(backend.isIdle()){
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            int returnVal = fileChooser.showOpenDialog(this);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                JOptionPane.showMessageDialog(new JFrame(), "File Chosen!!!!" + fileChooser.getSelectedFile().toString(), "File chooser", JOptionPane.PLAIN_MESSAGE);
+                java.io.File gcodeFolder = fileChooser.getSelectedFile();
+                try {
+                    processFilesInFolder(gcodeFolder);
+                } catch (Exception ex) {
+                    Exceptions.printStackTrace(ex);
+                }
             }
+        }else{
+            JOptionPane.showMessageDialog(new JFrame(), "Unable to upload file");
         }
     }//GEN-LAST:event_uploadButtonActionPerformed
     private void processFilesInFolder(java.io.File folder) throws Exception{
-        java.io.File[] files = folder.listFiles();
+        files = folder.listFiles();
         if (files != null) {
             StringBuilder fileList = new StringBuilder("Files in the selected folder:\n");
             
             for (java.io.File file : files) {
                 fileList.append(file.getName()).append("\n");
             }
-            
-            JOptionPane.showMessageDialog(new JFrame(), fileList, "File List", JOptionPane.PLAIN_MESSAGE);
-            for (java.io.File file : files) {
-                if(file.isFile() && backend.isIdle()){
-                    try {
-                        backend.setGcodeFile(file);
-                        backend.send();
-                        //put method to wait until the current running gcode file is finished
-                        backend.unsetGcodeFile();
-                        JOptionPane.showMessageDialog(new JFrame(), "File finished");
-                    } catch (GcodeParserException gEx){
-                        backend.pauseResume();
-                        JOptionPane.showMessageDialog(new JFrame(), "Gcode command error found. Auto-skipping command.");
-                    } catch (Exception ex) {
-                        Exceptions.printStackTrace(ex);
-                    }
-                }
-            }
-            JOptionPane.showMessageDialog(new JFrame(), "Files finished sending", "Files", JOptionPane.PLAIN_MESSAGE);
-        } else {
+            JOptionPane.showMessageDialog(new JFrame(), fileList + "\nAmount of gcode files" + files.length, "File List", JOptionPane.PLAIN_MESSAGE);
+            currentFileIndex = 0;
+            String file = files[currentFileIndex] + "";
+            JOptionPane.showMessageDialog(new JFrame(), "string " + currentFileIndex + " conversion passed");
+            backend.setGcodeFile(new File(file));
+            JOptionPane.showMessageDialog(new JFrame(), "backend.set passed");
+            isProcessing = true;
+            backend.send();
+        } else { //Folder is empty or not accessible
             JOptionPane.showMessageDialog(new JFrame(), "The files in this folder are empty or not accessible.", "File List", JOptionPane.PLAIN_MESSAGE);
         }
-    } 
+    }
+    
+    private void processNextFile() throws Exception{
+        String file = files[currentFileIndex] + "";
+        JOptionPane.showMessageDialog(new JFrame(), "string " + currentFileIndex + " conversion passed");
+        backend.setGcodeFile(new File(file));
+        JOptionPane.showMessageDialog(new JFrame(), "backend.set passed");
+        backend.send();
+        JOptionPane.showMessageDialog(new JFrame(), "File " + files[currentFileIndex].getName() + " loaded");
+    }
+     
+    
+    
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
@@ -388,6 +408,90 @@ public final class pluginTestTopComponent extends TopComponent
 
     @Override
     public void UGSEvent(UGSEvent event) {
-        
+//        if(!backend.isSendingFile() && currentFileIndex < files.length && files != null){
+//            if(!isProcessing){
+//                try {
+//                    //JOptionPane.showMessageDialog(new JFrame(), "File " + files[currentFileIndex].getName() + " loaded" + "\nEvent = " + event);
+//                    java.io.File file = files[currentFileIndex];
+//                    isProcessing = true;
+//                    processNextFile();
+//                    currentFileIndex++;
+//                } catch (Exception ex) {}
+//            }else{
+//                isProcessing = false;
+//                try {
+//                    JOptionPane.showMessageDialog(new JFrame(), "File " + files[currentFileIndex - 1].getName() + " finished");
+//                    backend.unsetGcodeFile();
+//                } catch (Exception ex) {}
+//            }
+//        }else if(currentFileIndex >= files.length){
+//            JOptionPane.showMessageDialog(new JFrame(), "All files processed");
+//            files = null;
+//        }
     }
+
+    @Override
+    public void streamCanceled() {
+        filler = true;
+    }
+
+    @Override
+    public void streamStarted() {
+        filler = true;
+    }
+
+    @Override
+    public void streamPaused() {
+        filler = true;
+    }
+
+    @Override
+    public void streamResumed() {
+        filler = true;
+    }
+
+    @Override
+    public void streamComplete() {
+        if(currentFileIndex < 3){
+            currentFileIndex++;
+            try {
+                processNextFile();
+            } catch (Exception ex) {
+                Exceptions.printStackTrace(ex);
+            }
+        }
+        JOptionPane.showMessageDialog(new JFrame(), "Streaming finished");
+    }
+
+    @Override
+    public void receivedAlarm(Alarm alarm) {
+        filler = true;
+    }
+
+    @Override
+    public void commandSkipped(GcodeCommand command) {
+        filler = true;
+    }
+
+    @Override
+    public void commandSent(GcodeCommand command) {
+        filler = true;
+    }
+
+    @Override
+    public void commandComplete(GcodeCommand command) {
+        filler = true;
+    }
+
+    @Override
+    public void probeCoordinates(Position p) {
+        filler = true;
+    }
+
+    @Override
+    public void statusStringListener(ControllerStatus status) {
+        filler = true;
+    }
+
+    
 }

@@ -490,7 +490,6 @@ public class GUIBackend implements BackendAPI {
                 gcodeStream.close();
             }
             gcodeStream = new GcodeStreamReader(this.processedGcodeFile, getCommandCreator());
-
             // This will throw an exception and prevent that other stuff from
             // happening (clearing the table before it is ready for clearing.
             controller.isReadyToStreamFile();
