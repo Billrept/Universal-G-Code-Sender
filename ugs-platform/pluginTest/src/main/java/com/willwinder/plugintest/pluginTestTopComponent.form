@@ -149,10 +149,7 @@
                                               <Component id="runButton" max="32767" attributes="0"/>
                                           </Group>
                                           <EmptySpace type="separate" max="-2" attributes="0"/>
-                                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
-                                              <Component id="svgButton" pref="88" max="32767" attributes="0"/>
-                                              <Component id="layerComboBox" pref="0" max="32767" attributes="0"/>
-                                          </Group>
+                                          <Component id="svgButton" min="-2" pref="88" max="-2" attributes="0"/>
                                       </Group>
                                   </Group>
                                   <EmptySpace max="32767" attributes="0"/>
@@ -181,10 +178,7 @@
                                       <Component id="svgButton" alignment="3" min="-2" pref="23" max="-2" attributes="0"/>
                                   </Group>
                                   <EmptySpace type="separate" max="-2" attributes="0"/>
-                                  <Group type="103" groupAlignment="3" attributes="0">
-                                      <Component id="runButton" alignment="3" min="-2" max="-2" attributes="0"/>
-                                      <Component id="layerComboBox" alignment="3" min="-2" max="-2" attributes="0"/>
-                                  </Group>
+                                  <Component id="runButton" min="-2" max="-2" attributes="0"/>
                               </Group>
                               <Component id="jPanel6" pref="244" max="32767" attributes="0"/>
                           </Group>
@@ -387,27 +381,6 @@
                   <Events>
                     <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="runButtonActionPerformed"/>
                   </Events>
-                </Component>
-                <Component class="javax.swing.JComboBox" name="layerComboBox">
-                  <Properties>
-                    <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.editors2.ComboBoxModelEditor">
-                      <StringArray count="7">
-                        <StringItem index="0" value="All layers"/>
-                        <StringItem index="1" value="Only cyan layer"/>
-                        <StringItem index="2" value="Only magenta layer"/>
-                        <StringItem index="3" value="Only yellow layer"/>
-                        <StringItem index="4" value="Only black layer"/>
-                        <StringItem index="5" value="From magenta layer"/>
-                        <StringItem index="6" value="From yellow layer"/>
-                      </StringArray>
-                    </Property>
-                  </Properties>
-                  <Events>
-                    <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="layerComboBoxActionPerformed"/>
-                  </Events>
-                  <AuxValues>
-                    <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
-                  </AuxValues>
                 </Component>
                 <Container class="javax.swing.JPanel" name="jPanel6">
                   <Properties>

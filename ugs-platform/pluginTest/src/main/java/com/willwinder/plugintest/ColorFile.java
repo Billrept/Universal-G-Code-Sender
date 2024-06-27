@@ -14,22 +14,21 @@ import javax.swing.JOptionPane;
 public class ColorFile extends Folder{
     public String[] gcodeFiles = new String[4];
     public String fileList;
-    public final BackendAPI backend;
+    public BackendAPI backend;
+    public Boolean cyanSelected, magentaSelected, yellowSelected, blackSelected;
     
-    public ColorFile(java.io.File folderPath, int previewWidth, int previewHeight){
+    public void setup(java.io.File folderPath, int previewWidth, int previewHeight){
         
         backend = CentralLookup.getDefault().lookup(BackendAPI.class);
         
         this.folderPath = folderPath;
         folderName = folderPath.getName();
-        JOptionPane.showMessageDialog(new JFrame(), folderPath.toString() + "\n" + folderName);
         
         FilenameFilter gcodeFilter = (java.io.File file, String name1) -> name1.endsWith(".gcode");
         java.io.File[] fileArr = folderPath.listFiles(gcodeFilter);
         sortGcodeFiles(fileArr);
         for(int i = 0; i < 4; i++){
             gcodeFiles[i] = fileArr[i].toString();
-            JOptionPane.showMessageDialog(new JFrame(), fileArr[i].toString());
         }
         fileList = getFileList(gcodeFiles);
     }
@@ -72,5 +71,12 @@ public class ColorFile extends Folder{
         } catch (Exception ex) {
             JOptionPane.showMessageDialog(new JFrame(), "Error trying to send Gcode File");
         }
+    }
+    
+    public void setAllLayerSelected(Boolean selected){
+        this.cyanSelected = selected;
+        this.magentaSelected = selected;
+        this.yellowSelected = selected;
+        this.blackSelected = selected;
     }
 }

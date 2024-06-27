@@ -9,7 +9,6 @@ import javax.swing.JFileChooser;
 import org.netbeans.api.settings.ConvertAsProperties;
 import org.openide.awt.ActionID;
 import org.openide.awt.ActionReference;
-import org.openide.util.Exceptions;
 import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 import com.willwinder.universalgcodesender.listeners.ControllerListener;
@@ -18,6 +17,7 @@ import com.willwinder.universalgcodesender.model.Alarm;
 import com.willwinder.universalgcodesender.model.Position;
 import com.willwinder.universalgcodesender.types.GcodeCommand;
 import java.awt.Desktop;
+import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -52,7 +52,7 @@ public class pluginTestTopComponent extends TopComponent
     public final BackendAPI backend;
     private ColorFile colorFile;
     
-    private int currentFileIndex = 4;
+    private int currentFileIndex;
     private boolean filler;
     private boolean isProcessing = false;
     private int layerMode = 0; 
@@ -73,6 +73,7 @@ public class pluginTestTopComponent extends TopComponent
         backend.getController().addListener(this);
         backend.addUGSEventListener(this);
         
+        colorFile = new ColorFile();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -95,7 +96,6 @@ public class pluginTestTopComponent extends TopComponent
         cyanProgress = new javax.swing.JProgressBar();
         statusText = new javax.swing.JTextField();
         runButton = new javax.swing.JButton();
-        layerComboBox = new javax.swing.JComboBox<>();
         jPanel6 = new javax.swing.JPanel();
         previewLabel = new javax.swing.JLabel();
         timeRemainText = new javax.swing.JLabel();
@@ -205,13 +205,6 @@ public class pluginTestTopComponent extends TopComponent
         runButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 runButtonActionPerformed(evt);
-            }
-        });
-
-        layerComboBox.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "All layers", "Only cyan layer", "Only magenta layer", "Only yellow layer", "Only black layer", "From magenta layer", "From yellow layer" }));
-        layerComboBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                layerComboBoxActionPerformed(evt);
             }
         });
 
@@ -334,9 +327,7 @@ public class pluginTestTopComponent extends TopComponent
                                     .addComponent(uploadButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                     .addComponent(runButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                 .addGap(18, 18, 18)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(svgButton, javax.swing.GroupLayout.DEFAULT_SIZE, 88, Short.MAX_VALUE)
-                                    .addComponent(layerComboBox, 0, 1, Short.MAX_VALUE))))
+                                .addComponent(svgButton, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
@@ -357,9 +348,7 @@ public class pluginTestTopComponent extends TopComponent
                             .addComponent(uploadButton)
                             .addComponent(svgButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(runButton)
-                            .addComponent(layerComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(runButton))
                     .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -454,7 +443,6 @@ public class pluginTestTopComponent extends TopComponent
 
     private void uploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadButtonActionPerformed
         if(backend.isIdle() && isProcessing == false){
-            
             //Open File Chooser
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -465,7 +453,7 @@ public class pluginTestTopComponent extends TopComponent
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 
                 //Initialize ColorFile
-                colorFile = new ColorFile(fileChooser.getSelectedFile(), PREVIEW_WIDTH, PREVIEW_HEIGHT);
+                colorFile.setup(fileChooser.getSelectedFile(), PREVIEW_WIDTH, PREVIEW_HEIGHT);
                 lastPath = colorFile.getParentFile();
                 setStatusText("Files Uploaded");
                 try {
@@ -475,7 +463,6 @@ public class pluginTestTopComponent extends TopComponent
                 }
                 previewLabel.setIcon(colorFile.getScaledImage());
                 previewLabel.setText("Preview");
-//                consoleSetText(colorFile.fileList);
             }else {
                 consoleSetText("\n\nFile chooser canceled");
             }
@@ -563,15 +550,12 @@ public class pluginTestTopComponent extends TopComponent
 
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runButtonActionPerformed
         if(isProcessing == false){
-            if(colorFile.gcodeFiles[3] != null){
+            setSelectedFiles();
+            if((colorFile.cyanSelected || colorFile.magentaSelected || colorFile.yellowSelected || colorFile.blackSelected) == true){
                 isProcessing = true;
                 setCurrentFileIndex();
                 setup();
-    //            try {
-    //                timeRemainUpdater();
-    //            } catch (Exception ex) {
-    //                textArea.append("Error occurred calling timeRemainUpdater method");
-    //            }
+                setColorCheckBoxEnabled(false);
                 try {
                     processGcode();
                 } catch (Exception ex) {
@@ -580,86 +564,73 @@ public class pluginTestTopComponent extends TopComponent
                     isProcessing = false;
                 }
             }else {
-                consoleSetText("\n\nUnable to run\nPlease make sure the folder is uploaded");
+                consoleSetText("\n\nUnable to run\nPlease make sure to select a layer");
             }
         }else{
             consoleSetText("\n\nUnable to run\nPlease make sure the machine is not running");
         }
     }//GEN-LAST:event_runButtonActionPerformed
 
-    private void layerComboBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_layerComboBoxActionPerformed
-        if(isProcessing == false){
-            layerMode = layerComboBox.getSelectedIndex();
-            if(layerMode >= 1 && layerMode <= 4){
-                autoRunNextFile = false;
-            }else{
-                autoRunNextFile = true;
-            }
-            setCurrentFileIndex();
-            consoleSetText("\n\nMachine will now draw '" + layerComboBox.getSelectedItem() + "'");
-        }
-    }//GEN-LAST:event_layerComboBoxActionPerformed
-
     private void jTabbedPane2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane2StateChanged
         
     }//GEN-LAST:event_jTabbedPane2StateChanged
 
     private void magentaCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_magentaCheckBoxActionPerformed
-        // TODO add your handling code here:
+        colorFile.magentaSelected = magentaCheckBox.isSelected();
+        consoleSetText("\nMagenta layer is set to " + colorFile.magentaSelected.toString());
     }//GEN-LAST:event_magentaCheckBoxActionPerformed
 
     private void blackCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blackCheckBoxActionPerformed
-        // TODO add your handling code here:
+        colorFile.blackSelected = blackCheckBox.isSelected();
+        consoleSetText("\nBlack layer is set to " + colorFile.blackSelected.toString());
     }//GEN-LAST:event_blackCheckBoxActionPerformed
 
     private void cyanCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cyanCheckBoxActionPerformed
-        // TODO add your handling code here:
+        colorFile.cyanSelected = cyanCheckBox.isSelected();
+        consoleSetText("\nCyan layer is set to " + colorFile.cyanSelected.toString());
     }//GEN-LAST:event_cyanCheckBoxActionPerformed
 
     private void yellowCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yellowCheckBoxActionPerformed
-        // TODO add your handling code here:
+        colorFile.yellowSelected = yellowCheckBox.isSelected();
+        consoleSetText("\nYellow layer is set to " + colorFile.yellowSelected.toString());
     }//GEN-LAST:event_yellowCheckBoxActionPerformed
     
+    private void setSelectedFiles(){
+        colorFile.magentaSelected = magentaCheckBox.isSelected();
+        colorFile.blackSelected = blackCheckBox.isSelected();
+        colorFile.cyanSelected = cyanCheckBox.isSelected();
+        colorFile.yellowSelected = yellowCheckBox.isSelected();
+    }
+    
     private void setCurrentFileIndex(){
-        switch (layerMode){
-            case 0 -> currentFileIndex = 0;
-            case 1 -> currentFileIndex = 0;
-            case 2 -> currentFileIndex = 1;
-            case 3 -> currentFileIndex = 2;
-            case 4 -> currentFileIndex = 3;
-            case 5 -> currentFileIndex = 1;
-            case 6 -> currentFileIndex = 2;
+        if(colorFile.cyanSelected){
+            currentFileIndex = 0;
+            colorFile.cyanSelected = false;
+        }else if(colorFile.magentaSelected){
+            currentFileIndex = 1;
+            colorFile.magentaSelected = false;
+        }else if(colorFile.yellowSelected){
+            currentFileIndex = 2;
+            colorFile.yellowSelected = false;
+        }else if(colorFile.blackSelected){
+            currentFileIndex = 3;
+            colorFile.blackSelected = false;
         }
     }
     
-//    private void timeRemainUpdater() throws Exception{
-//        
-//        long totalTime = 0;
-//        StringBuilder message = new StringBuilder("\nEstimated time for each layer :");
-//        
-//        for(int i = 0; i < gcodeFiles.length; i++){
-//            backend.setGcodeFile(gcodeFiles[i]);
-//            message.append("\n " + backend.getSendRemainingDuration());
-//            
-//            totalTime += backend.getSendRemainingDuration();
-//        }
-//        message.append("\n\nTotal Time : " + totalTime);
-//        textArea.append(message.toString());
-//        Timer time = new Timer();
-//        Thread timeThread = new Thread(){
-//            @Override
-//            public void run(){
-//                long timePassed;
-//                while(isProcessing){
-//                    timePassed = backend.get
-//                    timeRemainText.setText("Estimated time remaining : " + );
-//                    
-//                    Thread.sleep(50));
-//                }
-//            }
-//        };
-//        timeThread.start();
-//    }
+    private void setColorCheckBoxEnabled(boolean enable){
+        cyanCheckBox.setEnabled(enable);
+        magentaCheckBox.setEnabled(enable);
+        yellowCheckBox.setEnabled(enable);
+        blackCheckBox.setEnabled(enable);
+    }
+    
+    private void setColorCheckBoxSelected(boolean selected){
+        cyanCheckBox.setSelected(selected);
+        magentaCheckBox.setSelected(selected);
+        yellowCheckBox.setSelected(selected);
+        blackCheckBox.setSelected(selected);
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox blackCheckBox;
@@ -682,7 +653,6 @@ public class pluginTestTopComponent extends TopComponent
     public javax.swing.JScrollPane jScrollPane1;
     public javax.swing.JTabbedPane jTabbedPane2;
     private javax.swing.JToggleButton jToggleButton1;
-    private javax.swing.JComboBox<String> layerComboBox;
     private javax.swing.JCheckBox magentaCheckBox;
     public javax.swing.JProgressBar magentaProgress;
     private javax.swing.JLabel previewLabel;
@@ -700,7 +670,6 @@ public class pluginTestTopComponent extends TopComponent
     public void componentOpened() {
         setStatusText("Idle");
         setup();
-        currentFileIndex = 3;
         isProcessing = false;
     }
 
@@ -708,13 +677,15 @@ public class pluginTestTopComponent extends TopComponent
     public void componentClosed() {
         setStatusText("Idle");
         setup();
-        currentFileIndex = 3;
         isProcessing = false;
         try {
             backend.unsetGcodeFile();
         } catch (Exception ex) {}
         previewLabel.setIcon(null);
         previewLabel.setText("");
+        setColorCheckBoxEnabled(true);
+        setColorCheckBoxSelected(true);
+        resetLayerSelected();
     }
 
     void writeProperties(java.util.Properties p) {
@@ -726,6 +697,13 @@ public class pluginTestTopComponent extends TopComponent
 
     void readProperties(java.util.Properties p) {
         String version = p.getProperty("version");
+    }
+    
+    private void resetLayerSelected(){
+        colorFile.cyanSelected = cyanCheckBox.isSelected();
+        colorFile.magentaSelected = magentaCheckBox.isSelected();
+        colorFile.yellowSelected = yellowCheckBox.isSelected();
+        colorFile.blackSelected = blackCheckBox.isSelected();
     }
 
     @Override
@@ -772,28 +750,18 @@ public class pluginTestTopComponent extends TopComponent
     @Override
     public void streamComplete() {
         if(isProcessing == true){
-            if(currentFileIndex < 3 && autoRunNextFile == true){
-                textArea.append("\nFinished drawing layer " + (currentFileIndex + 1) + "\nSending next file");
-                currentFileIndex++;
+            if((colorFile.cyanSelected || colorFile.magentaSelected || colorFile.yellowSelected || colorFile.blackSelected) == true){
+                consoleSetText("\nFinished drawing layer " + (currentFileIndex + 1) + "\nSending next file");
+                setCurrentFileIndex();
                 try {
                     processGcode();
-                } catch (Exception ex) {
-                    Exceptions.printStackTrace(ex);
-                }
-            }else if(currentFileIndex == 3 && autoRunNextFile == true){
-                textArea.append("\n\n *** Finished drawing the last file ***");
+                } catch (Exception ex) {}
+            }else{
+                consoleSetText("\n\n *** Finished drawing the last file ***");
                 isProcessing = false;
                 setStatusText("Idle");
-            }else if(autoRunNextFile == false){
-                currentFileIndex = 3;
-                isProcessing = false;
-                switch (layerMode){
-                    case 1 -> textArea.append("\n\n *** Finished drawing cyan layer ***");
-                    case 2 -> textArea.append("\n\n *** Finished drawing magenta layer ***");
-                    case 3 -> textArea.append("\n\n *** Finished drawing yellow layer ***");
-                    case 4 -> textArea.append("\n\n *** Finished drawing black layer ***");
-                }
-                setStatusText("Idle");
+                resetLayerSelected();
+                setColorCheckBoxEnabled(true);
             }
         }
     }
