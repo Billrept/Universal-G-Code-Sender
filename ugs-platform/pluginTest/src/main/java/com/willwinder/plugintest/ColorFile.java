@@ -8,14 +8,14 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 public class ColorFile extends Folder{
+    public String[] colorChangeCommand = new String[4];
     public String[] gcodeFiles = new String[4];
     public String fileList;
     public BackendAPI backend;
     public Boolean cyanSelected, magentaSelected, yellowSelected, blackSelected;
+
     
     public void setup(java.io.File folderPath, int previewWidth, int previewHeight){
         
@@ -54,7 +54,7 @@ public class ColorFile extends Folder{
     public String getFileList(String[] gcodeFiles){
         StringBuilder fileList = new StringBuilder("\n\n *** Files Uploaded *** \n\nFiles in the selected folder:\n");
             for (String file : gcodeFiles) {
-                fileList.append(file + "\n");
+                fileList.append(file).append("\n");
             }
         fileList.append("\n Click Run to start drawing");
         return fileList.toString();
@@ -63,14 +63,8 @@ public class ColorFile extends Folder{
     public void sendGcode(String file){
         try {
             backend.setGcodeFile(new File(file));
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(new JFrame(), "Error trying to set Gcode file");
-        }
-        try {
             backend.send();
-        } catch (Exception ex) {
-            JOptionPane.showMessageDialog(new JFrame(), "Error trying to send Gcode File");
-        }
+        } catch (Exception ex) {}
     }
     
     public void setAllLayerSelected(Boolean selected){
@@ -78,5 +72,22 @@ public class ColorFile extends Folder{
         this.magentaSelected = selected;
         this.yellowSelected = selected;
         this.blackSelected = selected;
+    }
+
+    @Override
+    public void emptyGcodeFiles() {
+        for(int i = 0; i <= gcodeFiles.length; i++){
+            this.gcodeFiles[i] = null;
+        }
+    }
+
+    @Override
+    public boolean isEmptyGcodeFiles() {
+        for (String gcodeFile : gcodeFiles) {
+            if (gcodeFile != null) {
+                return false;
+            }
+        }
+        return true;
     }
 }

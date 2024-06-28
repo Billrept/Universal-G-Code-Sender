@@ -17,7 +17,6 @@ import com.willwinder.universalgcodesender.model.Alarm;
 import com.willwinder.universalgcodesender.model.Position;
 import com.willwinder.universalgcodesender.types.GcodeCommand;
 import java.awt.Desktop;
-import java.io.FileReader;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -50,17 +49,16 @@ public class pluginTestTopComponent extends TopComponent
     
     private final Settings settings;
     public final BackendAPI backend;
-    private ColorFile colorFile;
+    private ColorFile cFile;
     
     private int currentFileIndex;
     private boolean filler;
     private boolean isProcessing = false;
-    private int layerMode = 0; 
-    private boolean autoRunNextFile = true;
     private boolean paused = false;
     private java.io.File lastPath;
     private final int PREVIEW_WIDTH = 230;
     private final int PREVIEW_HEIGHT = 230;
+    
     
 
     public pluginTestTopComponent() {
@@ -73,16 +71,13 @@ public class pluginTestTopComponent extends TopComponent
         backend.getController().addListener(this);
         backend.addUGSEventListener(this);
         
-        colorFile = new ColorFile();
+        cFile = new ColorFile();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jMenuBar1 = new javax.swing.JMenuBar();
-        jMenu1 = new javax.swing.JMenu();
-        jMenu2 = new javax.swing.JMenu();
-        jTabbedPane2 = new javax.swing.JTabbedPane();
+        tabbedPane = new javax.swing.JTabbedPane();
         jPanel1 = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
         uploadButton = new javax.swing.JButton();
@@ -110,16 +105,18 @@ public class pluginTestTopComponent extends TopComponent
         jButton2 = new javax.swing.JButton();
         jPanel4 = new javax.swing.JPanel();
         jToggleButton1 = new javax.swing.JToggleButton();
+        jPanel8 = new javax.swing.JPanel();
+        jScrollPane2 = new javax.swing.JScrollPane();
+        colorChangeTable = new javax.swing.JTable();
 
-        org.openide.awt.Mnemonics.setLocalizedText(jMenu1, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jMenu1.text")); // NOI18N
-        jMenuBar1.add(jMenu1);
-
-        org.openide.awt.Mnemonics.setLocalizedText(jMenu2, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jMenu2.text")); // NOI18N
-        jMenuBar1.add(jMenu2);
-
-        jTabbedPane2.addChangeListener(new javax.swing.event.ChangeListener() {
+        tabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
-                jTabbedPane2StateChanged(evt);
+                tabbedPaneStateChanged(evt);
+            }
+        });
+        tabbedPane.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                tabbedPanePropertyChange(evt);
             }
         });
 
@@ -349,7 +346,7 @@ public class pluginTestTopComponent extends TopComponent
                             .addComponent(svgButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addGap(18, 18, 18)
                         .addComponent(runButton))
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 244, Short.MAX_VALUE))
+                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -372,11 +369,11 @@ public class pluginTestTopComponent extends TopComponent
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(16, 16, 16)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, 405, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
 
-        jTabbedPane2.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jPanel1.TabConstraints.tabTitle"), jPanel1); // NOI18N
+        tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jPanel1.TabConstraints.tabTitle"), jPanel1); // NOI18N
 
         org.openide.awt.Mnemonics.setLocalizedText(jButton2, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jButton2.text")); // NOI18N
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -399,10 +396,10 @@ public class pluginTestTopComponent extends TopComponent
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addGap(139, 139, 139)
                 .addComponent(jButton2)
-                .addContainerGap(265, Short.MAX_VALUE))
+                .addContainerGap(290, Short.MAX_VALUE))
         );
 
-        jTabbedPane2.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
+        tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
 
         org.openide.awt.Mnemonics.setLocalizedText(jToggleButton1, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jToggleButton1.text")); // NOI18N
 
@@ -418,26 +415,83 @@ public class pluginTestTopComponent extends TopComponent
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(264, Short.MAX_VALUE)
+                .addContainerGap(289, Short.MAX_VALUE)
                 .addComponent(jToggleButton1)
                 .addGap(140, 140, 140))
         );
 
-        jTabbedPane2.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jPanel4.TabConstraints.tabTitle"), jPanel4); // NOI18N
+        tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jPanel4.TabConstraints.tabTitle"), jPanel4); // NOI18N
+
+        colorChangeTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {"Cyan", null},
+                {"Magenta", null},
+                {"Yellow", null},
+                {"Black", null}
+            },
+            new String [] {
+                "Pen Color", "Pen Change Command"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, true
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        colorChangeTable.setToolTipText(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorChangeTable.toolTipText")); // NOI18N
+        colorChangeTable.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
+            public void propertyChange(java.beans.PropertyChangeEvent evt) {
+                colorChangeTablePropertyChange(evt);
+            }
+        });
+        jScrollPane2.setViewportView(colorChangeTable);
+        if (colorChangeTable.getColumnModel().getColumnCount() > 0) {
+            colorChangeTable.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorChangeTable.columnModel.title0")); // NOI18N
+            colorChangeTable.getColumnModel().getColumn(1).setHeaderValue(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorChangeTable.columnModel.title1_1")); // NOI18N
+        }
+
+        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
+        jPanel8.setLayout(jPanel8Layout);
+        jPanel8Layout.setHorizontalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(36, 36, 36)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
+                .addGap(68, 68, 68))
+        );
+        jPanel8Layout.setVerticalGroup(
+            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel8Layout.createSequentialGroup()
+                .addGap(48, 48, 48)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(271, Short.MAX_VALUE))
+        );
+
+        tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jPanel8.TabConstraints.tabTitle"), jPanel8); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(tabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 342, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(jTabbedPane2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 27, Short.MAX_VALUE))
+                .addComponent(tabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 2, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -453,15 +507,15 @@ public class pluginTestTopComponent extends TopComponent
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 
                 //Initialize ColorFile
-                colorFile.setup(fileChooser.getSelectedFile(), PREVIEW_WIDTH, PREVIEW_HEIGHT);
-                lastPath = colorFile.getParentFile();
+                cFile.setup(fileChooser.getSelectedFile(), PREVIEW_WIDTH, PREVIEW_HEIGHT);
+                lastPath = cFile.getParentFile();
                 setStatusText("Files Uploaded");
                 try {
-                    colorFile.scaleImage(fileChooser.getSelectedFile(), PREVIEW_WIDTH, PREVIEW_HEIGHT);
+                    cFile.scaleImage(fileChooser.getSelectedFile(), PREVIEW_WIDTH, PREVIEW_HEIGHT);
                 } catch (IOException ex) {
                     consoleSetText("\nError trying to scale image");
                 }
-                previewLabel.setIcon(colorFile.getScaledImage());
+                previewLabel.setIcon(cFile.getScaledImage());
                 previewLabel.setText("Preview");
             }else {
                 consoleSetText("\n\nFile chooser canceled");
@@ -472,9 +526,11 @@ public class pluginTestTopComponent extends TopComponent
     }//GEN-LAST:event_uploadButtonActionPerformed
     
     private void processGcode() throws Exception{
-        colorFile.sendGcode(colorFile.gcodeFiles[currentFileIndex]);
+        backend.sendGcodeCommand(cFile.colorChangeCommand[currentFileIndex]);
+        consoleSetText("\n\nPen changed");
+        cFile.sendGcode(cFile.gcodeFiles[currentFileIndex]);
         progressBarUpdater();
-        consoleSetText("\n\nFile " + colorFile.gcodeFiles[currentFileIndex] + " loaded");
+        consoleSetText("\n\nFile " + cFile.gcodeFiles[currentFileIndex] + " loaded");
     }
     
     public void consoleSetText(String message){
@@ -539,7 +595,8 @@ public class pluginTestTopComponent extends TopComponent
     }
     
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        
+        for(int i = 0; i <= 3; i++)
+            consoleSetText("\n" + colorChangeTable.getValueAt(i, 1).toString());
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void svgButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_svgButtonActionPerformed
@@ -549,72 +606,96 @@ public class pluginTestTopComponent extends TopComponent
     }//GEN-LAST:event_svgButtonActionPerformed
 
     private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runButtonActionPerformed
-        if(isProcessing == false){
+        if(backend.isIdle() && isProcessing == false && !cFile.isEmptyGcodeFiles()){
             setSelectedFiles();
-            if((colorFile.cyanSelected || colorFile.magentaSelected || colorFile.yellowSelected || colorFile.blackSelected) == true){
-                isProcessing = true;
-                setCurrentFileIndex();
-                setup();
-                setColorCheckBoxEnabled(false);
-                try {
-                    processGcode();
-                } catch (Exception ex) {
-                    consoleSetText("Error occurred trying to draw Gcode");
-                    currentFileIndex = 3;
-                    isProcessing = false;
+            if((cFile.cyanSelected || cFile.magentaSelected || cFile.yellowSelected || cFile.blackSelected) == true){
+                if(checkColorChangeCommand()){
+                    isProcessing = true;
+                    setCurrentFileIndex();
+                    setup();
+                    tabbedPane.setEnabled(false);
+                    setColorCheckBoxEnabled(false);
+                    try {
+                        processGcode();
+                    } catch (Exception ex) {
+                        consoleSetText("Error occurred trying to draw Gcode");
+                        currentFileIndex = 3;
+                        isProcessing = false;
+                    }
+                }else{
+                    consoleSetText("\n\nUnable to run\nPlease make sure to enter valid pen color change commands in the settings tab");
                 }
             }else {
                 consoleSetText("\n\nUnable to run\nPlease make sure to select a layer");
             }
         }else{
-            consoleSetText("\n\nUnable to run\nPlease make sure the machine is not running");
+            consoleSetText("\n\nUnable to run\nPlease make sure the machine is in idle mode and folder is loaded");
         }
     }//GEN-LAST:event_runButtonActionPerformed
 
-    private void jTabbedPane2StateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_jTabbedPane2StateChanged
+    private void tabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbedPaneStateChanged
         
-    }//GEN-LAST:event_jTabbedPane2StateChanged
+    }//GEN-LAST:event_tabbedPaneStateChanged
 
     private void magentaCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_magentaCheckBoxActionPerformed
-        colorFile.magentaSelected = magentaCheckBox.isSelected();
-        consoleSetText("\nMagenta layer is set to " + colorFile.magentaSelected.toString());
+        cFile.magentaSelected = magentaCheckBox.isSelected();
+        consoleSetText("\nMagenta layer is set to " + cFile.magentaSelected.toString());
     }//GEN-LAST:event_magentaCheckBoxActionPerformed
 
     private void blackCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blackCheckBoxActionPerformed
-        colorFile.blackSelected = blackCheckBox.isSelected();
-        consoleSetText("\nBlack layer is set to " + colorFile.blackSelected.toString());
+        cFile.blackSelected = blackCheckBox.isSelected();
+        consoleSetText("\nBlack layer is set to " + cFile.blackSelected.toString());
     }//GEN-LAST:event_blackCheckBoxActionPerformed
 
     private void cyanCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cyanCheckBoxActionPerformed
-        colorFile.cyanSelected = cyanCheckBox.isSelected();
-        consoleSetText("\nCyan layer is set to " + colorFile.cyanSelected.toString());
+        cFile.cyanSelected = cyanCheckBox.isSelected();
+        consoleSetText("\nCyan layer is set to " + cFile.cyanSelected.toString());
     }//GEN-LAST:event_cyanCheckBoxActionPerformed
 
     private void yellowCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yellowCheckBoxActionPerformed
-        colorFile.yellowSelected = yellowCheckBox.isSelected();
-        consoleSetText("\nYellow layer is set to " + colorFile.yellowSelected.toString());
+        cFile.yellowSelected = yellowCheckBox.isSelected();
+        consoleSetText("\nYellow layer is set to " + cFile.yellowSelected.toString());
     }//GEN-LAST:event_yellowCheckBoxActionPerformed
+
+    private void tabbedPanePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tabbedPanePropertyChange
+        // TODO add your handling code here:
+    }//GEN-LAST:event_tabbedPanePropertyChange
+
+    private void colorChangeTablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_colorChangeTablePropertyChange
+ 
+    }//GEN-LAST:event_colorChangeTablePropertyChange
+    
+    private boolean checkColorChangeCommand(){
+        for(int i = 0; i <= 3; i++){
+            if(!cFile.gcodeIsValid(colorChangeTable.getValueAt(i, 1) + "")){
+                consoleSetText("\n\nUnable to run\nPlease make sure pen change command is valid ");
+                return false;
+            }
+            cFile.colorChangeCommand[i] = colorChangeTable.getValueAt(i, 1).toString();
+        }
+        return true;
+    }
     
     private void setSelectedFiles(){
-        colorFile.magentaSelected = magentaCheckBox.isSelected();
-        colorFile.blackSelected = blackCheckBox.isSelected();
-        colorFile.cyanSelected = cyanCheckBox.isSelected();
-        colorFile.yellowSelected = yellowCheckBox.isSelected();
+        cFile.magentaSelected = magentaCheckBox.isSelected();
+        cFile.blackSelected = blackCheckBox.isSelected();
+        cFile.cyanSelected = cyanCheckBox.isSelected();
+        cFile.yellowSelected = yellowCheckBox.isSelected();
     }
     
     private void setCurrentFileIndex(){
-        if(colorFile.cyanSelected){
+        if(cFile.cyanSelected){
             currentFileIndex = 0;
-            colorFile.cyanSelected = false;
-        }else if(colorFile.magentaSelected){
+            cFile.cyanSelected = false;
+        }else if(cFile.magentaSelected){
             currentFileIndex = 1;
-            colorFile.magentaSelected = false;
-        }else if(colorFile.yellowSelected){
+            cFile.magentaSelected = false;
+        }else if(cFile.yellowSelected){
             currentFileIndex = 2;
-            colorFile.yellowSelected = false;
-        }else if(colorFile.blackSelected){
+            cFile.yellowSelected = false;
+        }else if(cFile.blackSelected){
             currentFileIndex = 3;
-            colorFile.blackSelected = false;
+            cFile.blackSelected = false;
         }
     }
     
@@ -635,14 +716,12 @@ public class pluginTestTopComponent extends TopComponent
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox blackCheckBox;
     public javax.swing.JProgressBar blackProgress;
+    private javax.swing.JTable colorChangeTable;
     private javax.swing.JCheckBox cyanCheckBox;
     public javax.swing.JProgressBar cyanProgress;
     private javax.swing.JLabel durationText;
     private javax.swing.JButton jButton2;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JMenu jMenu1;
-    private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
     public javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     public javax.swing.JPanel jPanel3;
@@ -650,8 +729,9 @@ public class pluginTestTopComponent extends TopComponent
     public javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
+    private javax.swing.JPanel jPanel8;
     public javax.swing.JScrollPane jScrollPane1;
-    public javax.swing.JTabbedPane jTabbedPane2;
+    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JToggleButton jToggleButton1;
     private javax.swing.JCheckBox magentaCheckBox;
     public javax.swing.JProgressBar magentaProgress;
@@ -659,6 +739,7 @@ public class pluginTestTopComponent extends TopComponent
     private javax.swing.JButton runButton;
     private javax.swing.JTextField statusText;
     private javax.swing.JButton svgButton;
+    public javax.swing.JTabbedPane tabbedPane;
     public javax.swing.JTextArea textArea;
     private javax.swing.JLabel timeRemainText;
     private javax.swing.JButton uploadButton;
@@ -668,6 +749,7 @@ public class pluginTestTopComponent extends TopComponent
 
     @Override
     public void componentOpened() {
+        tabbedPane.setEnabled(true);
         setStatusText("Idle");
         setup();
         isProcessing = false;
@@ -686,6 +768,7 @@ public class pluginTestTopComponent extends TopComponent
         setColorCheckBoxEnabled(true);
         setColorCheckBoxSelected(true);
         resetLayerSelected();
+        cFile.emptyGcodeFiles();
     }
 
     void writeProperties(java.util.Properties p) {
@@ -700,10 +783,10 @@ public class pluginTestTopComponent extends TopComponent
     }
     
     private void resetLayerSelected(){
-        colorFile.cyanSelected = cyanCheckBox.isSelected();
-        colorFile.magentaSelected = magentaCheckBox.isSelected();
-        colorFile.yellowSelected = yellowCheckBox.isSelected();
-        colorFile.blackSelected = blackCheckBox.isSelected();
+        cFile.cyanSelected = cyanCheckBox.isSelected();
+        cFile.magentaSelected = magentaCheckBox.isSelected();
+        cFile.yellowSelected = yellowCheckBox.isSelected();
+        cFile.blackSelected = blackCheckBox.isSelected();
     }
 
     @Override
@@ -750,8 +833,8 @@ public class pluginTestTopComponent extends TopComponent
     @Override
     public void streamComplete() {
         if(isProcessing == true){
-            if((colorFile.cyanSelected || colorFile.magentaSelected || colorFile.yellowSelected || colorFile.blackSelected) == true){
-                consoleSetText("\nFinished drawing layer " + (currentFileIndex + 1) + "\nSending next file");
+            if((cFile.cyanSelected || cFile.magentaSelected || cFile.yellowSelected || cFile.blackSelected) == true){
+                consoleSetText("\nFinished drawing layer " + cFile.gcodeFiles[currentFileIndex] + "\nSending next file");
                 setCurrentFileIndex();
                 try {
                     processGcode();
@@ -762,6 +845,7 @@ public class pluginTestTopComponent extends TopComponent
                 setStatusText("Idle");
                 resetLayerSelected();
                 setColorCheckBoxEnabled(true);
+                tabbedPane.setEnabled(true);
             }
         }
     }
