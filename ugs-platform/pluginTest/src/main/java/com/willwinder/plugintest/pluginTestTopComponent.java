@@ -20,6 +20,7 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.Set;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 
@@ -50,6 +51,7 @@ public class pluginTestTopComponent extends TopComponent
     private final Settings settings;
     public final BackendAPI backend;
     private ColorFile cFile;
+    private LaserFile lFile;
     
     private int currentFileIndex;
     private boolean filler;
@@ -59,7 +61,7 @@ public class pluginTestTopComponent extends TopComponent
     private final int PREVIEW_WIDTH = 230;
     private final int PREVIEW_HEIGHT = 230;
     
-    
+    private int selectedTab = 0;
 
     public pluginTestTopComponent() {
         initComponents();
@@ -72,42 +74,83 @@ public class pluginTestTopComponent extends TopComponent
         backend.addUGSEventListener(this);
         
         cFile = new ColorFile();
+        lFile = new LaserFile();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
         tabbedPane = new javax.swing.JTabbedPane();
-        jPanel1 = new javax.swing.JPanel();
+        drawingPanel = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        uploadButton = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
-        textArea = new javax.swing.JTextArea();
-        svgButton = new javax.swing.JButton();
+        colorTextArea = new javax.swing.JTextArea();
         jPanel5 = new javax.swing.JPanel();
         magentaProgress = new javax.swing.JProgressBar();
         blackProgress = new javax.swing.JProgressBar();
         yellowProgress = new javax.swing.JProgressBar();
         cyanProgress = new javax.swing.JProgressBar();
-        statusText = new javax.swing.JTextField();
-        runButton = new javax.swing.JButton();
+        colorStatusText = new javax.swing.JTextField();
+        colorUploadButton = new javax.swing.JButton();
+        colorRunButton = new javax.swing.JButton();
+        colorSvgButton = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
-        previewLabel = new javax.swing.JLabel();
-        timeRemainText = new javax.swing.JLabel();
-        durationText = new javax.swing.JLabel();
+        colorPreviewLabel = new javax.swing.JLabel();
+        colorTimeRemainText = new javax.swing.JLabel();
+        colorDurationText = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         cyanCheckBox = new javax.swing.JCheckBox();
         magentaCheckBox = new javax.swing.JCheckBox();
         yellowCheckBox = new javax.swing.JCheckBox();
         blackCheckBox = new javax.swing.JCheckBox();
-        jPanel2 = new javax.swing.JPanel();
-        jButton2 = new javax.swing.JButton();
-        jPanel4 = new javax.swing.JPanel();
-        jToggleButton1 = new javax.swing.JToggleButton();
-        jPanel8 = new javax.swing.JPanel();
+        laserPanel = new javax.swing.JPanel();
+        jPanel12 = new javax.swing.JPanel();
+        jPanel14 = new javax.swing.JPanel();
+        jScrollPane5 = new javax.swing.JScrollPane();
+        laserTextArea = new javax.swing.JTextArea();
+        jPanel15 = new javax.swing.JPanel();
+        laserStatusText = new javax.swing.JTextField();
+        laserProgress = new javax.swing.JProgressBar();
+        laserRunButton = new javax.swing.JButton();
+        laserSvgButton = new javax.swing.JButton();
+        laserUploadButton = new javax.swing.JButton();
+        powerSlider = new javax.swing.JSlider();
+        laserPreviewButton = new javax.swing.JButton();
+        laserPowerCheckBox = new javax.swing.JCheckBox();
+        jPanel16 = new javax.swing.JPanel();
+        laserTimeRemainText = new javax.swing.JLabel();
+        laserDurationText = new javax.swing.JLabel();
+        laserPreviewLabel = new javax.swing.JLabel();
+        jLabel3 = new javax.swing.JLabel();
+        drillingPanel = new javax.swing.JPanel();
+        jPanel17 = new javax.swing.JPanel();
+        jScrollPane6 = new javax.swing.JScrollPane();
+        drillTextArea = new javax.swing.JTextArea();
+        jPanel18 = new javax.swing.JPanel();
+        drillStatusText = new javax.swing.JTextField();
+        drillProgress = new javax.swing.JProgressBar();
+        drillRunButton = new javax.swing.JButton();
+        drillSvgButton = new javax.swing.JButton();
+        drillUploadButton = new javax.swing.JButton();
+        speedSlider = new javax.swing.JSlider();
+        drillPreviewButton = new javax.swing.JButton();
+        drillSpeedLevel = new javax.swing.JCheckBox();
+        jPanel19 = new javax.swing.JPanel();
+        drillPreviewLabel = new javax.swing.JLabel();
+        drillTimeRemainText = new javax.swing.JLabel();
+        drillDurationText = new javax.swing.JLabel();
+        settingsPanel = new javax.swing.JPanel();
         jScrollPane2 = new javax.swing.JScrollPane();
         colorChangeTable = new javax.swing.JTable();
+        penChangeCommandLabel = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        historyTable = new javax.swing.JTable();
+        penChangeCommandLabel1 = new javax.swing.JLabel();
+        laserMaxPowerLabel = new javax.swing.JLabel();
+        laserMaxPowerSlider = new javax.swing.JSlider();
+        drillMaxSpeedLabel = new javax.swing.JLabel();
+        drillMaxPowerSlider = new javax.swing.JSlider();
 
         tabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -120,27 +163,11 @@ public class pluginTestTopComponent extends TopComponent
             }
         });
 
-        org.openide.awt.Mnemonics.setLocalizedText(uploadButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.uploadButton.text")); // NOI18N
-        uploadButton.setToolTipText(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.uploadButton.toolTipText")); // NOI18N
-        uploadButton.setFocusable(false);
-        uploadButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                uploadButtonActionPerformed(evt);
-            }
-        });
-
-        textArea.setEditable(false);
-        textArea.setColumns(20);
-        textArea.setRows(5);
-        textArea.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jScrollPane1.setViewportView(textArea);
-
-        org.openide.awt.Mnemonics.setLocalizedText(svgButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.svgButton.text")); // NOI18N
-        svgButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                svgButtonActionPerformed(evt);
-            }
-        });
+        colorTextArea.setEditable(false);
+        colorTextArea.setColumns(20);
+        colorTextArea.setRows(5);
+        colorTextArea.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jScrollPane1.setViewportView(colorTextArea);
 
         magentaProgress.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         magentaProgress.setString(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.magentaProgress.string")); // NOI18N
@@ -158,10 +185,33 @@ public class pluginTestTopComponent extends TopComponent
         cyanProgress.setString(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.cyanProgress.string")); // NOI18N
         cyanProgress.setStringPainted(true);
 
-        statusText.setEditable(false);
-        statusText.setForeground(new java.awt.Color(0, 0, 0));
-        statusText.setText(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.statusText.text")); // NOI18N
-        statusText.setFocusable(false);
+        colorStatusText.setEditable(false);
+        colorStatusText.setForeground(new java.awt.Color(0, 0, 0));
+        colorStatusText.setText(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorStatusText.text")); // NOI18N
+        colorStatusText.setFocusable(false);
+
+        org.openide.awt.Mnemonics.setLocalizedText(colorUploadButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorUploadButton.text")); // NOI18N
+        colorUploadButton.setToolTipText(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorUploadButton.toolTipText")); // NOI18N
+        colorUploadButton.setFocusable(false);
+        colorUploadButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                colorUploadButtonActionPerformed(evt);
+            }
+        });
+
+        org.openide.awt.Mnemonics.setLocalizedText(colorRunButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorRunButton.text")); // NOI18N
+        colorRunButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                colorRunButtonActionPerformed(evt);
+            }
+        });
+
+        org.openide.awt.Mnemonics.setLocalizedText(colorSvgButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorSvgButton.text")); // NOI18N
+        colorSvgButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                colorSvgButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
         jPanel5.setLayout(jPanel5Layout);
@@ -170,22 +220,28 @@ public class pluginTestTopComponent extends TopComponent
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel5Layout.createSequentialGroup()
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(magentaProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(blackProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(yellowProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cyanProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addComponent(statusText))
+                    .addComponent(colorStatusText)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(magentaProgress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(blackProgress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(yellowProgress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(cyanProgress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
+                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                    .addComponent(colorUploadButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                    .addComponent(colorRunButton, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(colorSvgButton, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))))
                 .addContainerGap())
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(statusText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(colorStatusText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(29, 29, 29)
                 .addComponent(cyanProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(magentaProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -193,28 +249,27 @@ public class pluginTestTopComponent extends TopComponent
                 .addComponent(yellowProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(blackProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(colorUploadButton)
+                    .addComponent(colorSvgButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addComponent(colorRunButton)
                 .addContainerGap())
         );
 
         cyanProgress.getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.cyanProgress.AccessibleContext.accessibleName")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(runButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.runButton.text")); // NOI18N
-        runButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                runButtonActionPerformed(evt);
-            }
-        });
-
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel6.setPreferredSize(new java.awt.Dimension(240, 240));
 
-        previewLabel.setForeground(new java.awt.Color(0, 0, 0));
-        org.openide.awt.Mnemonics.setLocalizedText(previewLabel, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.previewLabel.text")); // NOI18N
-        previewLabel.setToolTipText(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.previewLabel.toolTipText")); // NOI18N
-        previewLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
-        previewLabel.setHorizontalTextPosition(JLabel.CENTER);
-        previewLabel.setVerticalTextPosition(JLabel.BOTTOM);
+        colorPreviewLabel.setForeground(new java.awt.Color(0, 0, 0));
+        org.openide.awt.Mnemonics.setLocalizedText(colorPreviewLabel, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorPreviewLabel.text")); // NOI18N
+        colorPreviewLabel.setToolTipText(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorPreviewLabel.toolTipText")); // NOI18N
+        colorPreviewLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        colorPreviewLabel.setHorizontalTextPosition(JLabel.CENTER);
+        colorPreviewLabel.setVerticalTextPosition(JLabel.BOTTOM);
 
         javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
         jPanel6.setLayout(jPanel6Layout);
@@ -222,20 +277,20 @@ public class pluginTestTopComponent extends TopComponent
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel6Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(previewLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(colorPreviewLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         jPanel6Layout.setVerticalGroup(
             jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(previewLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(colorPreviewLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(34, 34, 34))
         );
 
-        org.openide.awt.Mnemonics.setLocalizedText(timeRemainText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.timeRemainText.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(colorTimeRemainText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorTimeRemainText.text")); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(durationText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.durationText.text")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(colorDurationText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorDurationText.text")); // NOI18N
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jLabel1.text")); // NOI18N
 
@@ -276,23 +331,24 @@ public class pluginTestTopComponent extends TopComponent
         jPanel7Layout.setHorizontalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
+                .addGap(16, 16, 16)
+                .addComponent(jLabel1)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addComponent(yellowCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(blackCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(magentaCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cyanCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(0, 7, Short.MAX_VALUE))
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(cyanCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap())
         );
         jPanel7Layout.setVerticalGroup(
             jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel7Layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(cyanCheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(magentaCheckBox)
@@ -300,7 +356,7 @@ public class pluginTestTopComponent extends TopComponent
                 .addComponent(yellowCheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(blackCheckBox)
-                .addContainerGap())
+                .addGap(68, 68, 68))
         );
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
@@ -312,115 +368,471 @@ public class pluginTestTopComponent extends TopComponent
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jScrollPane1)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(durationText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(colorDurationText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(timeRemainText, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(colorTimeRemainText, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(jPanel3Layout.createSequentialGroup()
-                                .addGap(8, 8, 8)
-                                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(uploadButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(runButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                .addGap(18, 18, 18)
-                                .addComponent(svgButton, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 251, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
             jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel3Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jPanel5, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(uploadButton)
-                            .addComponent(svgButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(18, 18, 18)
-                        .addComponent(runButton))
-                    .addComponent(jPanel6, javax.swing.GroupLayout.DEFAULT_SIZE, 265, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGap(36, 36, 36))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(jPanel3Layout.createSequentialGroup()
+                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(durationText, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(timeRemainText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
+                    .addComponent(colorDurationText, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(colorTimeRemainText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addGap(24, 24, 24))
         );
 
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(14, 14, 14)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(27, Short.MAX_VALUE))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
+        javax.swing.GroupLayout drawingPanelLayout = new javax.swing.GroupLayout(drawingPanel);
+        drawingPanel.setLayout(drawingPanelLayout);
+        drawingPanelLayout.setHorizontalGroup(
+            drawingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, drawingPanelLayout.createSequentialGroup()
+                .addContainerGap()
                 .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
         );
+        drawingPanelLayout.setVerticalGroup(
+            drawingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, drawingPanelLayout.createSequentialGroup()
+                .addContainerGap(11, Short.MAX_VALUE)
+                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+        );
 
-        tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jPanel1.TabConstraints.tabTitle"), jPanel1); // NOI18N
+        tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drawingPanel.TabConstraints.tabTitle"), drawingPanel); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(jButton2, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jButton2.text")); // NOI18N
-        jButton2.addActionListener(new java.awt.event.ActionListener() {
+        laserTextArea.setEditable(false);
+        laserTextArea.setColumns(20);
+        laserTextArea.setRows(5);
+        laserTextArea.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jScrollPane5.setViewportView(laserTextArea);
+
+        laserStatusText.setEditable(false);
+        laserStatusText.setForeground(new java.awt.Color(0, 0, 0));
+        laserStatusText.setText(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserStatusText.text")); // NOI18N
+        laserStatusText.setFocusable(false);
+
+        laserProgress.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        laserProgress.setName(""); // NOI18N
+        laserProgress.setString(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.string")); // NOI18N
+        laserProgress.setStringPainted(true);
+
+        org.openide.awt.Mnemonics.setLocalizedText(laserRunButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserRunButton.text")); // NOI18N
+        laserRunButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton2ActionPerformed(evt);
+                laserRunButtonActionPerformed(evt);
             }
         });
 
-        javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
-        jPanel2.setLayout(jPanel2Layout);
-        jPanel2Layout.setHorizontalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(236, 236, 236)
-                .addComponent(jButton2)
-                .addContainerGap(289, Short.MAX_VALUE))
+        org.openide.awt.Mnemonics.setLocalizedText(laserSvgButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserSvgButton.text")); // NOI18N
+        laserSvgButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                laserSvgButtonActionPerformed(evt);
+            }
+        });
+
+        org.openide.awt.Mnemonics.setLocalizedText(laserUploadButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserUploadButton.text")); // NOI18N
+        laserUploadButton.setToolTipText(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserUploadButton.toolTipText")); // NOI18N
+        laserUploadButton.setFocusable(false);
+        laserUploadButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                laserUploadButtonActionPerformed(evt);
+            }
+        });
+
+        powerSlider.setValue(100);
+        powerSlider.setEnabled(false);
+
+        org.openide.awt.Mnemonics.setLocalizedText(laserPreviewButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserPreviewButton.text")); // NOI18N
+        laserPreviewButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                laserPreviewButtonActionPerformed(evt);
+            }
+        });
+
+        org.openide.awt.Mnemonics.setLocalizedText(laserPowerCheckBox, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserPowerCheckBox.text")); // NOI18N
+        laserPowerCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                laserPowerCheckBoxActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
+        jPanel15.setLayout(jPanel15Layout);
+        jPanel15Layout.setHorizontalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel15Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(laserStatusText)
+                    .addComponent(laserProgress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel15Layout.createSequentialGroup()
+                        .addComponent(powerSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel15Layout.createSequentialGroup()
+                        .addGap(21, 21, 21)
+                        .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel15Layout.createSequentialGroup()
+                                .addComponent(laserRunButton, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(laserPreviewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(jPanel15Layout.createSequentialGroup()
+                                .addComponent(laserUploadButton)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(laserSvgButton, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(26, 26, 26)))
+                .addContainerGap())
+            .addGroup(jPanel15Layout.createSequentialGroup()
+                .addComponent(laserPowerCheckBox)
+                .addGap(0, 0, Short.MAX_VALUE))
         );
-        jPanel2Layout.setVerticalGroup(
-            jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addGap(139, 139, 139)
-                .addComponent(jButton2)
-                .addContainerGap(290, Short.MAX_VALUE))
+        jPanel15Layout.setVerticalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel15Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(laserStatusText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(laserProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(25, 25, 25)
+                .addComponent(laserPowerCheckBox)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(powerSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(laserUploadButton)
+                    .addComponent(laserSvgButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(laserPreviewButton)
+                    .addComponent(laserRunButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
-        tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jPanel2.TabConstraints.tabTitle"), jPanel2); // NOI18N
+        jPanel16.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel16.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel16.setPreferredSize(new java.awt.Dimension(240, 240));
 
-        org.openide.awt.Mnemonics.setLocalizedText(jToggleButton1, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jToggleButton1.text")); // NOI18N
-
-        javax.swing.GroupLayout jPanel4Layout = new javax.swing.GroupLayout(jPanel4);
-        jPanel4.setLayout(jPanel4Layout);
-        jPanel4Layout.setHorizontalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel4Layout.createSequentialGroup()
-                .addGap(222, 222, 222)
-                .addComponent(jToggleButton1)
-                .addContainerGap(267, Short.MAX_VALUE))
+        javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
+        jPanel16.setLayout(jPanel16Layout);
+        jPanel16Layout.setHorizontalGroup(
+            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 257, Short.MAX_VALUE)
         );
-        jPanel4Layout.setVerticalGroup(
-            jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel4Layout.createSequentialGroup()
-                .addContainerGap(289, Short.MAX_VALUE)
-                .addComponent(jToggleButton1)
-                .addGap(140, 140, 140))
+        jPanel16Layout.setVerticalGroup(
+            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 252, Short.MAX_VALUE)
         );
 
-        tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jPanel4.TabConstraints.tabTitle"), jPanel4); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(laserTimeRemainText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserTimeRemainText.text")); // NOI18N
+
+        org.openide.awt.Mnemonics.setLocalizedText(laserDurationText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserDurationText.text")); // NOI18N
+
+        laserPreviewLabel.setForeground(new java.awt.Color(0, 0, 0));
+        org.openide.awt.Mnemonics.setLocalizedText(laserPreviewLabel, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserPreviewLabel.text")); // NOI18N
+        laserPreviewLabel.setToolTipText(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserPreviewLabel.toolTipText")); // NOI18N
+        laserPreviewLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        laserPreviewLabel.setHorizontalTextPosition(JLabel.CENTER);
+        colorPreviewLabel.setVerticalTextPosition(JLabel.BOTTOM);
+
+        org.openide.awt.Mnemonics.setLocalizedText(jLabel3, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jLabel3.text")); // NOI18N
+
+        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
+        jPanel14.setLayout(jPanel14Layout);
+        jPanel14Layout.setHorizontalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel14Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane5)
+                    .addGroup(jPanel14Layout.createSequentialGroup()
+                        .addComponent(laserDurationText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(laserTimeRemainText, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel14Layout.createSequentialGroup()
+                        .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                            .addGroup(jPanel14Layout.createSequentialGroup()
+                                .addGap(12, 12, 12)
+                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(laserPreviewLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                            .addGroup(jPanel14Layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addContainerGap())
+        );
+        jPanel14Layout.setVerticalGroup(
+            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel14Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(jPanel14Layout.createSequentialGroup()
+                        .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(7, 7, 7)
+                        .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel14Layout.createSequentialGroup()
+                                .addComponent(laserPreviewLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGap(11, 11, 11))
+                            .addGroup(jPanel14Layout.createSequentialGroup()
+                                .addComponent(jLabel3)
+                                .addGap(0, 0, Short.MAX_VALUE)))))
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(laserDurationText, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(laserTimeRemainText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+        );
+
+        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
+        jPanel12.setLayout(jPanel12Layout);
+        jPanel12Layout.setHorizontalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel12Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        jPanel12Layout.setVerticalGroup(
+            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+        );
+
+        javax.swing.GroupLayout laserPanelLayout = new javax.swing.GroupLayout(laserPanel);
+        laserPanel.setLayout(laserPanelLayout);
+        laserPanelLayout.setHorizontalGroup(
+            laserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(laserPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        laserPanelLayout.setVerticalGroup(
+            laserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(laserPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+
+        tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserPanel.TabConstraints.tabTitle"), laserPanel); // NOI18N
+
+        drillTextArea.setEditable(false);
+        drillTextArea.setColumns(20);
+        drillTextArea.setRows(5);
+        drillTextArea.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jScrollPane6.setViewportView(drillTextArea);
+
+        drillStatusText.setEditable(false);
+        drillStatusText.setForeground(new java.awt.Color(0, 0, 0));
+        drillStatusText.setText(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillStatusText.text")); // NOI18N
+        drillStatusText.setFocusable(false);
+
+        drillProgress.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        drillProgress.setName(""); // NOI18N
+        drillProgress.setString(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillProgress.string")); // NOI18N
+        drillProgress.setStringPainted(true);
+
+        org.openide.awt.Mnemonics.setLocalizedText(drillRunButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillRunButton.text")); // NOI18N
+        drillRunButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                drillRunButtonActionPerformed(evt);
+            }
+        });
+
+        org.openide.awt.Mnemonics.setLocalizedText(drillSvgButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillSvgButton.text")); // NOI18N
+        drillSvgButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                drillSvgButtonActionPerformed(evt);
+            }
+        });
+
+        org.openide.awt.Mnemonics.setLocalizedText(drillUploadButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillUploadButton.text")); // NOI18N
+        drillUploadButton.setToolTipText(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillUploadButton.toolTipText")); // NOI18N
+        drillUploadButton.setFocusable(false);
+        drillUploadButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                drillUploadButtonActionPerformed(evt);
+            }
+        });
+
+        speedSlider.setValue(100);
+        speedSlider.setEnabled(false);
+
+        org.openide.awt.Mnemonics.setLocalizedText(drillPreviewButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillPreviewButton.text")); // NOI18N
+        drillPreviewButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                drillPreviewButtonActionPerformed(evt);
+            }
+        });
+
+        org.openide.awt.Mnemonics.setLocalizedText(drillSpeedLevel, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillSpeedLevel.text")); // NOI18N
+        drillSpeedLevel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                drillSpeedLevelActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
+        jPanel18.setLayout(jPanel18Layout);
+        jPanel18Layout.setHorizontalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel18Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(drillStatusText)
+                    .addComponent(drillProgress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+            .addGroup(jPanel18Layout.createSequentialGroup()
+                .addGap(32, 32, 32)
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel18Layout.createSequentialGroup()
+                        .addComponent(drillRunButton, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
+                        .addComponent(drillPreviewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel18Layout.createSequentialGroup()
+                        .addComponent(drillUploadButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(drillSvgButton, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addGap(29, 29, 29))
+            .addGroup(jPanel18Layout.createSequentialGroup()
+                .addGap(21, 21, 21)
+                .addComponent(drillSpeedLevel)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+            .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel18Layout.createSequentialGroup()
+                    .addGap(14, 14, 14)
+                    .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(14, Short.MAX_VALUE)))
+        );
+        jPanel18Layout.setVerticalGroup(
+            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel18Layout.createSequentialGroup()
+                .addGap(17, 17, 17)
+                .addComponent(drillStatusText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(drillProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
+                .addComponent(drillSpeedLevel)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(drillSvgButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(drillUploadButton))
+                .addGap(18, 18, 18)
+                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(drillRunButton)
+                    .addComponent(drillPreviewButton))
+                .addGap(20, 20, 20))
+            .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(jPanel18Layout.createSequentialGroup()
+                    .addGap(138, 138, 138)
+                    .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addContainerGap(116, Short.MAX_VALUE)))
+        );
+
+        jPanel19.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel19.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jPanel19.setPreferredSize(new java.awt.Dimension(240, 240));
+
+        drillPreviewLabel.setForeground(new java.awt.Color(0, 0, 0));
+        org.openide.awt.Mnemonics.setLocalizedText(drillPreviewLabel, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillPreviewLabel.text")); // NOI18N
+        drillPreviewLabel.setToolTipText(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillPreviewLabel.toolTipText")); // NOI18N
+        drillPreviewLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
+        drillPreviewLabel.setHorizontalTextPosition(JLabel.CENTER);
+        colorPreviewLabel.setVerticalTextPosition(JLabel.BOTTOM);
+
+        javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
+        jPanel19.setLayout(jPanel19Layout);
+        jPanel19Layout.setHorizontalGroup(
+            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel19Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(drillPreviewLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(14, Short.MAX_VALUE))
+        );
+        jPanel19Layout.setVerticalGroup(
+            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel19Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(drillPreviewLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(36, Short.MAX_VALUE))
+        );
+
+        org.openide.awt.Mnemonics.setLocalizedText(drillTimeRemainText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillTimeRemainText.text")); // NOI18N
+
+        org.openide.awt.Mnemonics.setLocalizedText(drillDurationText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillDurationText.text")); // NOI18N
+
+        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
+        jPanel17.setLayout(jPanel17Layout);
+        jPanel17Layout.setHorizontalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel17Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane6)
+                    .addGroup(jPanel17Layout.createSequentialGroup()
+                        .addComponent(drillDurationText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(drillTimeRemainText, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(jPanel17Layout.createSequentialGroup()
+                        .addComponent(jPanel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jPanel17Layout.setVerticalGroup(
+            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel17Layout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel19, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
+                    .addComponent(jPanel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(drillDurationText, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(drillTimeRemainText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap())
+        );
+
+        javax.swing.GroupLayout drillingPanelLayout = new javax.swing.GroupLayout(drillingPanel);
+        drillingPanel.setLayout(drillingPanelLayout);
+        drillingPanelLayout.setHorizontalGroup(
+            drillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, drillingPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
+        );
+        drillingPanelLayout.setVerticalGroup(
+            drillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(drillingPanelLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(15, Short.MAX_VALUE))
+        );
+
+        tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillingPanel.TabConstraints.tabTitle"), drillingPanel); // NOI18N
 
         colorChangeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -454,30 +866,101 @@ public class pluginTestTopComponent extends TopComponent
                 colorChangeTablePropertyChange(evt);
             }
         });
-        jScrollPane2.setViewportView(colorChangeTable);
-        if (colorChangeTable.getColumnModel().getColumnCount() > 0) {
-            colorChangeTable.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorChangeTable.columnModel.title0")); // NOI18N
-            colorChangeTable.getColumnModel().getColumn(1).setHeaderValue(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorChangeTable.columnModel.title1_1")); // NOI18N
+
+        org.openide.awt.Mnemonics.setLocalizedText(penChangeCommandLabel, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.penChangeCommandLabel.text")); // NOI18N
+
+        historyTable.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "Date-Time", "File Path"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.String.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jScrollPane4.setViewportView(historyTable);
+        if (historyTable.getColumnModel().getColumnCount() > 0) {
+            historyTable.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.historyTable.columnModel.title0")); // NOI18N
+            historyTable.getColumnModel().getColumn(1).setHeaderValue(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.historyTable.columnModel.title1_1")); // NOI18N
         }
 
-        javax.swing.GroupLayout jPanel8Layout = new javax.swing.GroupLayout(jPanel8);
-        jPanel8.setLayout(jPanel8Layout);
-        jPanel8Layout.setHorizontalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(36, 36, 36)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
-                .addGap(68, 68, 68))
+        org.openide.awt.Mnemonics.setLocalizedText(penChangeCommandLabel1, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.penChangeCommandLabel1.text")); // NOI18N
+
+        org.openide.awt.Mnemonics.setLocalizedText(laserMaxPowerLabel, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserMaxPowerLabel.text")); // NOI18N
+
+        laserMaxPowerSlider.setValue(100);
+
+        org.openide.awt.Mnemonics.setLocalizedText(drillMaxSpeedLabel, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillMaxSpeedLabel.text")); // NOI18N
+
+        drillMaxPowerSlider.setValue(100);
+
+        javax.swing.GroupLayout settingsPanelLayout = new javax.swing.GroupLayout(settingsPanel);
+        settingsPanel.setLayout(settingsPanelLayout);
+        settingsPanelLayout.setHorizontalGroup(
+            settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(settingsPanelLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(penChangeCommandLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                        .addGroup(settingsPanelLayout.createSequentialGroup()
+                            .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                .addComponent(laserMaxPowerLabel)
+                                .addComponent(laserMaxPowerSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGap(30, 30, 30)
+                            .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                                .addGroup(settingsPanelLayout.createSequentialGroup()
+                                    .addComponent(drillMaxSpeedLabel)
+                                    .addGap(149, 149, 149))
+                                .addComponent(drillMaxPowerSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jScrollPane4)
+                            .addComponent(penChangeCommandLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE))))
+                .addContainerGap(34, Short.MAX_VALUE))
         );
-        jPanel8Layout.setVerticalGroup(
-            jPanel8Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel8Layout.createSequentialGroup()
-                .addGap(48, 48, 48)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 133, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(271, Short.MAX_VALUE))
+        settingsPanelLayout.setVerticalGroup(
+            settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(settingsPanelLayout.createSequentialGroup()
+                .addGap(24, 24, 24)
+                .addComponent(penChangeCommandLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(penChangeCommandLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(10, 10, 10)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(settingsPanelLayout.createSequentialGroup()
+                        .addComponent(laserMaxPowerLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(laserMaxPowerSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(settingsPanelLayout.createSequentialGroup()
+                        .addComponent(drillMaxSpeedLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(drillMaxPowerSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(57, Short.MAX_VALUE))
         );
 
-        tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jPanel8.TabConstraints.tabTitle"), jPanel8); // NOI18N
+        tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.settingsPanel.TabConstraints.tabTitle"), settingsPanel); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -490,40 +973,15 @@ public class pluginTestTopComponent extends TopComponent
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addComponent(tabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 2, Short.MAX_VALUE))
+                .addGap(30, 30, 30)
+                .addComponent(tabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(29, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void uploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_uploadButtonActionPerformed
-        if(backend.isIdle() && isProcessing == false){
-            //Open File Chooser
-            JFileChooser fileChooser = new JFileChooser();
-            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-            if(lastPath != null){
-                fileChooser.setCurrentDirectory(lastPath);
-            }
-            int returnVal = fileChooser.showOpenDialog(this);
-            if (returnVal == JFileChooser.APPROVE_OPTION) {
-                
-                //Initialize ColorFile
-                cFile.setup(fileChooser.getSelectedFile(), PREVIEW_WIDTH, PREVIEW_HEIGHT);
-                lastPath = cFile.getParentFile();
-                setStatusText("Files Uploaded");
-                try {
-                    cFile.scaleImage(fileChooser.getSelectedFile(), PREVIEW_WIDTH, PREVIEW_HEIGHT);
-                } catch (IOException ex) {
-                    consoleSetText("\nError trying to scale image");
-                }
-                previewLabel.setIcon(cFile.getScaledImage());
-                previewLabel.setText("Preview");
-            }else {
-                consoleSetText("\n\nFile chooser canceled");
-            }
-        }else{
-            consoleSetText("\n\nUnable to upload file");
-        }
-    }//GEN-LAST:event_uploadButtonActionPerformed
+    private void colorUploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorUploadButtonActionPerformed
+        openFileChooser(0);
+    }//GEN-LAST:event_colorUploadButtonActionPerformed
     
     private void processGcode() throws Exception{
         backend.sendGcodeCommand(cFile.colorChangeCommand[currentFileIndex]);
@@ -534,7 +992,10 @@ public class pluginTestTopComponent extends TopComponent
     }
     
     public void consoleSetText(String message){
-        SwingUtilities.invokeLater(() -> textArea.append(message));
+        switch (selectedTab){
+            case 0 -> SwingUtilities.invokeLater(() -> colorTextArea.append(message));
+            case 1 -> SwingUtilities.invokeLater(() -> laserTextArea.append(message));
+        }
     }
     
     private void progressBarUpdater(){
@@ -591,21 +1052,21 @@ public class pluginTestTopComponent extends TopComponent
     }
     
     private void setStatusText(String status){
-        statusText.setText("Status : " + status);
+        switch (selectedTab){
+            case 0:
+                colorStatusText.setText("Status : " + status);
+                break;
+            case 1:
+                laserStatusText.setText("Status : " + status);
+                break;
+        }
     }
     
-    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-        for(int i = 0; i <= 3; i++)
-            consoleSetText("\n" + colorChangeTable.getValueAt(i, 1).toString());
-    }//GEN-LAST:event_jButton2ActionPerformed
+    private void colorSvgButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorSvgButtonActionPerformed
+        openWeb();
+    }//GEN-LAST:event_colorSvgButtonActionPerformed
 
-    private void svgButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_svgButtonActionPerformed
-        try {
-            Desktop.getDesktop().browse(new URI("https://starfish-app-8zwaq.ondigitalocean.app"));
-        } catch (URISyntaxException | IOException ex) {}
-    }//GEN-LAST:event_svgButtonActionPerformed
-
-    private void runButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_runButtonActionPerformed
+    private void colorRunButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorRunButtonActionPerformed
         if(backend.isIdle() && isProcessing == false && !cFile.isEmptyGcodeFiles()){
             setSelectedFiles();
             if((cFile.cyanSelected || cFile.magentaSelected || cFile.yellowSelected || cFile.blackSelected) == true){
@@ -631,10 +1092,10 @@ public class pluginTestTopComponent extends TopComponent
         }else{
             consoleSetText("\n\nUnable to run\nPlease make sure the machine is in idle mode and folder is loaded");
         }
-    }//GEN-LAST:event_runButtonActionPerformed
+    }//GEN-LAST:event_colorRunButtonActionPerformed
 
     private void tabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbedPaneStateChanged
-        
+        selectedTab = tabbedPane.getSelectedIndex();
     }//GEN-LAST:event_tabbedPaneStateChanged
 
     private void magentaCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_magentaCheckBoxActionPerformed
@@ -664,6 +1125,54 @@ public class pluginTestTopComponent extends TopComponent
     private void colorChangeTablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_colorChangeTablePropertyChange
  
     }//GEN-LAST:event_colorChangeTablePropertyChange
+
+    private void laserUploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laserUploadButtonActionPerformed
+        openFileChooser(1);
+    }//GEN-LAST:event_laserUploadButtonActionPerformed
+
+    private void laserSvgButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laserSvgButtonActionPerformed
+        openWeb();
+    }//GEN-LAST:event_laserSvgButtonActionPerformed
+
+    private void laserRunButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laserRunButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_laserRunButtonActionPerformed
+
+    private void drillRunButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drillRunButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_drillRunButtonActionPerformed
+
+    private void drillSvgButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drillSvgButtonActionPerformed
+        openWeb();
+    }//GEN-LAST:event_drillSvgButtonActionPerformed
+
+    private void drillUploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drillUploadButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_drillUploadButtonActionPerformed
+
+    private void laserPreviewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laserPreviewButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_laserPreviewButtonActionPerformed
+
+    private void drillPreviewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drillPreviewButtonActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_drillPreviewButtonActionPerformed
+
+    private void laserPowerCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laserPowerCheckBoxActionPerformed
+        if (laserPowerCheckBox.isSelected()){
+            powerSlider.setEnabled(true);
+        } else {
+            powerSlider.setEnabled(false);
+        }
+    }//GEN-LAST:event_laserPowerCheckBoxActionPerformed
+
+    private void drillSpeedLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drillSpeedLevelActionPerformed
+        if (drillSpeedLevel.isSelected()){
+            speedSlider.setEnabled(true);
+        } else {
+            speedSlider.setEnabled(false);
+        }
+    }//GEN-LAST:event_drillSpeedLevelActionPerformed
     
     private boolean checkColorChangeCommand(){
         for(int i = 0; i <= 3; i++){
@@ -713,36 +1222,130 @@ public class pluginTestTopComponent extends TopComponent
         blackCheckBox.setSelected(selected);
     }
     
+    private void openFileChooser(int mode){
+        if(backend.isIdle() && isProcessing == false){
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            if(lastPath != null){
+                fileChooser.setCurrentDirectory(lastPath);
+            }
+            int returnVal = fileChooser.showOpenDialog(this);
+            if (returnVal == JFileChooser.APPROVE_OPTION) {
+                
+                //Initialize ColorFile
+                switch (mode){
+                    case 0:
+                        cFile.setup(fileChooser.getSelectedFile());
+                        lastPath = cFile.getParentFile();
+                        setStatusText("Files Uploaded");
+                        try {
+                            cFile.scaleImage(fileChooser.getSelectedFile(), PREVIEW_WIDTH, PREVIEW_HEIGHT);
+                        } catch (IOException ex) {
+                            consoleSetText("\nError trying to scale image");
+                        }
+                        colorPreviewLabel.setIcon(cFile.getScaledImage());
+                        colorPreviewLabel.setText("Preview");
+                        break;
+                    
+                    case 1:
+                        lFile.setup(fileChooser.getSelectedFile());
+                        lastPath = lFile.getParentFile();
+                        setStatusText("Files Uploaded");
+                        try {
+                            lFile.scaleImage(fileChooser.getSelectedFile(), PREVIEW_WIDTH, PREVIEW_HEIGHT);
+                        } catch (IOException ex) {
+                            consoleSetText("\nError trying to scale image");
+                        }
+                        laserPreviewLabel.setIcon(lFile.getScaledImage());
+                        laserPreviewLabel.setText("Preview");
+                        break;
+                    
+                        
+                }
+            }else {
+                consoleSetText("\n\nFile chooser canceled");
+            }
+        }else{
+            consoleSetText("\n\nUnable to upload file");
+        }
+    }
+    
+    private void openWeb(){
+        try {
+            Desktop.getDesktop().browse(new URI("https://starfish-app-8zwaq.ondigitalocean.app"));
+        } catch (URISyntaxException | IOException ex) {}
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox blackCheckBox;
     public javax.swing.JProgressBar blackProgress;
     private javax.swing.JTable colorChangeTable;
+    private javax.swing.JLabel colorDurationText;
+    private javax.swing.JLabel colorPreviewLabel;
+    private javax.swing.JButton colorRunButton;
+    private javax.swing.JTextField colorStatusText;
+    private javax.swing.JButton colorSvgButton;
+    public javax.swing.JTextArea colorTextArea;
+    private javax.swing.JLabel colorTimeRemainText;
+    private javax.swing.JButton colorUploadButton;
     private javax.swing.JCheckBox cyanCheckBox;
     public javax.swing.JProgressBar cyanProgress;
-    private javax.swing.JLabel durationText;
-    private javax.swing.JButton jButton2;
+    public javax.swing.JPanel drawingPanel;
+    private javax.swing.JLabel drillDurationText;
+    private javax.swing.JSlider drillMaxPowerSlider;
+    private javax.swing.JLabel drillMaxSpeedLabel;
+    private javax.swing.JButton drillPreviewButton;
+    private javax.swing.JLabel drillPreviewLabel;
+    public javax.swing.JProgressBar drillProgress;
+    private javax.swing.JButton drillRunButton;
+    private javax.swing.JCheckBox drillSpeedLevel;
+    private javax.swing.JTextField drillStatusText;
+    private javax.swing.JButton drillSvgButton;
+    public javax.swing.JTextArea drillTextArea;
+    private javax.swing.JLabel drillTimeRemainText;
+    private javax.swing.JButton drillUploadButton;
+    private javax.swing.JPanel drillingPanel;
+    private javax.swing.JTable historyTable;
     private javax.swing.JLabel jLabel1;
-    public javax.swing.JPanel jPanel1;
-    private javax.swing.JPanel jPanel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JPanel jPanel12;
+    public javax.swing.JPanel jPanel14;
+    public javax.swing.JPanel jPanel15;
+    private javax.swing.JPanel jPanel16;
+    public javax.swing.JPanel jPanel17;
+    public javax.swing.JPanel jPanel18;
+    private javax.swing.JPanel jPanel19;
     public javax.swing.JPanel jPanel3;
-    private javax.swing.JPanel jPanel4;
     public javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    private javax.swing.JPanel jPanel8;
     public javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JToggleButton jToggleButton1;
+    private javax.swing.JScrollPane jScrollPane4;
+    public javax.swing.JScrollPane jScrollPane5;
+    public javax.swing.JScrollPane jScrollPane6;
+    private javax.swing.JLabel laserDurationText;
+    private javax.swing.JLabel laserMaxPowerLabel;
+    private javax.swing.JSlider laserMaxPowerSlider;
+    private javax.swing.JPanel laserPanel;
+    private javax.swing.JCheckBox laserPowerCheckBox;
+    private javax.swing.JButton laserPreviewButton;
+    private javax.swing.JLabel laserPreviewLabel;
+    public javax.swing.JProgressBar laserProgress;
+    private javax.swing.JButton laserRunButton;
+    private javax.swing.JTextField laserStatusText;
+    private javax.swing.JButton laserSvgButton;
+    public javax.swing.JTextArea laserTextArea;
+    private javax.swing.JLabel laserTimeRemainText;
+    private javax.swing.JButton laserUploadButton;
     private javax.swing.JCheckBox magentaCheckBox;
     public javax.swing.JProgressBar magentaProgress;
-    private javax.swing.JLabel previewLabel;
-    private javax.swing.JButton runButton;
-    private javax.swing.JTextField statusText;
-    private javax.swing.JButton svgButton;
+    private javax.swing.JLabel penChangeCommandLabel;
+    private javax.swing.JLabel penChangeCommandLabel1;
+    private javax.swing.JSlider powerSlider;
+    private javax.swing.JPanel settingsPanel;
+    private javax.swing.JSlider speedSlider;
     public javax.swing.JTabbedPane tabbedPane;
-    public javax.swing.JTextArea textArea;
-    private javax.swing.JLabel timeRemainText;
-    private javax.swing.JButton uploadButton;
     private javax.swing.JCheckBox yellowCheckBox;
     public javax.swing.JProgressBar yellowProgress;
     // End of variables declaration//GEN-END:variables
@@ -763,8 +1366,8 @@ public class pluginTestTopComponent extends TopComponent
         try {
             backend.unsetGcodeFile();
         } catch (Exception ex) {}
-        previewLabel.setIcon(null);
-        previewLabel.setText("");
+        colorPreviewLabel.setIcon(null);
+        colorPreviewLabel.setText("");
         setColorCheckBoxEnabled(true);
         setColorCheckBoxSelected(true);
         resetLayerSelected();

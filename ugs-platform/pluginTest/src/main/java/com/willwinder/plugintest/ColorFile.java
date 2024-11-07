@@ -17,7 +17,7 @@ public class ColorFile extends Folder{
     public Boolean cyanSelected, magentaSelected, yellowSelected, blackSelected;
 
     
-    public void setup(java.io.File folderPath, int previewWidth, int previewHeight){
+    public void setup(java.io.File folderPath){
         
         backend = CentralLookup.getDefault().lookup(BackendAPI.class);
         
