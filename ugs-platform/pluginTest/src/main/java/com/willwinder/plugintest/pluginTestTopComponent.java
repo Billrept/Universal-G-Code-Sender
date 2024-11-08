@@ -141,16 +141,9 @@ public class pluginTestTopComponent extends TopComponent
         drillTimeRemainText = new javax.swing.JLabel();
         drillDurationText = new javax.swing.JLabel();
         settingsPanel = new javax.swing.JPanel();
-        jScrollPane2 = new javax.swing.JScrollPane();
-        colorChangeTable = new javax.swing.JTable();
         penChangeCommandLabel = new javax.swing.JLabel();
-        jScrollPane4 = new javax.swing.JScrollPane();
-        historyTable = new javax.swing.JTable();
-        penChangeCommandLabel1 = new javax.swing.JLabel();
-        laserMaxPowerLabel = new javax.swing.JLabel();
-        laserMaxPowerSlider = new javax.swing.JSlider();
-        drillMaxSpeedLabel = new javax.swing.JLabel();
-        drillMaxPowerSlider = new javax.swing.JSlider();
+        jScrollPane3 = new javax.swing.JScrollPane();
+        colorChangeTable = new javax.swing.JTable();
 
         tabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -834,82 +827,32 @@ public class pluginTestTopComponent extends TopComponent
 
         tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillingPanel.TabConstraints.tabTitle"), drillingPanel); // NOI18N
 
+        org.openide.awt.Mnemonics.setLocalizedText(penChangeCommandLabel, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.penChangeCommandLabel.text")); // NOI18N
+
         colorChangeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"Cyan", null},
+                {"Cyan", ""},
                 {"Magenta", null},
                 {"Yellow", null},
                 {"Black", null}
             },
             new String [] {
-                "Pen Color", "Pen Change Command"
+                "Color", "Command"
             }
         ) {
             Class[] types = new Class [] {
                 java.lang.String.class, java.lang.String.class
             };
-            boolean[] canEdit = new boolean [] {
-                false, true
-            };
 
             public Class getColumnClass(int columnIndex) {
                 return types [columnIndex];
             }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
         });
-        colorChangeTable.setToolTipText(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorChangeTable.toolTipText")); // NOI18N
-        colorChangeTable.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
-            public void propertyChange(java.beans.PropertyChangeEvent evt) {
-                colorChangeTablePropertyChange(evt);
-            }
-        });
-
-        org.openide.awt.Mnemonics.setLocalizedText(penChangeCommandLabel, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.penChangeCommandLabel.text")); // NOI18N
-
-        historyTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
-            },
-            new String [] {
-                "Date-Time", "File Path"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
-            };
-            boolean[] canEdit = new boolean [] {
-                false, false
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-
-            public boolean isCellEditable(int rowIndex, int columnIndex) {
-                return canEdit [columnIndex];
-            }
-        });
-        jScrollPane4.setViewportView(historyTable);
-        if (historyTable.getColumnModel().getColumnCount() > 0) {
-            historyTable.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.historyTable.columnModel.title0")); // NOI18N
-            historyTable.getColumnModel().getColumn(1).setHeaderValue(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.historyTable.columnModel.title1_1")); // NOI18N
+        jScrollPane3.setViewportView(colorChangeTable);
+        if (colorChangeTable.getColumnModel().getColumnCount() > 0) {
+            colorChangeTable.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorChangeTable.columnModel.title0")); // NOI18N
+            colorChangeTable.getColumnModel().getColumn(1).setHeaderValue(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorChangeTable.columnModel.title1")); // NOI18N
         }
-
-        org.openide.awt.Mnemonics.setLocalizedText(penChangeCommandLabel1, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.penChangeCommandLabel1.text")); // NOI18N
-
-        org.openide.awt.Mnemonics.setLocalizedText(laserMaxPowerLabel, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserMaxPowerLabel.text")); // NOI18N
-
-        laserMaxPowerSlider.setValue(100);
-
-        org.openide.awt.Mnemonics.setLocalizedText(drillMaxSpeedLabel, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillMaxSpeedLabel.text")); // NOI18N
-
-        drillMaxPowerSlider.setValue(100);
 
         javax.swing.GroupLayout settingsPanelLayout = new javax.swing.GroupLayout(settingsPanel);
         settingsPanel.setLayout(settingsPanelLayout);
@@ -918,46 +861,18 @@ public class pluginTestTopComponent extends TopComponent
             .addGroup(settingsPanelLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(penChangeCommandLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addGroup(settingsPanelLayout.createSequentialGroup()
-                            .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                .addComponent(laserMaxPowerLabel)
-                                .addComponent(laserMaxPowerSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 256, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGap(30, 30, 30)
-                            .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                .addGroup(settingsPanelLayout.createSequentialGroup()
-                                    .addComponent(drillMaxSpeedLabel)
-                                    .addGap(149, 149, 149))
-                                .addComponent(drillMaxPowerSlider, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                        .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jScrollPane4)
-                            .addComponent(penChangeCommandLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(jScrollPane2, javax.swing.GroupLayout.DEFAULT_SIZE, 542, Short.MAX_VALUE))))
-                .addContainerGap(34, Short.MAX_VALUE))
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(penChangeCommandLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(50, Short.MAX_VALUE))
         );
         settingsPanelLayout.setVerticalGroup(
             settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(settingsPanelLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
+                .addGap(26, 26, 26)
                 .addComponent(penChangeCommandLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(penChangeCommandLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(10, 10, 10)
-                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 142, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(settingsPanelLayout.createSequentialGroup()
-                        .addComponent(laserMaxPowerLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(laserMaxPowerSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(settingsPanelLayout.createSequentialGroup()
-                        .addComponent(drillMaxSpeedLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(drillMaxPowerSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(57, Short.MAX_VALUE))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(278, Short.MAX_VALUE))
         );
 
         tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.settingsPanel.TabConstraints.tabTitle"), settingsPanel); // NOI18N
@@ -968,7 +883,7 @@ public class pluginTestTopComponent extends TopComponent
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(tabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 600, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 342, Short.MAX_VALUE))
+                .addGap(0, 458, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1098,10 +1013,6 @@ public class pluginTestTopComponent extends TopComponent
         filler = true;
     }//GEN-LAST:event_tabbedPanePropertyChange
 
-    private void colorChangeTablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_colorChangeTablePropertyChange
-        filler = true;
-    }//GEN-LAST:event_colorChangeTablePropertyChange
-
     private void laserUploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laserUploadButtonActionPerformed
         openFileChooser(1);
     }//GEN-LAST:event_laserUploadButtonActionPerformed
@@ -1152,11 +1063,12 @@ public class pluginTestTopComponent extends TopComponent
     
     private boolean checkColorChangeCommand(){
         for(int i = 0; i <= 3; i++){
-            if(!cFile.gcodeIsValid(colorChangeTable.getValueAt(i, 1) + "")){
+            String colorChangeCommand = colorChangeTable.getValueAt(i, 1) + "";
+            if((!cFile.gcodeIsValid(colorChangeCommand) && (colorChangeCommand != null))){
                 consoleSetText("\n\nUnable to run\nPlease make sure pen change command is valid ");
                 return false;
             }
-            cFile.colorChangeCommand[i] = colorChangeTable.getValueAt(i, 1).toString();
+            cFile.colorChangeCommand[i] = colorChangeCommand;
         }
         return true;
     }
@@ -1315,8 +1227,6 @@ public class pluginTestTopComponent extends TopComponent
     public javax.swing.JProgressBar cyanProgress;
     public javax.swing.JPanel drawingPanel;
     private javax.swing.JLabel drillDurationText;
-    private javax.swing.JSlider drillMaxPowerSlider;
-    private javax.swing.JLabel drillMaxSpeedLabel;
     private javax.swing.JButton drillPreviewButton;
     private javax.swing.JLabel drillPreviewLabel;
     public javax.swing.JProgressBar drillProgress;
@@ -1328,7 +1238,6 @@ public class pluginTestTopComponent extends TopComponent
     private javax.swing.JLabel drillTimeRemainText;
     private javax.swing.JButton drillUploadButton;
     private javax.swing.JPanel drillingPanel;
-    private javax.swing.JTable historyTable;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel12;
@@ -1343,13 +1252,10 @@ public class pluginTestTopComponent extends TopComponent
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
     public javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
-    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JScrollPane jScrollPane3;
     public javax.swing.JScrollPane jScrollPane5;
     public javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JLabel laserDurationText;
-    private javax.swing.JLabel laserMaxPowerLabel;
-    private javax.swing.JSlider laserMaxPowerSlider;
     private javax.swing.JPanel laserPanel;
     private javax.swing.JCheckBox laserPowerCheckBox;
     private javax.swing.JButton laserPreviewButton;
@@ -1364,7 +1270,6 @@ public class pluginTestTopComponent extends TopComponent
     private javax.swing.JCheckBox magentaCheckBox;
     public javax.swing.JProgressBar magentaProgress;
     private javax.swing.JLabel penChangeCommandLabel;
-    private javax.swing.JLabel penChangeCommandLabel1;
     private javax.swing.JSlider powerSlider;
     private javax.swing.JPanel settingsPanel;
     private javax.swing.JSlider speedSlider;
