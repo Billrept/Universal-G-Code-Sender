@@ -901,11 +901,19 @@ public class pluginTestTopComponent extends TopComponent
     }//GEN-LAST:event_colorUploadButtonActionPerformed
     
     private void processGcode() throws Exception{
-        backend.sendGcodeCommand(cFile.colorChangeCommand[currentFileIndex]);
-        consoleSetText("\n\nPen changed");
-        cFile.sendGcode(cFile.gcodeFiles[currentFileIndex]);
-        progressBarUpdater();
-        consoleSetText("\n\nFile " + cFile.gcodeFiles[currentFileIndex] + " loaded");
+        switch(selectedTab){
+            case 0:
+                backend.sendGcodeCommand(cFile.colorChangeCommand[currentFileIndex]);
+                consoleSetText("\n\nPen changed");
+                cFile.sendGcode(cFile.gcodeFiles[currentFileIndex]);
+                progressBarUpdater();
+                consoleSetText("\n\nFile " + cFile.gcodeFiles[currentFileIndex] + " loaded");
+                break;
+            case 1:
+                break;
+            case 2:
+                break;
+        }
     }
     
     public void consoleSetText(String message){
@@ -964,8 +972,20 @@ public class pluginTestTopComponent extends TopComponent
     }
      
     public void setup(){
-        for(int i = 0; i <= 3; i++){
-            progressBarSet(i, 0);
+        switch(selectedTab){
+            case 0:
+                for(int i = 0; i <= 3; i++){
+                    progressBarSet(i, 0);
+                }
+                break;
+            case 1:
+                laserProgress.setValue(0);
+                laserProgress.setString("Progress : 0%");
+                break;
+            case 2:
+                drillProgress.setValue(0);
+                drillProgress.setString("Progress : 0%");
+                break;
         }
     }
     
@@ -1224,6 +1244,16 @@ public class pluginTestTopComponent extends TopComponent
                 }
                 break;
             case 2:
+                if(backend.isIdle() && isProcessing == false && !dFile.isEmptyGcodeFiles()){
+                    isProcessing = true;
+                    tabbedPane.setEnabled(false);
+                    try {
+                        processGcode();
+                    } catch (Exception ex) {
+                        consoleSetText("Error occurred trying to draw Gcode");
+                        isProcessing = false;
+                    }
+                }
                 break;
         }
     }
