@@ -52,6 +52,7 @@ public class pluginTestTopComponent extends TopComponent
     public final BackendAPI backend;
     private ColorFile cFile;
     private LaserFile lFile;
+    private DrillFile dFile;
     
     private int currentFileIndex;
     private boolean filler;
@@ -75,6 +76,7 @@ public class pluginTestTopComponent extends TopComponent
         
         cFile = new ColorFile();
         lFile = new LaserFile();
+        dFile = new DrillFile();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -910,6 +912,7 @@ public class pluginTestTopComponent extends TopComponent
         switch (selectedTab){
             case 0 -> SwingUtilities.invokeLater(() -> colorTextArea.append(message));
             case 1 -> SwingUtilities.invokeLater(() -> laserTextArea.append(message));
+            case 2 -> SwingUtilities.invokeLater(() -> drillTextArea.append(message));
         }
     }
     
@@ -974,6 +977,8 @@ public class pluginTestTopComponent extends TopComponent
             case 1:
                 laserStatusText.setText("Status : " + status);
                 break;
+            case 2:
+                drillStatusText.setText("Status : " + status);
         }
     }
     
@@ -1064,7 +1069,7 @@ public class pluginTestTopComponent extends TopComponent
     private boolean checkColorChangeCommand(){
         for(int i = 0; i <= 3; i++){
             String colorChangeCommand = colorChangeTable.getValueAt(i, 1) + "";
-            if((!cFile.gcodeIsValid(colorChangeCommand) && (colorChangeCommand != null))){
+            if((!cFile.gcodeIsValid(colorChangeCommand) && (colorChangeCommand != ""))){
                 consoleSetText("\n\nUnable to run\nPlease make sure pen change command is valid ");
                 return false;
             }
@@ -1148,7 +1153,19 @@ public class pluginTestTopComponent extends TopComponent
                         laserPreviewLabel.setText("Preview");
                         break;
                     
-                        
+                    case 2:
+                        dFile.setup(fileChooser.getSelectedFile());
+                        lastPath = dFile.getParentFile();
+                        setStatusText("Files Uploaded");
+                        try {
+                            dFile.scaleImage(fileChooser.getSelectedFile(), PREVIEW_WIDTH, PREVIEW_HEIGHT);
+                        } catch (IOException ex) {
+                            consoleSetText("\nError trying to scale image");
+                        }
+                        drillPreviewLabel.setIcon(dFile.getScaledImage());
+                        drillPreviewLabel.setText("Preview");
+                        break;
+                    
                 }
             }else {
                 consoleSetText("\n\nFile chooser canceled");
@@ -1184,7 +1201,7 @@ public class pluginTestTopComponent extends TopComponent
                                 isProcessing = false;
                             }
                         }else{
-                            consoleSetText("\n\nUnable to run\nPlease make sure to enter valid pen color change commands in the settings tab");
+                            consoleSetText("\n\nUnable to run\nPlease make sure to enter valid pen color change commands in the settings tabbbbb");
                         }
                     }else {
                         consoleSetText("\n\nUnable to run\nPlease make sure to select a layer");
