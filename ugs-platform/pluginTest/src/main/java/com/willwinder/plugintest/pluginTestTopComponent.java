@@ -1095,11 +1095,11 @@ public class pluginTestTopComponent extends TopComponent
     }//GEN-LAST:event_yellowCheckBoxActionPerformed
 
     private void tabbedPanePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tabbedPanePropertyChange
-        // TODO add your handling code here:
+        filler = true;
     }//GEN-LAST:event_tabbedPanePropertyChange
 
     private void colorChangeTablePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_colorChangeTablePropertyChange
- 
+        filler = true;
     }//GEN-LAST:event_colorChangeTablePropertyChange
 
     private void laserUploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laserUploadButtonActionPerformed
@@ -1123,15 +1123,15 @@ public class pluginTestTopComponent extends TopComponent
     }//GEN-LAST:event_drillSvgButtonActionPerformed
 
     private void drillUploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drillUploadButtonActionPerformed
-        // TODO add your handling code here:
+        openFileChooser(2);
     }//GEN-LAST:event_drillUploadButtonActionPerformed
 
     private void laserPreviewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laserPreviewButtonActionPerformed
-        // TODO add your handling code here:
+        filler = true;
     }//GEN-LAST:event_laserPreviewButtonActionPerformed
 
     private void drillPreviewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drillPreviewButtonActionPerformed
-        // TODO add your handling code here:
+        filler = true;
     }//GEN-LAST:event_drillPreviewButtonActionPerformed
 
     private void laserPowerCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laserPowerCheckBoxActionPerformed
