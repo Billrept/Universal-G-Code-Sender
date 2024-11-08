@@ -1067,31 +1067,7 @@ public class pluginTestTopComponent extends TopComponent
     }//GEN-LAST:event_colorSvgButtonActionPerformed
 
     private void colorRunButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorRunButtonActionPerformed
-        if(backend.isIdle() && isProcessing == false && !cFile.isEmptyGcodeFiles()){
-            setSelectedFiles();
-            if((cFile.cyanSelected || cFile.magentaSelected || cFile.yellowSelected || cFile.blackSelected) == true){
-                if(checkColorChangeCommand()){
-                    isProcessing = true;
-                    setCurrentFileIndex();
-                    setup();
-                    tabbedPane.setEnabled(false);
-                    setColorCheckBoxEnabled(false);
-                    try {
-                        processGcode();
-                    } catch (Exception ex) {
-                        consoleSetText("Error occurred trying to draw Gcode");
-                        currentFileIndex = 3;
-                        isProcessing = false;
-                    }
-                }else{
-                    consoleSetText("\n\nUnable to run\nPlease make sure to enter valid pen color change commands in the settings tab");
-                }
-            }else {
-                consoleSetText("\n\nUnable to run\nPlease make sure to select a layer");
-            }
-        }else{
-            consoleSetText("\n\nUnable to run\nPlease make sure the machine is in idle mode and folder is loaded");
-        }
+        runFile();
     }//GEN-LAST:event_colorRunButtonActionPerformed
 
     private void tabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbedPaneStateChanged
@@ -1135,11 +1111,11 @@ public class pluginTestTopComponent extends TopComponent
     }//GEN-LAST:event_laserSvgButtonActionPerformed
 
     private void laserRunButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laserRunButtonActionPerformed
-        // TODO add your handling code here:
+        runFile();
     }//GEN-LAST:event_laserRunButtonActionPerformed
 
     private void drillRunButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drillRunButtonActionPerformed
-        // TODO add your handling code here:
+        runFile();
     }//GEN-LAST:event_drillRunButtonActionPerformed
 
     private void drillSvgButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drillSvgButtonActionPerformed
@@ -1274,6 +1250,53 @@ public class pluginTestTopComponent extends TopComponent
         try {
             Desktop.getDesktop().browse(new URI("https://starfish-app-8zwaq.ondigitalocean.app"));
         } catch (URISyntaxException | IOException ex) {}
+    }
+    
+    private void runFile(){
+        switch (selectedTab){
+            case 0:
+                if(backend.isIdle() && isProcessing == false && !cFile.isEmptyGcodeFiles()){
+                    setSelectedFiles();
+                    if((cFile.cyanSelected || cFile.magentaSelected || cFile.yellowSelected || cFile.blackSelected) == true){
+                        if(checkColorChangeCommand()){
+                            isProcessing = true;
+                            setCurrentFileIndex();
+                            setup();
+                            tabbedPane.setEnabled(false);
+                            setColorCheckBoxEnabled(false);
+                            try {
+                                processGcode();
+                            } catch (Exception ex) {
+                                consoleSetText("Error occurred trying to draw Gcode");
+                                currentFileIndex = 3;
+                                isProcessing = false;
+                            }
+                        }else{
+                            consoleSetText("\n\nUnable to run\nPlease make sure to enter valid pen color change commands in the settings tab");
+                        }
+                    }else {
+                        consoleSetText("\n\nUnable to run\nPlease make sure to select a layer");
+                    }
+                }else{
+                    consoleSetText("\n\nUnable to run\nPlease make sure the machine is in idle mode and folder is loaded");
+                }
+                break;
+               
+            case 1:
+                if(backend.isIdle() && isProcessing == false && !lFile.isEmptyGcodeFiles()){
+                    isProcessing = true;
+                    tabbedPane.setEnabled(false);
+                    try {
+                        processGcode();
+                    } catch (Exception ex) {
+                        consoleSetText("Error occurred trying to draw Gcode");
+                        isProcessing = false;
+                    }
+                }
+                break;
+            case 2:
+                break;
+        }
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

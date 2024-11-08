@@ -19,13 +19,10 @@ package com.willwinder.plugintest;
 import com.willwinder.ugs.nbp.lib.lookup.CentralLookup;
 import com.willwinder.universalgcodesender.model.BackendAPI;
 
-/**
- *
- * @author User
- */
 public class LaserFile extends Folder{
     
     public BackendAPI backend;
+    public String gcodeFiles = new String();
     
     public void setup(java.io.File folderPath){
         backend = CentralLookup.getDefault().lookup(BackendAPI.class);
@@ -36,12 +33,15 @@ public class LaserFile extends Folder{
     
     @Override
     public void emptyGcodeFiles() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        this.gcodeFiles = null;
     }
 
     @Override
     public boolean isEmptyGcodeFiles() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (this.gcodeFiles != null){
+            return false;
+        }
+        return true;
     }
     
 }
