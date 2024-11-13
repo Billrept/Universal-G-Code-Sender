@@ -122,9 +122,9 @@ public class pluginTestTopComponent extends TopComponent
         laserPreviewButton = new javax.swing.JButton();
         laserPowerCheckBox = new javax.swing.JCheckBox();
         jPanel16 = new javax.swing.JPanel();
+        laserPreviewLabel = new javax.swing.JLabel();
         laserTimeRemainText = new javax.swing.JLabel();
         laserDurationText = new javax.swing.JLabel();
-        laserPreviewLabel = new javax.swing.JLabel();
         drillingPanel = new javax.swing.JPanel();
         jPanel17 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
@@ -399,25 +399,7 @@ public class pluginTestTopComponent extends TopComponent
         jPanel16.setBackground(new java.awt.Color(255, 255, 255));
         jPanel16.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel16.setPreferredSize(new java.awt.Dimension(240, 240));
-
-        javax.swing.GroupLayout jPanel16Layout = new javax.swing.GroupLayout(jPanel16);
-        jPanel16.setLayout(jPanel16Layout);
-        jPanel16Layout.setHorizontalGroup(
-            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 257, Short.MAX_VALUE)
-        );
-        jPanel16Layout.setVerticalGroup(
-            jPanel16Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 252, Short.MAX_VALUE)
-        );
-
-        jPanel12.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(324, 3, 259, 254));
-
-        org.openide.awt.Mnemonics.setLocalizedText(laserTimeRemainText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserTimeRemainText.text")); // NOI18N
-        jPanel12.add(laserTimeRemainText, new org.netbeans.lib.awtextra.AbsoluteConstraints(289, 426, 294, 16));
-
-        org.openide.awt.Mnemonics.setLocalizedText(laserDurationText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserDurationText.text")); // NOI18N
-        jPanel12.add(laserDurationText, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 423, 274, 22));
+        jPanel16.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         laserPreviewLabel.setForeground(new java.awt.Color(0, 0, 0));
         org.openide.awt.Mnemonics.setLocalizedText(laserPreviewLabel, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserPreviewLabel.text")); // NOI18N
@@ -425,7 +407,15 @@ public class pluginTestTopComponent extends TopComponent
         laserPreviewLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         laserPreviewLabel.setHorizontalTextPosition(JLabel.CENTER);
         colorPreviewLabel.setVerticalTextPosition(JLabel.BOTTOM);
-        jPanel12.add(laserPreviewLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(583, 264, -1, 5));
+        jPanel16.add(laserPreviewLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(7, 7, 244, 250));
+
+        jPanel12.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(331, 6, 251, 260));
+
+        org.openide.awt.Mnemonics.setLocalizedText(laserTimeRemainText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserTimeRemainText.text")); // NOI18N
+        jPanel12.add(laserTimeRemainText, new org.netbeans.lib.awtextra.AbsoluteConstraints(289, 426, 294, 16));
+
+        org.openide.awt.Mnemonics.setLocalizedText(laserDurationText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserDurationText.text")); // NOI18N
+        jPanel12.add(laserDurationText, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 423, 274, 22));
 
         laserPanel.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 11, 588, 443));
 
