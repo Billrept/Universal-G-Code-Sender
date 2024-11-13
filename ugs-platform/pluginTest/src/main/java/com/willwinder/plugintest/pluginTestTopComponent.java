@@ -110,7 +110,6 @@ public class pluginTestTopComponent extends TopComponent
         blackCheckBox = new javax.swing.JCheckBox();
         laserPanel = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
-        jPanel14 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
         laserTextArea = new javax.swing.JTextArea();
         jPanel15 = new javax.swing.JPanel();
@@ -126,7 +125,6 @@ public class pluginTestTopComponent extends TopComponent
         laserTimeRemainText = new javax.swing.JLabel();
         laserDurationText = new javax.swing.JLabel();
         laserPreviewLabel = new javax.swing.JLabel();
-        jLabel3 = new javax.swing.JLabel();
         drillingPanel = new javax.swing.JPanel();
         jPanel17 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
@@ -160,32 +158,46 @@ public class pluginTestTopComponent extends TopComponent
             }
         });
 
+        drawingPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         colorTextArea.setEditable(false);
         colorTextArea.setColumns(20);
         colorTextArea.setRows(5);
         colorTextArea.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jScrollPane1.setViewportView(colorTextArea);
 
+        jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 298, 574, 119));
+
+        jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         magentaProgress.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         magentaProgress.setString(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.magentaProgress.string")); // NOI18N
         magentaProgress.setStringPainted(true);
+        jPanel5.add(magentaProgress, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 89, 200, 20));
 
         blackProgress.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         blackProgress.setString(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.blackProgress.string")); // NOI18N
         blackProgress.setStringPainted(true);
+        jPanel5.add(blackProgress, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 153, 200, 20));
 
         yellowProgress.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         yellowProgress.setString(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.yellowProgress.string")); // NOI18N
         yellowProgress.setStringPainted(true);
+        jPanel5.add(yellowProgress, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 121, 200, 20));
 
         cyanProgress.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         cyanProgress.setString(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.cyanProgress.string")); // NOI18N
         cyanProgress.setStringPainted(true);
+        jPanel5.add(cyanProgress, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 57, 200, 20));
+        cyanProgress.getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.cyanProgress.AccessibleContext.accessibleName")); // NOI18N
 
         colorStatusText.setEditable(false);
         colorStatusText.setForeground(new java.awt.Color(0, 0, 0));
         colorStatusText.setText(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorStatusText.text")); // NOI18N
         colorStatusText.setFocusable(false);
+        jPanel5.add(colorStatusText, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 200, -1));
 
         org.openide.awt.Mnemonics.setLocalizedText(colorUploadButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorUploadButton.text")); // NOI18N
         colorUploadButton.setToolTipText(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorUploadButton.toolTipText")); // NOI18N
@@ -195,6 +207,7 @@ public class pluginTestTopComponent extends TopComponent
                 colorUploadButtonActionPerformed(evt);
             }
         });
+        jPanel5.add(colorUploadButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 186, -1, -1));
 
         org.openide.awt.Mnemonics.setLocalizedText(colorRunButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorRunButton.text")); // NOI18N
         colorRunButton.addActionListener(new java.awt.event.ActionListener() {
@@ -202,6 +215,7 @@ public class pluginTestTopComponent extends TopComponent
                 colorRunButtonActionPerformed(evt);
             }
         });
+        jPanel5.add(colorRunButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 227, 89, -1));
 
         org.openide.awt.Mnemonics.setLocalizedText(colorSvgButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorSvgButton.text")); // NOI18N
         colorSvgButton.addActionListener(new java.awt.event.ActionListener() {
@@ -209,57 +223,14 @@ public class pluginTestTopComponent extends TopComponent
                 colorSvgButtonActionPerformed(evt);
             }
         });
+        jPanel5.add(colorSvgButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(118, 186, 88, -1));
 
-        javax.swing.GroupLayout jPanel5Layout = new javax.swing.GroupLayout(jPanel5);
-        jPanel5.setLayout(jPanel5Layout);
-        jPanel5Layout.setHorizontalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(colorStatusText)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(magentaProgress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(blackProgress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(yellowProgress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(cyanProgress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(colorUploadButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(colorRunButton, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(18, 18, 18)
-                                .addComponent(colorSvgButton, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap())
-        );
-        jPanel5Layout.setVerticalGroup(
-            jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel5Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(colorStatusText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(29, 29, 29)
-                .addComponent(cyanProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(magentaProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(yellowProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(blackProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
-                .addGroup(jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(colorUploadButton)
-                    .addComponent(colorSvgButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addComponent(colorRunButton)
-                .addContainerGap())
-        );
-
-        cyanProgress.getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.cyanProgress.AccessibleContext.accessibleName")); // NOI18N
+        jPanel3.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, -1, -1));
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel6.setPreferredSize(new java.awt.Dimension(240, 240));
+        jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         colorPreviewLabel.setForeground(new java.awt.Color(0, 0, 0));
         org.openide.awt.Mnemonics.setLocalizedText(colorPreviewLabel, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorPreviewLabel.text")); // NOI18N
@@ -267,27 +238,15 @@ public class pluginTestTopComponent extends TopComponent
         colorPreviewLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         colorPreviewLabel.setHorizontalTextPosition(JLabel.CENTER);
         colorPreviewLabel.setVerticalTextPosition(JLabel.BOTTOM);
+        jPanel6.add(colorPreviewLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(7, 7, 244, 250));
 
-        javax.swing.GroupLayout jPanel6Layout = new javax.swing.GroupLayout(jPanel6);
-        jPanel6.setLayout(jPanel6Layout);
-        jPanel6Layout.setHorizontalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel6Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(colorPreviewLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel6Layout.setVerticalGroup(
-            jPanel6Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel6Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(colorPreviewLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 250, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(34, 34, 34))
-        );
+        jPanel3.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(331, 6, 251, 260));
 
         org.openide.awt.Mnemonics.setLocalizedText(colorTimeRemainText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorTimeRemainText.text")); // NOI18N
+        jPanel3.add(colorTimeRemainText, new org.netbeans.lib.awtextra.AbsoluteConstraints(289, 426, 294, 16));
 
         org.openide.awt.Mnemonics.setLocalizedText(colorDurationText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorDurationText.text")); // NOI18N
+        jPanel3.add(colorDurationText, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 423, 274, 22));
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jLabel1.text")); // NOI18N
 
@@ -356,66 +315,16 @@ public class pluginTestTopComponent extends TopComponent
                 .addGap(68, 68, 68))
         );
 
-        javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
-        jPanel3.setLayout(jPanel3Layout);
-        jPanel3Layout.setHorizontalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(colorDurationText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(colorTimeRemainText, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel7, javax.swing.GroupLayout.PREFERRED_SIZE, 77, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(18, 18, 18)
-                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 251, Short.MAX_VALUE)))
-                .addContainerGap())
-        );
-        jPanel3Layout.setVerticalGroup(
-            jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel3Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jPanel7, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGap(36, 36, 36))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jPanel5, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel3Layout.createSequentialGroup()
-                        .addComponent(jPanel6, javax.swing.GroupLayout.PREFERRED_SIZE, 260, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(colorDurationText, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(colorTimeRemainText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(24, 24, 24))
-        );
+        jPanel3.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(236, 6, 77, 230));
 
-        javax.swing.GroupLayout drawingPanelLayout = new javax.swing.GroupLayout(drawingPanel);
-        drawingPanel.setLayout(drawingPanelLayout);
-        drawingPanelLayout.setHorizontalGroup(
-            drawingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, drawingPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel3, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        drawingPanelLayout.setVerticalGroup(
-            drawingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, drawingPanelLayout.createSequentialGroup()
-                .addContainerGap(11, Short.MAX_VALUE)
-                .addComponent(jPanel3, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap())
-        );
+        drawingPanel.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 11, 588, 443));
 
         tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drawingPanel.TabConstraints.tabTitle"), drawingPanel); // NOI18N
+
+        laserPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel12.setPreferredSize(new java.awt.Dimension(588, 443));
+        jPanel12.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         laserTextArea.setEditable(false);
         laserTextArea.setColumns(20);
@@ -423,15 +332,21 @@ public class pluginTestTopComponent extends TopComponent
         laserTextArea.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jScrollPane5.setViewportView(laserTextArea);
 
+        jPanel12.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 298, 574, 119));
+
+        jPanel15.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         laserStatusText.setEditable(false);
         laserStatusText.setForeground(new java.awt.Color(0, 0, 0));
         laserStatusText.setText(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserStatusText.text")); // NOI18N
         laserStatusText.setFocusable(false);
+        jPanel15.add(laserStatusText, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 290, -1));
 
         laserProgress.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         laserProgress.setName(""); // NOI18N
         laserProgress.setString(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.string")); // NOI18N
         laserProgress.setStringPainted(true);
+        jPanel15.add(laserProgress, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 57, 290, 27));
 
         org.openide.awt.Mnemonics.setLocalizedText(laserRunButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserRunButton.text")); // NOI18N
         laserRunButton.addActionListener(new java.awt.event.ActionListener() {
@@ -439,6 +354,7 @@ public class pluginTestTopComponent extends TopComponent
                 laserRunButtonActionPerformed(evt);
             }
         });
+        jPanel15.add(laserRunButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 214, 89, -1));
 
         org.openide.awt.Mnemonics.setLocalizedText(laserSvgButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserSvgButton.text")); // NOI18N
         laserSvgButton.addActionListener(new java.awt.event.ActionListener() {
@@ -446,6 +362,7 @@ public class pluginTestTopComponent extends TopComponent
                 laserSvgButtonActionPerformed(evt);
             }
         });
+        jPanel15.add(laserSvgButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(182, 173, 88, -1));
 
         org.openide.awt.Mnemonics.setLocalizedText(laserUploadButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserUploadButton.text")); // NOI18N
         laserUploadButton.setToolTipText(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserUploadButton.toolTipText")); // NOI18N
@@ -455,9 +372,11 @@ public class pluginTestTopComponent extends TopComponent
                 laserUploadButtonActionPerformed(evt);
             }
         });
+        jPanel15.add(laserUploadButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 173, -1, -1));
 
         powerSlider.setValue(100);
         powerSlider.setEnabled(false);
+        jPanel15.add(powerSlider, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 135, 290, -1));
 
         org.openide.awt.Mnemonics.setLocalizedText(laserPreviewButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserPreviewButton.text")); // NOI18N
         laserPreviewButton.addActionListener(new java.awt.event.ActionListener() {
@@ -465,6 +384,7 @@ public class pluginTestTopComponent extends TopComponent
                 laserPreviewButtonActionPerformed(evt);
             }
         });
+        jPanel15.add(laserPreviewButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(181, 214, 89, -1));
 
         org.openide.awt.Mnemonics.setLocalizedText(laserPowerCheckBox, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserPowerCheckBox.text")); // NOI18N
         laserPowerCheckBox.addActionListener(new java.awt.event.ActionListener() {
@@ -472,57 +392,9 @@ public class pluginTestTopComponent extends TopComponent
                 laserPowerCheckBoxActionPerformed(evt);
             }
         });
+        jPanel15.add(laserPowerCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 109, -1, -1));
 
-        javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
-        jPanel15.setLayout(jPanel15Layout);
-        jPanel15Layout.setHorizontalGroup(
-            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel15Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(laserStatusText)
-                    .addComponent(laserProgress, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel15Layout.createSequentialGroup()
-                        .addComponent(powerSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel15Layout.createSequentialGroup()
-                        .addGap(21, 21, 21)
-                        .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel15Layout.createSequentialGroup()
-                                .addComponent(laserRunButton, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(laserPreviewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel15Layout.createSequentialGroup()
-                                .addComponent(laserUploadButton)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(laserSvgButton, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addGap(26, 26, 26)))
-                .addContainerGap())
-            .addGroup(jPanel15Layout.createSequentialGroup()
-                .addComponent(laserPowerCheckBox)
-                .addGap(0, 0, Short.MAX_VALUE))
-        );
-        jPanel15Layout.setVerticalGroup(
-            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel15Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(laserStatusText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(laserProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(25, 25, 25)
-                .addComponent(laserPowerCheckBox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(powerSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(laserUploadButton)
-                    .addComponent(laserSvgButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(laserPreviewButton)
-                    .addComponent(laserRunButton))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
+        jPanel12.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, -1, 277));
 
         jPanel16.setBackground(new java.awt.Color(255, 255, 255));
         jPanel16.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -539,9 +411,13 @@ public class pluginTestTopComponent extends TopComponent
             .addGap(0, 252, Short.MAX_VALUE)
         );
 
+        jPanel12.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(324, 3, 259, 254));
+
         org.openide.awt.Mnemonics.setLocalizedText(laserTimeRemainText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserTimeRemainText.text")); // NOI18N
+        jPanel12.add(laserTimeRemainText, new org.netbeans.lib.awtextra.AbsoluteConstraints(289, 426, 294, 16));
 
         org.openide.awt.Mnemonics.setLocalizedText(laserDurationText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserDurationText.text")); // NOI18N
+        jPanel12.add(laserDurationText, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 423, 274, 22));
 
         laserPreviewLabel.setForeground(new java.awt.Color(0, 0, 0));
         org.openide.awt.Mnemonics.setLocalizedText(laserPreviewLabel, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserPreviewLabel.text")); // NOI18N
@@ -549,87 +425,9 @@ public class pluginTestTopComponent extends TopComponent
         laserPreviewLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         laserPreviewLabel.setHorizontalTextPosition(JLabel.CENTER);
         colorPreviewLabel.setVerticalTextPosition(JLabel.BOTTOM);
+        jPanel12.add(laserPreviewLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(583, 264, -1, 5));
 
-        org.openide.awt.Mnemonics.setLocalizedText(jLabel3, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jLabel3.text")); // NOI18N
-
-        javax.swing.GroupLayout jPanel14Layout = new javax.swing.GroupLayout(jPanel14);
-        jPanel14.setLayout(jPanel14Layout);
-        jPanel14Layout.setHorizontalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel14Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane5)
-                    .addGroup(jPanel14Layout.createSequentialGroup()
-                        .addComponent(laserDurationText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(laserTimeRemainText, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel14Layout.createSequentialGroup()
-                        .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addGroup(jPanel14Layout.createSequentialGroup()
-                                .addGap(12, 12, 12)
-                                .addComponent(jLabel3, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                                .addComponent(laserPreviewLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                            .addGroup(jPanel14Layout.createSequentialGroup()
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, 259, javax.swing.GroupLayout.PREFERRED_SIZE)))))
-                .addContainerGap())
-        );
-        jPanel14Layout.setVerticalGroup(
-            jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel14Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel15, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel14Layout.createSequentialGroup()
-                        .addComponent(jPanel16, javax.swing.GroupLayout.PREFERRED_SIZE, 254, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(7, 7, 7)
-                        .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel14Layout.createSequentialGroup()
-                                .addComponent(laserPreviewLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGap(11, 11, 11))
-                            .addGroup(jPanel14Layout.createSequentialGroup()
-                                .addComponent(jLabel3)
-                                .addGap(0, 0, Short.MAX_VALUE)))))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane5, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel14Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(laserDurationText, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(laserTimeRemainText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-        );
-
-        javax.swing.GroupLayout jPanel12Layout = new javax.swing.GroupLayout(jPanel12);
-        jPanel12.setLayout(jPanel12Layout);
-        jPanel12Layout.setHorizontalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel12Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        jPanel12Layout.setVerticalGroup(
-            jPanel12Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel14, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-        );
-
-        javax.swing.GroupLayout laserPanelLayout = new javax.swing.GroupLayout(laserPanel);
-        laserPanel.setLayout(laserPanelLayout);
-        laserPanelLayout.setHorizontalGroup(
-            laserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(laserPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        laserPanelLayout.setVerticalGroup(
-            laserPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(laserPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
+        laserPanel.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 11, 588, 443));
 
         tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserPanel.TabConstraints.tabTitle"), laserPanel); // NOI18N
 
@@ -1368,9 +1166,7 @@ public class pluginTestTopComponent extends TopComponent
     private javax.swing.JButton drillUploadButton;
     private javax.swing.JPanel drillingPanel;
     private javax.swing.JLabel jLabel1;
-    private javax.swing.JLabel jLabel3;
     private javax.swing.JPanel jPanel12;
-    public javax.swing.JPanel jPanel14;
     public javax.swing.JPanel jPanel15;
     private javax.swing.JPanel jPanel16;
     public javax.swing.JPanel jPanel17;
