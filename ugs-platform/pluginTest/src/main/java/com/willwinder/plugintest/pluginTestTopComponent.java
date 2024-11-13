@@ -197,7 +197,7 @@ public class pluginTestTopComponent extends TopComponent
         colorStatusText.setForeground(new java.awt.Color(0, 0, 0));
         colorStatusText.setText(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorStatusText.text")); // NOI18N
         colorStatusText.setFocusable(false);
-        jPanel5.add(colorStatusText, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 200, -1));
+        jPanel5.add(colorStatusText, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 11, 200, -1));
 
         org.openide.awt.Mnemonics.setLocalizedText(colorUploadButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorUploadButton.text")); // NOI18N
         colorUploadButton.setToolTipText(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorUploadButton.toolTipText")); // NOI18N
@@ -340,7 +340,7 @@ public class pluginTestTopComponent extends TopComponent
         laserStatusText.setForeground(new java.awt.Color(0, 0, 0));
         laserStatusText.setText(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserStatusText.text")); // NOI18N
         laserStatusText.setFocusable(false);
-        jPanel15.add(laserStatusText, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 290, -1));
+        jPanel15.add(laserStatusText, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 11, 290, 22));
 
         laserProgress.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         laserProgress.setName(""); // NOI18N
@@ -354,7 +354,7 @@ public class pluginTestTopComponent extends TopComponent
                 laserRunButtonActionPerformed(evt);
             }
         });
-        jPanel15.add(laserRunButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 214, 89, -1));
+        jPanel15.add(laserRunButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 214, 89, 23));
 
         org.openide.awt.Mnemonics.setLocalizedText(laserSvgButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserSvgButton.text")); // NOI18N
         laserSvgButton.addActionListener(new java.awt.event.ActionListener() {
@@ -376,7 +376,7 @@ public class pluginTestTopComponent extends TopComponent
 
         powerSlider.setValue(100);
         powerSlider.setEnabled(false);
-        jPanel15.add(powerSlider, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 135, 290, -1));
+        jPanel15.add(powerSlider, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 135, 290, 20));
 
         org.openide.awt.Mnemonics.setLocalizedText(laserPreviewButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserPreviewButton.text")); // NOI18N
         laserPreviewButton.addActionListener(new java.awt.event.ActionListener() {
@@ -394,7 +394,7 @@ public class pluginTestTopComponent extends TopComponent
         });
         jPanel15.add(laserPowerCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 109, -1, -1));
 
-        jPanel12.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, -1, 277));
+        jPanel12.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 302, 277));
 
         jPanel16.setBackground(new java.awt.Color(255, 255, 255));
         jPanel16.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -421,21 +421,31 @@ public class pluginTestTopComponent extends TopComponent
 
         tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserPanel.TabConstraints.tabTitle"), laserPanel); // NOI18N
 
+        drillingPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jPanel17.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         drillTextArea.setEditable(false);
         drillTextArea.setColumns(20);
         drillTextArea.setRows(5);
         drillTextArea.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jScrollPane6.setViewportView(drillTextArea);
 
+        jPanel17.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 298, 574, 119));
+
+        jPanel18.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
         drillStatusText.setEditable(false);
         drillStatusText.setForeground(new java.awt.Color(0, 0, 0));
         drillStatusText.setText(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillStatusText.text")); // NOI18N
         drillStatusText.setFocusable(false);
+        jPanel18.add(drillStatusText, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 11, 290, 22));
 
         drillProgress.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         drillProgress.setName(""); // NOI18N
         drillProgress.setString(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillProgress.string")); // NOI18N
         drillProgress.setStringPainted(true);
+        jPanel18.add(drillProgress, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 57, 290, 27));
 
         org.openide.awt.Mnemonics.setLocalizedText(drillRunButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillRunButton.text")); // NOI18N
         drillRunButton.addActionListener(new java.awt.event.ActionListener() {
@@ -443,6 +453,7 @@ public class pluginTestTopComponent extends TopComponent
                 drillRunButtonActionPerformed(evt);
             }
         });
+        jPanel18.add(drillRunButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 214, 89, 23));
 
         org.openide.awt.Mnemonics.setLocalizedText(drillSvgButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillSvgButton.text")); // NOI18N
         drillSvgButton.addActionListener(new java.awt.event.ActionListener() {
@@ -450,6 +461,7 @@ public class pluginTestTopComponent extends TopComponent
                 drillSvgButtonActionPerformed(evt);
             }
         });
+        jPanel18.add(drillSvgButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(182, 173, 88, -1));
 
         org.openide.awt.Mnemonics.setLocalizedText(drillUploadButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillUploadButton.text")); // NOI18N
         drillUploadButton.setToolTipText(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillUploadButton.toolTipText")); // NOI18N
@@ -459,9 +471,11 @@ public class pluginTestTopComponent extends TopComponent
                 drillUploadButtonActionPerformed(evt);
             }
         });
+        jPanel18.add(drillUploadButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(27, 173, -1, -1));
 
         speedSlider.setValue(100);
         speedSlider.setEnabled(false);
+        jPanel18.add(speedSlider, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 135, 290, 20));
 
         org.openide.awt.Mnemonics.setLocalizedText(drillPreviewButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillPreviewButton.text")); // NOI18N
         drillPreviewButton.addActionListener(new java.awt.event.ActionListener() {
@@ -469,6 +483,7 @@ public class pluginTestTopComponent extends TopComponent
                 drillPreviewButtonActionPerformed(evt);
             }
         });
+        jPanel18.add(drillPreviewButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(181, 214, 89, -1));
 
         org.openide.awt.Mnemonics.setLocalizedText(drillSpeedLevel, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillSpeedLevel.text")); // NOI18N
         drillSpeedLevel.addActionListener(new java.awt.event.ActionListener() {
@@ -476,67 +491,14 @@ public class pluginTestTopComponent extends TopComponent
                 drillSpeedLevelActionPerformed(evt);
             }
         });
+        jPanel18.add(drillSpeedLevel, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 109, -1, -1));
 
-        javax.swing.GroupLayout jPanel18Layout = new javax.swing.GroupLayout(jPanel18);
-        jPanel18.setLayout(jPanel18Layout);
-        jPanel18Layout.setHorizontalGroup(
-            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel18Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(drillStatusText)
-                    .addComponent(drillProgress, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-            .addGroup(jPanel18Layout.createSequentialGroup()
-                .addGap(32, 32, 32)
-                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(jPanel18Layout.createSequentialGroup()
-                        .addComponent(drillRunButton, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 79, Short.MAX_VALUE)
-                        .addComponent(drillPreviewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 89, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel18Layout.createSequentialGroup()
-                        .addComponent(drillUploadButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(drillSvgButton, javax.swing.GroupLayout.PREFERRED_SIZE, 88, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(29, 29, 29))
-            .addGroup(jPanel18Layout.createSequentialGroup()
-                .addGap(21, 21, 21)
-                .addComponent(drillSpeedLevel)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel18Layout.createSequentialGroup()
-                    .addGap(14, 14, 14)
-                    .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, 290, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(14, Short.MAX_VALUE)))
-        );
-        jPanel18Layout.setVerticalGroup(
-            jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel18Layout.createSequentialGroup()
-                .addGap(17, 17, 17)
-                .addComponent(drillStatusText, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
-                .addComponent(drillProgress, javax.swing.GroupLayout.PREFERRED_SIZE, 27, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(33, 33, 33)
-                .addComponent(drillSpeedLevel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(drillSvgButton, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(drillUploadButton))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(drillRunButton)
-                    .addComponent(drillPreviewButton))
-                .addGap(20, 20, 20))
-            .addGroup(jPanel18Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                .addGroup(jPanel18Layout.createSequentialGroup()
-                    .addGap(138, 138, 138)
-                    .addComponent(speedSlider, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addContainerGap(116, Short.MAX_VALUE)))
-        );
+        jPanel17.add(jPanel18, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 302, 277));
 
         jPanel19.setBackground(new java.awt.Color(255, 255, 255));
         jPanel19.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         jPanel19.setPreferredSize(new java.awt.Dimension(240, 240));
+        jPanel19.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         drillPreviewLabel.setForeground(new java.awt.Color(0, 0, 0));
         org.openide.awt.Mnemonics.setLocalizedText(drillPreviewLabel, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillPreviewLabel.text")); // NOI18N
@@ -544,78 +506,17 @@ public class pluginTestTopComponent extends TopComponent
         drillPreviewLabel.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         drillPreviewLabel.setHorizontalTextPosition(JLabel.CENTER);
         colorPreviewLabel.setVerticalTextPosition(JLabel.BOTTOM);
+        jPanel19.add(drillPreviewLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(7, 7, 244, 250));
 
-        javax.swing.GroupLayout jPanel19Layout = new javax.swing.GroupLayout(jPanel19);
-        jPanel19.setLayout(jPanel19Layout);
-        jPanel19Layout.setHorizontalGroup(
-            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel19Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(drillPreviewLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(14, Short.MAX_VALUE))
-        );
-        jPanel19Layout.setVerticalGroup(
-            jPanel19Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel19Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(drillPreviewLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 230, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(36, Short.MAX_VALUE))
-        );
+        jPanel17.add(jPanel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(331, 6, 251, 260));
 
         org.openide.awt.Mnemonics.setLocalizedText(drillTimeRemainText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillTimeRemainText.text")); // NOI18N
+        jPanel17.add(drillTimeRemainText, new org.netbeans.lib.awtextra.AbsoluteConstraints(289, 426, 294, 16));
 
         org.openide.awt.Mnemonics.setLocalizedText(drillDurationText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillDurationText.text")); // NOI18N
+        jPanel17.add(drillDurationText, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 423, 274, 22));
 
-        javax.swing.GroupLayout jPanel17Layout = new javax.swing.GroupLayout(jPanel17);
-        jPanel17.setLayout(jPanel17Layout);
-        jPanel17Layout.setHorizontalGroup(
-            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel17Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane6)
-                    .addGroup(jPanel17Layout.createSequentialGroup()
-                        .addComponent(drillDurationText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(drillTimeRemainText, javax.swing.GroupLayout.PREFERRED_SIZE, 294, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(jPanel17Layout.createSequentialGroup()
-                        .addComponent(jPanel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(jPanel19, javax.swing.GroupLayout.PREFERRED_SIZE, 252, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap())
-        );
-        jPanel17Layout.setVerticalGroup(
-            jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel17Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jPanel19, javax.swing.GroupLayout.DEFAULT_SIZE, 274, Short.MAX_VALUE)
-                    .addComponent(jPanel18, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane6, javax.swing.GroupLayout.PREFERRED_SIZE, 119, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel17Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(drillDurationText, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(drillTimeRemainText, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap())
-        );
-
-        javax.swing.GroupLayout drillingPanelLayout = new javax.swing.GroupLayout(drillingPanel);
-        drillingPanel.setLayout(drillingPanelLayout);
-        drillingPanelLayout.setHorizontalGroup(
-            drillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, drillingPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel17, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addContainerGap())
-        );
-        drillingPanelLayout.setVerticalGroup(
-            drillingPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(drillingPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jPanel17, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(15, Short.MAX_VALUE))
-        );
+        drillingPanel.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 11, 588, 443));
 
         tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillingPanel.TabConstraints.tabTitle"), drillingPanel); // NOI18N
 
