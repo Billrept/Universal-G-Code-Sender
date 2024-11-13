@@ -1258,6 +1258,21 @@ public class pluginTestTopComponent extends TopComponent
         }
     }
     
+    private void setAllStatusText(String status){
+        colorStatusText.setText("Status : " + status);
+        laserStatusText.setText("Status : " + status);
+        drillStatusText.setText("Status : " + status);
+    }
+    
+    private void resetAllPreviewLabel(){
+        colorPreviewLabel.setIcon(null);
+        colorPreviewLabel.setText("");
+        laserPreviewLabel.setIcon(null);
+        laserPreviewLabel.setText("");
+        drillPreviewLabel.setIcon(null);
+        drillPreviewLabel.setText("");
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox blackCheckBox;
     public javax.swing.JProgressBar blackProgress;
@@ -1328,25 +1343,26 @@ public class pluginTestTopComponent extends TopComponent
     @Override
     public void componentOpened() {
         tabbedPane.setEnabled(true);
-        setStatusText("Idle");
+        setAllStatusText("Idle");
         setup();
         isProcessing = false;
     }
 
     @Override
     public void componentClosed() {
-        setStatusText("Idle");
+        setAllStatusText("Idle");
         setup();
         isProcessing = false;
         try {
             backend.unsetGcodeFile();
         } catch (Exception ex) {}
-        colorPreviewLabel.setIcon(null);
-        colorPreviewLabel.setText("");
+        resetAllPreviewLabel();
         setColorCheckBoxEnabled(true);
         setColorCheckBoxSelected(true);
         resetLayerSelected();
         cFile.emptyGcodeFiles();
+        lFile.emptyGcodeFiles();
+        dFile.emptyGcodeFiles();
     }
 
     void writeProperties(java.util.Properties p) {
