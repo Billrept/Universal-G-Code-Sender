@@ -53,14 +53,15 @@ public class pluginTestTopComponent extends TopComponent
     private ColorFile cFile;
     private LaserFile lFile;
     private DrillFile dFile;
+    private LastFilePathHelper lastFilePathHelper;
     
     private int currentFileIndex;
     private boolean filler;
     private boolean isProcessing = false;
     private boolean paused = false;
-    private java.io.File lastPath;
     private final int PREVIEW_WIDTH = 230;
     private final int PREVIEW_HEIGHT = 230;
+    private java.io.File lastPath;
     
     private int selectedTab = 0;
 
@@ -77,6 +78,7 @@ public class pluginTestTopComponent extends TopComponent
         cFile = new ColorFile();
         lFile = new LaserFile();
         dFile = new DrillFile();
+        lastFilePathHelper = new LastFilePathHelper();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1202,6 +1204,7 @@ public class pluginTestTopComponent extends TopComponent
         if(backend.isIdle() && isProcessing == false){
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+            lastPath = lastFilePathHelper.loadLastFilePath();
             if(lastPath != null){
                 fileChooser.setCurrentDirectory(lastPath);
             }
@@ -1212,7 +1215,7 @@ public class pluginTestTopComponent extends TopComponent
                 switch (mode){
                     case 0:
                         cFile.setup(fileChooser.getSelectedFile());
-                        lastPath = cFile.getParentFile();
+                        lastFilePathHelper.saveLastFilePath(cFile.getParentFile());
                         setStatusText("Files Uploaded");
                         try {
                             cFile.scaleImage(fileChooser.getSelectedFile(), PREVIEW_WIDTH, PREVIEW_HEIGHT);
@@ -1225,7 +1228,7 @@ public class pluginTestTopComponent extends TopComponent
                     
                     case 1:
                         lFile.setup(fileChooser.getSelectedFile());
-                        lastPath = lFile.getParentFile();
+                        lastFilePathHelper.saveLastFilePath(lFile.getParentFile());
                         setStatusText("Files Uploaded");
                         try {
                             lFile.scaleImage(fileChooser.getSelectedFile(), PREVIEW_WIDTH, PREVIEW_HEIGHT);
@@ -1238,7 +1241,7 @@ public class pluginTestTopComponent extends TopComponent
                     
                     case 2:
                         dFile.setup(fileChooser.getSelectedFile());
-                        lastPath = dFile.getParentFile();
+                        lastFilePathHelper.saveLastFilePath(dFile.getParentFile());
                         setStatusText("Files Uploaded");
                         try {
                             dFile.scaleImage(fileChooser.getSelectedFile(), PREVIEW_WIDTH, PREVIEW_HEIGHT);
