@@ -143,9 +143,9 @@ public class pluginTestTopComponent extends TopComponent
         drillTimeRemainText = new javax.swing.JLabel();
         drillDurationText = new javax.swing.JLabel();
         settingsPanel = new javax.swing.JPanel();
-        penChangeCommandLabel = new javax.swing.JLabel();
         jScrollPane3 = new javax.swing.JScrollPane();
         colorChangeTable = new javax.swing.JTable();
+        changeCommandCheckBox = new javax.swing.JCheckBox();
 
         tabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -829,8 +829,6 @@ public class pluginTestTopComponent extends TopComponent
 
         tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillingPanel.TabConstraints.tabTitle"), drillingPanel); // NOI18N
 
-        org.openide.awt.Mnemonics.setLocalizedText(penChangeCommandLabel, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.penChangeCommandLabel.text")); // NOI18N
-
         colorChangeTable.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {"Cyan", ""},
@@ -856,6 +854,13 @@ public class pluginTestTopComponent extends TopComponent
             colorChangeTable.getColumnModel().getColumn(1).setHeaderValue(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorChangeTable.columnModel.title1")); // NOI18N
         }
 
+        org.openide.awt.Mnemonics.setLocalizedText(changeCommandCheckBox, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.changeCommandCheckBox.text")); // NOI18N
+        changeCommandCheckBox.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                changeCommandCheckBoxActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout settingsPanelLayout = new javax.swing.GroupLayout(settingsPanel);
         settingsPanel.setLayout(settingsPanelLayout);
         settingsPanelLayout.setHorizontalGroup(
@@ -863,15 +868,15 @@ public class pluginTestTopComponent extends TopComponent
             .addGroup(settingsPanelLayout.createSequentialGroup()
                 .addGap(24, 24, 24)
                 .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(penChangeCommandLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(changeCommandCheckBox)
+                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(50, Short.MAX_VALUE))
         );
         settingsPanelLayout.setVerticalGroup(
             settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(settingsPanelLayout.createSequentialGroup()
-                .addGap(26, 26, 26)
-                .addComponent(penChangeCommandLabel, javax.swing.GroupLayout.PREFERRED_SIZE, 16, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(22, 22, 22)
+                .addComponent(changeCommandCheckBox)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(278, Short.MAX_VALUE))
@@ -925,21 +930,59 @@ public class pluginTestTopComponent extends TopComponent
     }
     
     private void progressBarUpdater(){
-        Thread progressThread = new Thread(){
-        @Override
-            public void run(){
-                int progress = 0;
-                while (progress < 100){
-                    progressBarSet(currentFileIndex, progress);
-                    try {
-                        Thread.sleep(50);
-                    } catch (InterruptedException ex) {}
-                    progress = (int)((((float)backend.getNumCompletedRows())/((float)backend.getNumRows())) * 100);
-                }
-                progressBarSet(currentFileIndex, 100);
-            }
-        };
-        progressThread.start();
+        switch(selectedTab){
+            case 0:
+                Thread colorProgressThread = new Thread(){
+                @Override
+                    public void run(){
+                        int progress = 0;
+                        while (progress < 100){
+                            progressBarSet(currentFileIndex, progress);
+                            try {
+                                Thread.sleep(50);
+                            } catch (InterruptedException ex) {}
+                            progress = (int)((((float)backend.getNumCompletedRows())/((float)backend.getNumRows())) * 100);
+                        }
+                        progressBarSet(currentFileIndex, 100);
+                    }
+                };
+                colorProgressThread.start();
+                break;
+            case 1:
+                Thread laserProgressThread = new Thread(){
+                @Override
+                    public void run(){
+                        int progress = 0;
+                        while (progress < 100){
+                            progressBarSet(4, progress);
+                            try {
+                                Thread.sleep(50);
+                            } catch (InterruptedException ex) {}
+                            progress = (int)((((float)backend.getNumCompletedRows())/((float)backend.getNumRows())) * 100);
+                        }
+                        progressBarSet(4, 100);
+                    }
+                };
+                laserProgressThread.start();
+                break;
+            case 2:
+                Thread drillProgressThread = new Thread(){
+                @Override
+                    public void run(){
+                        int progress = 0;
+                        while (progress < 100){
+                            progressBarSet(5, progress);
+                            try {
+                                Thread.sleep(50);
+                            } catch (InterruptedException ex) {}
+                            progress = (int)((((float)backend.getNumCompletedRows())/((float)backend.getNumRows())) * 100);
+                        }
+                        progressBarSet(5, 100);
+                    }
+                };
+                drillProgressThread.start();
+                break;
+        }
     }
     
     public void progressBarSet(int progressBarNum,int progress){
@@ -966,6 +1009,18 @@ public class pluginTestTopComponent extends TopComponent
                 SwingUtilities.invokeLater(() -> {
                     blackProgress.setValue(progress);
                     blackProgress.setString("Black : " + progress + "%");
+                });
+            }
+            case 4 -> {
+                SwingUtilities.invokeLater(() -> {
+                    laserProgress.setValue(progress);
+                    laserProgress.setString("Progress : " + progress + "%");
+                });
+            }
+            case 5 -> {
+                SwingUtilities.invokeLater(() -> {
+                    drillProgress.setValue(progress);
+                    drillProgress.setString("Progress : " + progress + "%");
                 });
             }
         }
@@ -1085,11 +1140,19 @@ public class pluginTestTopComponent extends TopComponent
             speedSlider.setEnabled(false);
         }
     }//GEN-LAST:event_drillSpeedLevelActionPerformed
+
+    private void changeCommandCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeCommandCheckBoxActionPerformed
+        if (changeCommandCheckBox.isSelected()){
+            colorChangeTable.setEnabled(true);
+        } else {
+            colorChangeTable.setEnabled(false);
+        }
+    }//GEN-LAST:event_changeCommandCheckBoxActionPerformed
     
     private boolean checkColorChangeCommand(){
         for(int i = 0; i <= 3; i++){
             String colorChangeCommand = colorChangeTable.getValueAt(i, 1) + "";
-            if((!cFile.gcodeIsValid(colorChangeCommand) && (colorChangeCommand != ""))){
+            if((!cFile.gcodeIsValid(colorChangeCommand)) && changeCommandCheckBox.isSelected() == true){
                 consoleSetText("\n\nUnable to run\nPlease make sure pen change command is valid ");
                 return false;
             }
@@ -1276,6 +1339,7 @@ public class pluginTestTopComponent extends TopComponent
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox blackCheckBox;
     public javax.swing.JProgressBar blackProgress;
+    private javax.swing.JCheckBox changeCommandCheckBox;
     private javax.swing.JTable colorChangeTable;
     private javax.swing.JLabel colorDurationText;
     private javax.swing.JLabel colorPreviewLabel;
@@ -1331,7 +1395,6 @@ public class pluginTestTopComponent extends TopComponent
     private javax.swing.JButton laserUploadButton;
     private javax.swing.JCheckBox magentaCheckBox;
     public javax.swing.JProgressBar magentaProgress;
-    private javax.swing.JLabel penChangeCommandLabel;
     private javax.swing.JSlider powerSlider;
     private javax.swing.JPanel settingsPanel;
     private javax.swing.JSlider speedSlider;
