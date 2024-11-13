@@ -23,6 +23,7 @@ import java.net.URISyntaxException;
 import java.util.Set;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
+import org.openide.util.Exceptions;
 
 @ConvertAsProperties(
         dtd = "-//com.willwinder.plugintest//pluginTest//EN",
@@ -62,6 +63,7 @@ public class pluginTestTopComponent extends TopComponent
     private final int PREVIEW_WIDTH = 230;
     private final int PREVIEW_HEIGHT = 230;
     private java.io.File lastPath;
+    private Folder.Bounds lBounds;
     
     private int selectedTab = 0;
 
@@ -593,7 +595,11 @@ public class pluginTestTopComponent extends TopComponent
     }// </editor-fold>//GEN-END:initComponents
 
     private void colorUploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorUploadButtonActionPerformed
-        openFileChooser(0);
+        try {
+            openFileChooser(0);
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
+        }
     }//GEN-LAST:event_colorUploadButtonActionPerformed
     
     private void processGcode() throws Exception{
@@ -785,7 +791,12 @@ public class pluginTestTopComponent extends TopComponent
     }//GEN-LAST:event_tabbedPanePropertyChange
 
     private void laserUploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laserUploadButtonActionPerformed
-        openFileChooser(1);
+        try {
+            openFileChooser(1);
+        } catch (IOException ex) {
+            consoleSetText(ex.toString());
+            consoleSetText("\nError occurred");
+        }
     }//GEN-LAST:event_laserUploadButtonActionPerformed
 
     private void laserSvgButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laserSvgButtonActionPerformed
@@ -805,11 +816,16 @@ public class pluginTestTopComponent extends TopComponent
     }//GEN-LAST:event_drillSvgButtonActionPerformed
 
     private void drillUploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drillUploadButtonActionPerformed
-        openFileChooser(2);
+        try {
+            openFileChooser(2);
+        } catch (IOException ex) {
+            Exceptions.printStackTrace(ex);
+        }
     }//GEN-LAST:event_drillUploadButtonActionPerformed
 
     private void laserPreviewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laserPreviewButtonActionPerformed
-        filler = true;
+        consoleSetText("\nMinX : " + lBounds.minX + "\tMaxX : " + lBounds.maxX);
+        consoleSetText("\nMinY : " + lBounds.minY + "\tMaxY : " + lBounds.maxY);
     }//GEN-LAST:event_laserPreviewButtonActionPerformed
 
     private void drillPreviewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drillPreviewButtonActionPerformed
@@ -889,7 +905,7 @@ public class pluginTestTopComponent extends TopComponent
         blackCheckBox.setSelected(selected);
     }
     
-    private void openFileChooser(int mode){
+    private void openFileChooser(int mode) throws IOException{
         if(backend.isIdle() && isProcessing == false){
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -926,6 +942,8 @@ public class pluginTestTopComponent extends TopComponent
                         }
                         laserPreviewLabel.setIcon(lFile.getScaledImage());
                         laserPreviewLabel.setText("Preview");
+                        lBounds = Folder.getGcodeBounds(lFile.gcodeFiles);
+                        consoleSetText(lBounds.toString());
                         break;
                     
                     case 2:
