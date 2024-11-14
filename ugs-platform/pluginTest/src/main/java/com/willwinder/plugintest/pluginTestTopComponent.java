@@ -106,8 +106,6 @@ public class pluginTestTopComponent extends TopComponent
         colorPreviewButton = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         colorPreviewLabel = new javax.swing.JLabel();
-        colorTimeRemainText = new javax.swing.JLabel();
-        colorDurationText = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         cyanCheckBox = new javax.swing.JCheckBox();
@@ -129,8 +127,6 @@ public class pluginTestTopComponent extends TopComponent
         laserPowerCheckBox = new javax.swing.JCheckBox();
         jPanel16 = new javax.swing.JPanel();
         laserPreviewLabel = new javax.swing.JLabel();
-        laserTimeRemainText = new javax.swing.JLabel();
-        laserDurationText = new javax.swing.JLabel();
         drillingPanel = new javax.swing.JPanel();
         jPanel17 = new javax.swing.JPanel();
         jScrollPane6 = new javax.swing.JScrollPane();
@@ -146,8 +142,6 @@ public class pluginTestTopComponent extends TopComponent
         drillSpeedLevel = new javax.swing.JCheckBox();
         jPanel19 = new javax.swing.JPanel();
         drillPreviewLabel = new javax.swing.JLabel();
-        drillTimeRemainText = new javax.swing.JLabel();
-        drillDurationText = new javax.swing.JLabel();
         settingsPanel = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         colorChangeTable = new javax.swing.JTable();
@@ -256,13 +250,10 @@ public class pluginTestTopComponent extends TopComponent
 
         jPanel3.add(jPanel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(331, 6, 251, 260));
 
-        org.openide.awt.Mnemonics.setLocalizedText(colorTimeRemainText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorTimeRemainText.text")); // NOI18N
-        jPanel3.add(colorTimeRemainText, new org.netbeans.lib.awtextra.AbsoluteConstraints(289, 426, 294, 16));
-
-        org.openide.awt.Mnemonics.setLocalizedText(colorDurationText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorDurationText.text")); // NOI18N
-        jPanel3.add(colorDurationText, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 423, 274, 22));
+        jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         org.openide.awt.Mnemonics.setLocalizedText(jLabel1, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jLabel1.text")); // NOI18N
+        jPanel7.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(16, 24, -1, -1));
 
         cyanCheckBox.setSelected(true);
         org.openide.awt.Mnemonics.setLocalizedText(cyanCheckBox, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.cyanCheckBox.text")); // NOI18N
@@ -271,6 +262,7 @@ public class pluginTestTopComponent extends TopComponent
                 cyanCheckBoxActionPerformed(evt);
             }
         });
+        jPanel7.add(cyanCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 57, 70, -1));
 
         magentaCheckBox.setSelected(true);
         org.openide.awt.Mnemonics.setLocalizedText(magentaCheckBox, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.magentaCheckBox.text")); // NOI18N
@@ -279,6 +271,7 @@ public class pluginTestTopComponent extends TopComponent
                 magentaCheckBoxActionPerformed(evt);
             }
         });
+        jPanel7.add(magentaCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 89, -1, -1));
 
         yellowCheckBox.setSelected(true);
         org.openide.awt.Mnemonics.setLocalizedText(yellowCheckBox, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.yellowCheckBox.text")); // NOI18N
@@ -287,6 +280,7 @@ public class pluginTestTopComponent extends TopComponent
                 yellowCheckBoxActionPerformed(evt);
             }
         });
+        jPanel7.add(yellowCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 121, 70, -1));
 
         blackCheckBox.setSelected(true);
         org.openide.awt.Mnemonics.setLocalizedText(blackCheckBox, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.blackCheckBox.text")); // NOI18N
@@ -295,39 +289,7 @@ public class pluginTestTopComponent extends TopComponent
                 blackCheckBoxActionPerformed(evt);
             }
         });
-
-        javax.swing.GroupLayout jPanel7Layout = new javax.swing.GroupLayout(jPanel7);
-        jPanel7.setLayout(jPanel7Layout);
-        jPanel7Layout.setHorizontalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addGap(16, 16, 16)
-                .addComponent(jLabel1)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel7Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                    .addComponent(yellowCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(blackCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(magentaCheckBox, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(cyanCheckBox, javax.swing.GroupLayout.PREFERRED_SIZE, 70, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap())
-        );
-        jPanel7Layout.setVerticalGroup(
-            jPanel7Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel7Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(cyanCheckBox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(magentaCheckBox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(yellowCheckBox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(blackCheckBox)
-                .addGap(68, 68, 68))
-        );
+        jPanel7.add(blackCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 153, 70, -1));
 
         jPanel3.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(236, 6, 77, 230));
 
@@ -425,12 +387,6 @@ public class pluginTestTopComponent extends TopComponent
 
         jPanel12.add(jPanel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(331, 6, 251, 260));
 
-        org.openide.awt.Mnemonics.setLocalizedText(laserTimeRemainText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserTimeRemainText.text")); // NOI18N
-        jPanel12.add(laserTimeRemainText, new org.netbeans.lib.awtextra.AbsoluteConstraints(289, 426, 294, 16));
-
-        org.openide.awt.Mnemonics.setLocalizedText(laserDurationText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserDurationText.text")); // NOI18N
-        jPanel12.add(laserDurationText, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 423, 274, 22));
-
         laserPanel.add(jPanel12, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 11, 588, 443));
 
         tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserPanel.TabConstraints.tabTitle"), laserPanel); // NOI18N
@@ -524,12 +480,6 @@ public class pluginTestTopComponent extends TopComponent
 
         jPanel17.add(jPanel19, new org.netbeans.lib.awtextra.AbsoluteConstraints(331, 6, 251, 260));
 
-        org.openide.awt.Mnemonics.setLocalizedText(drillTimeRemainText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillTimeRemainText.text")); // NOI18N
-        jPanel17.add(drillTimeRemainText, new org.netbeans.lib.awtextra.AbsoluteConstraints(289, 426, 294, 16));
-
-        org.openide.awt.Mnemonics.setLocalizedText(drillDurationText, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillDurationText.text")); // NOI18N
-        jPanel17.add(drillDurationText, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 423, 274, 22));
-
         drillingPanel.add(jPanel17, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 11, 588, 443));
 
         tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillingPanel.TabConstraints.tabTitle"), drillingPanel); // NOI18N
@@ -608,7 +558,7 @@ public class pluginTestTopComponent extends TopComponent
 
     private void colorUploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorUploadButtonActionPerformed
         try {
-            openFileChooser(0);
+            openFileChooser();
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
         }
@@ -620,14 +570,18 @@ public class pluginTestTopComponent extends TopComponent
                 backend.sendGcodeCommand(cFile.colorChangeCommand[currentFileIndex]);
                 consoleSetText("\n\nPen changed");
                 cFile.sendGcode(cFile.gcodeFiles[currentFileIndex]);
-                progressBarUpdater();
                 consoleSetText("\n\nFile " + cFile.gcodeFiles[currentFileIndex] + " loaded");
                 break;
             case 1:
+                lFile.sendGcode(lFile.gcodeFiles);
+                consoleSetText("\n\nFile " + lFile.gcodeFiles + " loaded");
                 break;
             case 2:
+                dFile.sendGcode(dFile.gcodeFiles);
+                consoleSetText("\n\nFile " + dFile.gcodeFiles + " loaded");
                 break;
         }
+        progressBarUpdater();
     }
     
     public void consoleSetText(String message){
@@ -804,7 +758,7 @@ public class pluginTestTopComponent extends TopComponent
 
     private void laserUploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laserUploadButtonActionPerformed
         try {
-            openFileChooser(1);
+            openFileChooser();
         } catch (IOException ex) {
             consoleSetText(ex.toString());
             consoleSetText("\nError occurred");
@@ -829,7 +783,7 @@ public class pluginTestTopComponent extends TopComponent
 
     private void drillUploadButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drillUploadButtonActionPerformed
         try {
-            openFileChooser(2);
+            openFileChooser();
         } catch (IOException ex) {
             Exceptions.printStackTrace(ex);
         }
@@ -932,7 +886,7 @@ public class pluginTestTopComponent extends TopComponent
         blackCheckBox.setSelected(selected);
     }
     
-    private void openFileChooser(int mode) throws IOException{
+    private void openFileChooser() throws IOException{
         if(backend.isIdle() && isProcessing == false){
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
@@ -943,7 +897,7 @@ public class pluginTestTopComponent extends TopComponent
             int returnVal = fileChooser.showOpenDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 
-                switch (mode){
+                switch (selectedTab){
                     case 0:
                         cFile.setup(fileChooser.getSelectedFile());
                         lastFilePathHelper.saveLastFilePath(cFile.getParentFile());
@@ -1080,9 +1034,13 @@ public class pluginTestTopComponent extends TopComponent
    
         //check if running only this command works before un-commenting
 //        backend.performHomingCycle();
-        for(int i = 0; i < 5; i++){
-            consoleSetText("\n" + gcodeBounds[i]);
-            backend.sendGcodeCommand(gcodeBounds[i]);
+        if(backend.isIdle() == true && isProcessing == false){
+            for(int i = 0; i < 5; i++){
+                consoleSetText("\n" + gcodeBounds[i]);
+                backend.sendGcodeCommand(gcodeBounds[i]);
+            }
+        } else{
+            consoleSetText("\nCurrently unable to preview file");
         }
     }
     
@@ -1091,19 +1049,16 @@ public class pluginTestTopComponent extends TopComponent
     public javax.swing.JProgressBar blackProgress;
     private javax.swing.JCheckBox changeCommandCheckBox;
     private javax.swing.JTable colorChangeTable;
-    private javax.swing.JLabel colorDurationText;
     private javax.swing.JButton colorPreviewButton;
     private javax.swing.JLabel colorPreviewLabel;
     private javax.swing.JButton colorRunButton;
     private javax.swing.JTextField colorStatusText;
     private javax.swing.JButton colorSvgButton;
     public javax.swing.JTextArea colorTextArea;
-    private javax.swing.JLabel colorTimeRemainText;
     private javax.swing.JButton colorUploadButton;
     private javax.swing.JCheckBox cyanCheckBox;
     public javax.swing.JProgressBar cyanProgress;
     public javax.swing.JPanel drawingPanel;
-    private javax.swing.JLabel drillDurationText;
     private javax.swing.JButton drillPreviewButton;
     private javax.swing.JLabel drillPreviewLabel;
     public javax.swing.JProgressBar drillProgress;
@@ -1112,7 +1067,6 @@ public class pluginTestTopComponent extends TopComponent
     private javax.swing.JTextField drillStatusText;
     private javax.swing.JButton drillSvgButton;
     public javax.swing.JTextArea drillTextArea;
-    private javax.swing.JLabel drillTimeRemainText;
     private javax.swing.JButton drillUploadButton;
     private javax.swing.JPanel drillingPanel;
     private javax.swing.JLabel jLabel1;
@@ -1130,7 +1084,6 @@ public class pluginTestTopComponent extends TopComponent
     private javax.swing.JScrollPane jScrollPane3;
     public javax.swing.JScrollPane jScrollPane5;
     public javax.swing.JScrollPane jScrollPane6;
-    private javax.swing.JLabel laserDurationText;
     private javax.swing.JPanel laserPanel;
     private javax.swing.JCheckBox laserPowerCheckBox;
     private javax.swing.JButton laserPreviewButton;
@@ -1140,7 +1093,6 @@ public class pluginTestTopComponent extends TopComponent
     private javax.swing.JTextField laserStatusText;
     private javax.swing.JButton laserSvgButton;
     public javax.swing.JTextArea laserTextArea;
-    private javax.swing.JLabel laserTimeRemainText;
     private javax.swing.JButton laserUploadButton;
     private javax.swing.JCheckBox magentaCheckBox;
     public javax.swing.JProgressBar magentaProgress;
@@ -1210,13 +1162,15 @@ public class pluginTestTopComponent extends TopComponent
 
     @Override
     public void streamStarted() {
-        if(isProcessing == true){
+        if(isProcessing == true && selectedTab == 0){
             switch (currentFileIndex) {
                 case 0 -> setStatusText("Drawing Cyan");
                 case 1 -> setStatusText("Drawing Magenta");
                 case 2 -> setStatusText("Drawing Yellow");
                 case 3 -> setStatusText("Drawing Black");
             }
+        }else if(isProcessing == true){
+            setStatusText("Running");
         }
     }
 
@@ -1238,7 +1192,7 @@ public class pluginTestTopComponent extends TopComponent
 
     @Override
     public void streamComplete() {
-        if(isProcessing == true){
+        if(isProcessing == true && selectedTab == 0){
             if((cFile.cyanSelected || cFile.magentaSelected || cFile.yellowSelected || cFile.blackSelected) == true){
                 consoleSetText("\nFinished drawing layer " + cFile.gcodeFiles[currentFileIndex] + "\nSending next file");
                 setCurrentFileIndex();
@@ -1253,6 +1207,11 @@ public class pluginTestTopComponent extends TopComponent
                 setColorCheckBoxEnabled(true);
                 tabbedPane.setEnabled(true);
             }
+        }else if(isProcessing == true){
+            consoleSetText("\n\n *** Finished running ***");
+            isProcessing = false;
+            setStatusText("Idle");
+            tabbedPane.setEnabled(true);
         }
     }
 
