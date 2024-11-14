@@ -63,7 +63,10 @@ public class pluginTestTopComponent extends TopComponent
     private final int PREVIEW_WIDTH = 230;
     private final int PREVIEW_HEIGHT = 230;
     private java.io.File lastPath;
+    private Folder.Bounds cBounds;
     private Folder.Bounds lBounds;
+    private Folder.Bounds dBounds;
+    private String[] gcodeBounds = new String[5];
     
     private int selectedTab = 0;
 
@@ -100,6 +103,7 @@ public class pluginTestTopComponent extends TopComponent
         colorUploadButton = new javax.swing.JButton();
         colorRunButton = new javax.swing.JButton();
         colorSvgButton = new javax.swing.JButton();
+        colorPreviewButton = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         colorPreviewLabel = new javax.swing.JLabel();
         colorTimeRemainText = new javax.swing.JLabel();
@@ -226,6 +230,14 @@ public class pluginTestTopComponent extends TopComponent
             }
         });
         jPanel5.add(colorSvgButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(118, 186, 88, -1));
+
+        org.openide.awt.Mnemonics.setLocalizedText(colorPreviewButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorPreviewButton.text")); // NOI18N
+        colorPreviewButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                colorPreviewButtonActionPerformed(evt);
+            }
+        });
+        jPanel5.add(colorPreviewButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(118, 227, 89, 23));
 
         jPanel3.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, -1, -1));
 
@@ -824,12 +836,19 @@ public class pluginTestTopComponent extends TopComponent
     }//GEN-LAST:event_drillUploadButtonActionPerformed
 
     private void laserPreviewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laserPreviewButtonActionPerformed
-        consoleSetText("\nMinX : " + lBounds.minX + "\tMaxX : " + lBounds.maxX);
-        consoleSetText("\nMinY : " + lBounds.minY + "\tMaxY : " + lBounds.maxY);
+        try {
+            previewGcode();
+        } catch (Exception ex) {
+            consoleSetText("\nError previewing gcode\n" + ex);
+        }
     }//GEN-LAST:event_laserPreviewButtonActionPerformed
 
     private void drillPreviewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drillPreviewButtonActionPerformed
-        filler = true;
+        try {
+            previewGcode();
+        } catch (Exception ex) {
+            consoleSetText("\nError previewing gcode\n" + ex);
+        }
     }//GEN-LAST:event_drillPreviewButtonActionPerformed
 
     private void laserPowerCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laserPowerCheckBoxActionPerformed
@@ -855,6 +874,14 @@ public class pluginTestTopComponent extends TopComponent
             colorChangeTable.setEnabled(false);
         }
     }//GEN-LAST:event_changeCommandCheckBoxActionPerformed
+
+    private void colorPreviewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorPreviewButtonActionPerformed
+        try {
+            previewGcode();
+        } catch (Exception ex) {
+            consoleSetText("\nError previewing gcode\n" + ex);
+        }
+    }//GEN-LAST:event_colorPreviewButtonActionPerformed
     
     private boolean checkColorChangeCommand(){
         for(int i = 0; i <= 3; i++){
@@ -916,7 +943,6 @@ public class pluginTestTopComponent extends TopComponent
             int returnVal = fileChooser.showOpenDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
                 
-                //Initialize ColorFile
                 switch (mode){
                     case 0:
                         cFile.setup(fileChooser.getSelectedFile());
@@ -929,6 +955,8 @@ public class pluginTestTopComponent extends TopComponent
                         }
                         colorPreviewLabel.setIcon(cFile.getScaledImage());
                         colorPreviewLabel.setText("Preview");
+                        cBounds = cFile.getGcodeBounds(cFile.gcodeFiles);
+                        gcodeBounds = cBounds.getPreviewGcode();
                         break;
                     
                     case 1:
@@ -943,7 +971,7 @@ public class pluginTestTopComponent extends TopComponent
                         laserPreviewLabel.setIcon(lFile.getScaledImage());
                         laserPreviewLabel.setText("Preview");
                         lBounds = Folder.getGcodeBounds(lFile.gcodeFiles);
-                        consoleSetText(lBounds.toString());
+                        gcodeBounds = lBounds.getPreviewGcode();
                         break;
                     
                     case 2:
@@ -957,6 +985,8 @@ public class pluginTestTopComponent extends TopComponent
                         }
                         drillPreviewLabel.setIcon(dFile.getScaledImage());
                         drillPreviewLabel.setText("Preview");
+                        dBounds = Folder.getGcodeBounds(dFile.gcodeFiles);
+                        gcodeBounds = dBounds.getPreviewGcode();
                         break;
                     
                 }
@@ -1046,12 +1076,23 @@ public class pluginTestTopComponent extends TopComponent
         drillPreviewLabel.setText("");
     }
     
+    private void previewGcode() throws Exception{
+   
+        //check if running only this command works before un-commenting
+//        backend.performHomingCycle();
+        for(int i = 0; i < 5; i++){
+            consoleSetText("\n" + gcodeBounds[i]);
+            backend.sendGcodeCommand(gcodeBounds[i]);
+        }
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox blackCheckBox;
     public javax.swing.JProgressBar blackProgress;
     private javax.swing.JCheckBox changeCommandCheckBox;
     private javax.swing.JTable colorChangeTable;
     private javax.swing.JLabel colorDurationText;
+    private javax.swing.JButton colorPreviewButton;
     private javax.swing.JLabel colorPreviewLabel;
     private javax.swing.JButton colorRunButton;
     private javax.swing.JTextField colorStatusText;

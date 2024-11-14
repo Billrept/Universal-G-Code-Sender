@@ -1,9 +1,13 @@
 package com.willwinder.plugintest;
 
+import static com.willwinder.plugintest.Folder.extractCoordinate;
 import com.willwinder.ugs.nbp.lib.lookup.CentralLookup;
 import com.willwinder.universalgcodesender.model.BackendAPI;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FilenameFilter;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -72,6 +76,34 @@ public class ColorFile extends Folder{
         this.magentaSelected = selected;
         this.yellowSelected = selected;
         this.blackSelected = selected;
+    }
+    
+    public static Bounds getGcodeBounds(String[] gcodeFileString) throws IOException {
+        float minX = Float.MAX_VALUE, minY = Float.MAX_VALUE;
+        float maxX = Float.MIN_VALUE, maxY = Float.MIN_VALUE;
+        for (int i = 0; i < 4; i++){
+            java.io.File gcodeFile = new java.io.File(gcodeFileString[i]);
+
+            try (BufferedReader reader = new BufferedReader(new FileReader(gcodeFile))) {
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    if (line.startsWith("G0") || line.startsWith("G1")) {
+                        Float xValue = extractCoordinate(line, 'X');
+                        Float yValue = extractCoordinate(line, 'Y');
+
+                        if ((xValue != null) && (xValue != 0)) {
+                            minX = Math.min(minX, xValue);
+                            maxX = Math.max(maxX, xValue);
+                        }
+                        if ((yValue != null) && (yValue != 0)) {
+                            minY = Math.min(minY, yValue);
+                            maxY = Math.max(maxY, yValue);
+                        }
+                    }
+                }
+            }
+        }
+        return new Bounds(minX, minY, maxX, maxY);
     }
 
     @Override

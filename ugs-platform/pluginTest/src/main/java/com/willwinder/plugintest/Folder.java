@@ -26,7 +26,18 @@ public abstract class Folder {
             this.maxX = maxX;
             this.maxY = maxY;
         }
-
+        
+        public String[] getPreviewGcode(){
+            String[] previewGcodeCommands = {
+                "G0 X" + minX + " Y" + minY + ";",
+                "G0 X" + maxX + " Y" + minY + ";",
+                "G0 X" + maxX + " Y" + maxY + ";",
+                "G0 X" + minX + " Y" + maxY + ";",
+                "G0 X" + minX + " Y" + minY + ";"
+            };
+            return previewGcodeCommands;
+        }
+        
         @Override
         public String toString() {
             return "Bounds: [minX=" + minX + ", minY=" + minY + ", maxX=" + maxX + ", maxY=" + maxY + "]";
@@ -104,11 +115,11 @@ public abstract class Folder {
                 }
             }
         }
-
+        
         return new Bounds(minX, minY, maxX, maxY);
     }
 
-    private static Float extractCoordinate(String line, char axis) {
+    protected static Float extractCoordinate(String line, char axis) {
         int index = line.indexOf(axis);
         if (index != -1) {
             int start = index + 1;
