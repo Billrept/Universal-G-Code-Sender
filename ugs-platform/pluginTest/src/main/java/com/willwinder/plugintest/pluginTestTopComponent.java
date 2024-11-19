@@ -67,6 +67,9 @@ public class pluginTestTopComponent extends TopComponent
     private Folder.Bounds lBounds;
     private Folder.Bounds dBounds;
     private String[] gcodeBounds = new String[5];
+    private final int X_LIMITS = 999; //Change to actual x limits of machine
+    private final int Y_LIMITS = 999; //Change to actual y limits of machine
+    private boolean isOutOfBounds = false;
     
     private int selectedTab = 0;
 
@@ -911,6 +914,7 @@ public class pluginTestTopComponent extends TopComponent
                         colorPreviewLabel.setText("Preview");
                         cBounds = cFile.getGcodeBounds(cFile.gcodeFiles);
                         gcodeBounds = cBounds.getPreviewGcode();
+                        isOutOfBounds = checkOutOfBounds(cBounds.maxX, cBounds.maxY);
                         break;
                     
                     case 1:
@@ -926,6 +930,7 @@ public class pluginTestTopComponent extends TopComponent
                         laserPreviewLabel.setText("Preview");
                         lBounds = Folder.getGcodeBounds(lFile.gcodeFiles);
                         gcodeBounds = lBounds.getPreviewGcode();
+                        isOutOfBounds = checkOutOfBounds(lBounds.maxX, lBounds.maxY);
                         break;
                     
                     case 2:
@@ -941,8 +946,12 @@ public class pluginTestTopComponent extends TopComponent
                         drillPreviewLabel.setText("Preview");
                         dBounds = Folder.getGcodeBounds(dFile.gcodeFiles);
                         gcodeBounds = dBounds.getPreviewGcode();
+                        isOutOfBounds = checkOutOfBounds(dBounds.maxX, dBounds.maxY);
                         break;
-                    
+                        
+                }
+                if (isOutOfBounds){
+                    consoleSetText("\n\n *** Gcode is out of bounds *** ");
                 }
             }else {
                 consoleSetText("\n\nFile chooser canceled");
@@ -959,59 +968,63 @@ public class pluginTestTopComponent extends TopComponent
     }
     
     private void runFile(){
-        switch (selectedTab){
-            case 0:
-                if(backend.isIdle() && isProcessing == false && !cFile.isEmptyGcodeFiles()){
-                    setSelectedFiles();
-                    if((cFile.cyanSelected || cFile.magentaSelected || cFile.yellowSelected || cFile.blackSelected) == true){
-                        if(checkColorChangeCommand()){
-                            isProcessing = true;
-                            setCurrentFileIndex();
-                            setup();
-                            tabbedPane.setEnabled(false);
-                            setColorCheckBoxEnabled(false);
-                            try {
-                                processGcode();
-                            } catch (Exception ex) {
-                                consoleSetText("Error occurred trying to draw Gcode");
-                                currentFileIndex = 3;
-                                isProcessing = false;
+        if (isOutOfBounds){
+            switch (selectedTab){
+                case 0:
+                    if(backend.isIdle() && isProcessing == false && !cFile.isEmptyGcodeFiles()){
+                        setSelectedFiles();
+                        if((cFile.cyanSelected || cFile.magentaSelected || cFile.yellowSelected || cFile.blackSelected) == true){
+                            if(checkColorChangeCommand()){
+                                isProcessing = true;
+                                setCurrentFileIndex();
+                                setup();
+                                tabbedPane.setEnabled(false);
+                                setColorCheckBoxEnabled(false);
+                                try {
+                                    processGcode();
+                                } catch (Exception ex) {
+                                    consoleSetText("Error occurred trying to draw Gcode");
+                                    currentFileIndex = 3;
+                                    isProcessing = false;
+                                }
+                            }else{
+                                consoleSetText("\n\nUnable to run\nPlease make sure to enter valid pen color change commands in the settings tabbbbb");
                             }
-                        }else{
-                            consoleSetText("\n\nUnable to run\nPlease make sure to enter valid pen color change commands in the settings tabbbbb");
+                        }else {
+                            consoleSetText("\n\nUnable to run\nPlease make sure to select a layer");
                         }
-                    }else {
-                        consoleSetText("\n\nUnable to run\nPlease make sure to select a layer");
+                    }else{
+                        consoleSetText("\n\nUnable to run\nPlease make sure the machine is in idle mode and folder is loaded");
                     }
-                }else{
-                    consoleSetText("\n\nUnable to run\nPlease make sure the machine is in idle mode and folder is loaded");
-                }
-                break;
-               
-            case 1:
-                if(backend.isIdle() && isProcessing == false && !lFile.isEmptyGcodeFiles()){
-                    isProcessing = true;
-                    tabbedPane.setEnabled(false);
-                    try {
-                        processGcode();
-                    } catch (Exception ex) {
-                        consoleSetText("Error occurred trying to draw Gcode");
-                        isProcessing = false;
+                    break;
+
+                case 1:
+                    if(backend.isIdle() && isProcessing == false && !lFile.isEmptyGcodeFiles()){
+                        isProcessing = true;
+                        tabbedPane.setEnabled(false);
+                        try {
+                            processGcode();
+                        } catch (Exception ex) {
+                            consoleSetText("Error occurred trying to draw Gcode");
+                            isProcessing = false;
+                        }
                     }
-                }
-                break;
-            case 2:
-                if(backend.isIdle() && isProcessing == false && !dFile.isEmptyGcodeFiles()){
-                    isProcessing = true;
-                    tabbedPane.setEnabled(false);
-                    try {
-                        processGcode();
-                    } catch (Exception ex) {
-                        consoleSetText("Error occurred trying to draw Gcode");
-                        isProcessing = false;
+                    break;
+                case 2:
+                    if(backend.isIdle() && isProcessing == false && !dFile.isEmptyGcodeFiles()){
+                        isProcessing = true;
+                        tabbedPane.setEnabled(false);
+                        try {
+                            processGcode();
+                        } catch (Exception ex) {
+                            consoleSetText("Error occurred trying to draw Gcode");
+                            isProcessing = false;
+                        }
                     }
-                }
-                break;
+                    break;
+            }
+        } else {
+            consoleSetText("\n\n *** Gcode is out of bounds *** ");
         }
     }
     
@@ -1042,6 +1055,13 @@ public class pluginTestTopComponent extends TopComponent
         } else{
             consoleSetText("\nCurrently unable to preview file");
         }
+    }
+    
+    private boolean checkOutOfBounds(float xBounds, float yBounds){
+        if (xBounds > X_LIMITS || yBounds > Y_LIMITS){
+            return true;
+        }
+        return false;
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
