@@ -155,6 +155,7 @@ public class pluginTestTopComponent extends TopComponent
         colorChangeTable = new javax.swing.JTable();
         changeCommandCheckBox = new javax.swing.JCheckBox();
 
+        tabbedPane.setEnabled(false);
         tabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 tabbedPaneStateChanged(evt);
@@ -737,7 +738,7 @@ public class pluginTestTopComponent extends TopComponent
     }//GEN-LAST:event_colorRunButtonActionPerformed
 
     private void tabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbedPaneStateChanged
-        selectedTab = tabbedPane.getSelectedIndex();
+
     }//GEN-LAST:event_tabbedPaneStateChanged
 
     private void magentaCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_magentaCheckBoxActionPerformed
@@ -983,7 +984,7 @@ public class pluginTestTopComponent extends TopComponent
                                 isProcessing = true;
                                 setCurrentFileIndex();
                                 setup();
-                                tabbedPane.setEnabled(false);
+//                                tabbedPane.setEnabled(false);
                                 setColorCheckBoxEnabled(false);
                                 try {
                                     processGcode();
@@ -1006,7 +1007,7 @@ public class pluginTestTopComponent extends TopComponent
                 case 1:
                     if(backend.isIdle() && isProcessing == false && !lFile.isEmptyGcodeFiles()){
                         isProcessing = true;
-                        tabbedPane.setEnabled(false);
+//                        tabbedPane.setEnabled(false);
                         try {
                             processGcode();
                         } catch (Exception ex) {
@@ -1018,7 +1019,7 @@ public class pluginTestTopComponent extends TopComponent
                 case 2:
                     if(backend.isIdle() && isProcessing == false && !dFile.isEmptyGcodeFiles()){
                         isProcessing = true;
-                        tabbedPane.setEnabled(false);
+//                        tabbedPane.setEnabled(false);
                         try {
                             processGcode();
                         } catch (Exception ex) {
@@ -1131,7 +1132,7 @@ public class pluginTestTopComponent extends TopComponent
 
     @Override
     public void componentOpened() {
-        tabbedPane.setEnabled(true);
+//        tabbedPane.setEnabled(true);
         setAllStatusText("Idle");
         setup();
         isProcessing = false;
@@ -1230,13 +1231,13 @@ public class pluginTestTopComponent extends TopComponent
                 setStatusText("Idle");
                 resetLayerSelected();
                 setColorCheckBoxEnabled(true);
-                tabbedPane.setEnabled(true);
+//                tabbedPane.setEnabled(true);
             }
         }else if(isProcessing == true){
             consoleSetText("\n\n *** Finished running ***");
             isProcessing = false;
             setStatusText("Idle");
-            tabbedPane.setEnabled(true);
+//            tabbedPane.setEnabled(true);
         }
     }
 
@@ -1276,10 +1277,18 @@ public class pluginTestTopComponent extends TopComponent
     @Override
     public void rawResponseListener(String response) {
         consoleSetText("Received" + response);
+        if (response == "pen"){
+            selectedTab = 0;
+        } else if (response == "laser") {
+            selectedTab = 1;
+        } else if (response == "drill") {
+            selectedTab = 2;
+        }
+        tabbedPane.setSelectedIndex(selectedTab);
     }
 
     @Override
     public void communicatorPausedOnError() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        filler = true;
     }
 }
