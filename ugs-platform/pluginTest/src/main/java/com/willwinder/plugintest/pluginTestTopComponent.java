@@ -13,9 +13,14 @@ import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 import com.willwinder.universalgcodesender.listeners.ControllerListener;
 import com.willwinder.universalgcodesender.listeners.ControllerStatus;
+import com.willwinder.universalgcodesender.communicator.ICommunicatorListener;
+import com.willwinder.universalgcodesender.communicator.ICommunicator;
+import com.willwinder.universalgcodesender.connection.Connection;
+import com.willwinder.universalgcodesender.connection.ConnectionDriver;
 import com.willwinder.universalgcodesender.model.Alarm;
 import com.willwinder.universalgcodesender.model.Position;
 import com.willwinder.universalgcodesender.types.GcodeCommand;
+import com.willwinder.universalgcodesender.utils.IGcodeStreamReader;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
@@ -46,8 +51,8 @@ import org.openide.util.Exceptions;
     "CTL_pluginTestTopComponent=pluginTest Window",
     "HINT_pluginTestTopComponent=This is a pluginTest window"
 })
-public class pluginTestTopComponent extends TopComponent 
-    implements UGSEventListener, ControllerListener{
+public class pluginTestTopComponent extends TopComponent
+    implements UGSEventListener, ControllerListener, ICommunicatorListener{
     
     private final Settings settings;
     public final BackendAPI backend;
@@ -1266,5 +1271,15 @@ public class pluginTestTopComponent extends TopComponent
     @Override
     public void statusStringListener(ControllerStatus status) {
         filler = true;
+    }
+
+    @Override
+    public void rawResponseListener(String response) {
+        consoleSetText("Received" + response);
+    }
+
+    @Override
+    public void communicatorPausedOnError() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

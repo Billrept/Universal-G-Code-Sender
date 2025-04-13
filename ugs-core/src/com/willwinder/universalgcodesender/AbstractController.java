@@ -780,7 +780,7 @@ public abstract class AbstractController implements ICommunicatorListener, ICont
 
     @Override
     public void rawResponseListener(String response) {
-        rawResponseHandler(response);
+        rawResponseHandler(response);   
     }
 
     protected void setCurrentState(CommunicatorState state) {
