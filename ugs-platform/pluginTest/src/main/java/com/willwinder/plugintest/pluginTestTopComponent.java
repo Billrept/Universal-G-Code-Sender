@@ -14,18 +14,16 @@ import org.openide.util.NbBundle.Messages;
 import com.willwinder.universalgcodesender.listeners.ControllerListener;
 import com.willwinder.universalgcodesender.listeners.ControllerStatus;
 import com.willwinder.universalgcodesender.communicator.ICommunicatorListener;
-import com.willwinder.universalgcodesender.communicator.ICommunicator;
-import com.willwinder.universalgcodesender.connection.Connection;
-import com.willwinder.universalgcodesender.connection.ConnectionDriver;
+import com.willwinder.universalgcodesender.listeners.MessageListener;
+import com.willwinder.universalgcodesender.listeners.MessageType;
+import com.willwinder.universalgcodesender.services.MessageService;
 import com.willwinder.universalgcodesender.model.Alarm;
 import com.willwinder.universalgcodesender.model.Position;
 import com.willwinder.universalgcodesender.types.GcodeCommand;
-import com.willwinder.universalgcodesender.utils.IGcodeStreamReader;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Set;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import org.openide.util.Exceptions;
@@ -52,7 +50,7 @@ import org.openide.util.Exceptions;
     "HINT_pluginTestTopComponent=This is a pluginTest window"
 })
 public class pluginTestTopComponent extends TopComponent
-    implements UGSEventListener, ControllerListener, ICommunicatorListener{
+    implements UGSEventListener, ControllerListener, ICommunicatorListener, MessageListener{
     
     private final Settings settings;
     public final BackendAPI backend;
@@ -87,6 +85,7 @@ public class pluginTestTopComponent extends TopComponent
         backend = CentralLookup.getDefault().lookup(BackendAPI.class);
         backend.getController().addListener(this);
         backend.addUGSEventListener(this);
+        backend.addMessageListener(this);
         
         cFile = new ColorFile();
         lFile = new LaserFile();
@@ -120,6 +119,7 @@ public class pluginTestTopComponent extends TopComponent
         magentaCheckBox = new javax.swing.JCheckBox();
         yellowCheckBox = new javax.swing.JCheckBox();
         blackCheckBox = new javax.swing.JCheckBox();
+        showLimitButton = new javax.swing.JButton();
         laserPanel = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -300,7 +300,15 @@ public class pluginTestTopComponent extends TopComponent
         });
         jPanel7.add(blackCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 153, 70, -1));
 
-        jPanel3.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(236, 6, 77, 230));
+        jPanel3.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(236, 6, 77, 190));
+
+        org.openide.awt.Mnemonics.setLocalizedText(showLimitButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.showLimitButton.text")); // NOI18N
+        showLimitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showLimitButtonActionPerformed(evt);
+            }
+        });
+        jPanel3.add(showLimitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 230, -1, -1));
 
         drawingPanel.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 11, 588, 443));
 
@@ -845,6 +853,34 @@ public class pluginTestTopComponent extends TopComponent
             consoleSetText("\nError previewing gcode\n" + ex);
         }
     }//GEN-LAST:event_colorPreviewButtonActionPerformed
+
+    private void showLimitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showLimitButtonActionPerformed
+        try {
+            StringBuilder gcode = new StringBuilder();
+            gcode.append("G90\n");
+            
+            gcode.append("G0 X").append(cBounds.minX)
+                    .append(" Y").append(cBounds.minY).append("\n");
+            
+            gcode.append("G1 F3000 X").append(cBounds.maxX)
+                    .append(" Y").append(cBounds.minY).append("\n");
+            
+            gcode.append("G1 X").append(cBounds.maxX)
+                    .append(" Y").append(cBounds.maxY).append("\n");
+            
+            gcode.append("G1 X").append(cBounds.minX)
+                    .append(" Y").append(cBounds.maxY).append("\n");
+            
+            gcode.append("G1 X").append(cBounds.minX)
+                    .append(" Y").append(cBounds.minY).append("\n");
+            
+            gcode.append("G4 P0.5\n");
+            
+            backend.sendGcodeCommand(gcode.toString());
+        } catch (Exception ex) {
+            consoleSetText("Unable to show limits");
+        }
+    }//GEN-LAST:event_showLimitButtonActionPerformed
     
     private boolean checkColorChangeCommand(){
         for(int i = 0; i <= 3; i++){
@@ -1124,6 +1160,7 @@ public class pluginTestTopComponent extends TopComponent
     public javax.swing.JProgressBar magentaProgress;
     private javax.swing.JSlider powerSlider;
     private javax.swing.JPanel settingsPanel;
+    private javax.swing.JButton showLimitButton;
     private javax.swing.JSlider speedSlider;
     public javax.swing.JTabbedPane tabbedPane;
     private javax.swing.JCheckBox yellowCheckBox;
@@ -1290,5 +1327,11 @@ public class pluginTestTopComponent extends TopComponent
     @Override
     public void communicatorPausedOnError() {
         filler = true;
+    }
+
+    @Override
+    public void onMessage(MessageType messageType, String message) {
+        consoleSetText("Received Message: ");
+        consoleSetText(message.toString());
     }
 }
