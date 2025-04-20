@@ -13,10 +13,9 @@ import org.openide.windows.TopComponent;
 import org.openide.util.NbBundle.Messages;
 import com.willwinder.universalgcodesender.listeners.ControllerListener;
 import com.willwinder.universalgcodesender.listeners.ControllerStatus;
-import com.willwinder.universalgcodesender.communicator.ICommunicatorListener;
 import com.willwinder.universalgcodesender.listeners.MessageListener;
 import com.willwinder.universalgcodesender.listeners.MessageType;
-import com.willwinder.universalgcodesender.services.MessageService;
+import org.json.JSONObject;
 import com.willwinder.universalgcodesender.model.Alarm;
 import com.willwinder.universalgcodesender.model.Position;
 import com.willwinder.universalgcodesender.types.GcodeCommand;
@@ -50,7 +49,7 @@ import org.openide.util.Exceptions;
     "HINT_pluginTestTopComponent=This is a pluginTest window"
 })
 public class pluginTestTopComponent extends TopComponent
-    implements UGSEventListener, ControllerListener, ICommunicatorListener, MessageListener{
+    implements UGSEventListener, ControllerListener, MessageListener{
     
     private final Settings settings;
     public final BackendAPI backend;
@@ -174,6 +173,7 @@ public class pluginTestTopComponent extends TopComponent
         colorTextArea.setEditable(false);
         colorTextArea.setColumns(20);
         colorTextArea.setRows(5);
+        colorTextArea.setAutoscrolls(false);
         colorTextArea.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jScrollPane1.setViewportView(colorTextArea);
 
@@ -1312,26 +1312,28 @@ public class pluginTestTopComponent extends TopComponent
     }
 
     @Override
-    public void rawResponseListener(String response) {
-        consoleSetText("Received" + response);
-        if (response == "pen"){
-            selectedTab = 0;
-        } else if (response == "laser") {
-            selectedTab = 1;
-        } else if (response == "drill") {
-            selectedTab = 2;
-        }
-        tabbedPane.setSelectedIndex(selectedTab);
-    }
-
-    @Override
-    public void communicatorPausedOnError() {
-        filler = true;
-    }
-
-    @Override
     public void onMessage(MessageType messageType, String message) {
-        consoleSetText("Received Message: ");
-        consoleSetText(message.toString());
+        consoleSetText("Received Message:\n" + message);
+        if (message.startsWith("[JSON:") && message.endsWith("]")) {
+//            consoleSetText("Received Message:\n" + message);
+            String jsonString = message.substring(6, message.length() - 1); // remove [JSON: and ]
+            JSONObject json = new JSONObject(jsonString);
+
+            if (json.has("mode")) {
+                String mode = json.getString("mode");
+
+                consoleSetText("Parsed Mode: " + mode);
+                
+                if (null != mode)switch (mode) {
+                    case "pen" -> selectedTab = 0;
+                    case "laser" -> selectedTab = 1;
+                    case "drill" -> selectedTab = 2;
+                    default -> {
+                    }
+                }
+                
+                tabbedPane.setSelectedIndex(selectedTab);
+            }
+        }
     }
 }
