@@ -15,7 +15,6 @@ import com.willwinder.universalgcodesender.listeners.ControllerListener;
 import com.willwinder.universalgcodesender.listeners.ControllerStatus;
 import com.willwinder.universalgcodesender.listeners.MessageListener;
 import com.willwinder.universalgcodesender.listeners.MessageType;
-import org.json.JSONObject;
 import com.willwinder.universalgcodesender.model.Alarm;
 import com.willwinder.universalgcodesender.model.Position;
 import com.willwinder.universalgcodesender.types.GcodeCommand;
@@ -57,6 +56,7 @@ public class pluginTestTopComponent extends TopComponent
     private LaserFile lFile;
     private DrillFile dFile;
     private LastFilePathHelper lastFilePathHelper;
+    private JSONMessageHandler messageHandler;
     
     private int currentFileIndex;
     private boolean filler;
@@ -90,6 +90,7 @@ public class pluginTestTopComponent extends TopComponent
         lFile = new LaserFile();
         dFile = new DrillFile();
         lastFilePathHelper = new LastFilePathHelper();
+        messageHandler = new JSONMessageHandler();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -154,7 +155,6 @@ public class pluginTestTopComponent extends TopComponent
         colorChangeTable = new javax.swing.JTable();
         changeCommandCheckBox = new javax.swing.JCheckBox();
 
-        tabbedPane.setEnabled(false);
         tabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 tabbedPaneStateChanged(evt);
@@ -310,7 +310,7 @@ public class pluginTestTopComponent extends TopComponent
         });
         jPanel3.add(showLimitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 230, -1, -1));
 
-        drawingPanel.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 11, 588, 443));
+        drawingPanel.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 11, 588, 440));
 
         tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drawingPanel.TabConstraints.tabTitle"), drawingPanel); // NOI18N
 
@@ -881,7 +881,7 @@ public class pluginTestTopComponent extends TopComponent
             consoleSetText("Unable to show limits");
         }
     }//GEN-LAST:event_showLimitButtonActionPerformed
-    
+
     private boolean checkColorChangeCommand(){
         for(int i = 0; i <= 3; i++){
             String colorChangeCommand = colorChangeTable.getValueAt(i, 1) + "";
@@ -1020,7 +1020,7 @@ public class pluginTestTopComponent extends TopComponent
                                 isProcessing = true;
                                 setCurrentFileIndex();
                                 setup();
-//                                tabbedPane.setEnabled(false);
+                                tabbedPane.setEnabled(false);
                                 setColorCheckBoxEnabled(false);
                                 try {
                                     processGcode();
@@ -1043,7 +1043,7 @@ public class pluginTestTopComponent extends TopComponent
                 case 1:
                     if(backend.isIdle() && isProcessing == false && !lFile.isEmptyGcodeFiles()){
                         isProcessing = true;
-//                        tabbedPane.setEnabled(false);
+                        tabbedPane.setEnabled(false);
                         try {
                             processGcode();
                         } catch (Exception ex) {
@@ -1055,7 +1055,7 @@ public class pluginTestTopComponent extends TopComponent
                 case 2:
                     if(backend.isIdle() && isProcessing == false && !dFile.isEmptyGcodeFiles()){
                         isProcessing = true;
-//                        tabbedPane.setEnabled(false);
+                        tabbedPane.setEnabled(false);
                         try {
                             processGcode();
                         } catch (Exception ex) {
@@ -1169,7 +1169,7 @@ public class pluginTestTopComponent extends TopComponent
 
     @Override
     public void componentOpened() {
-//        tabbedPane.setEnabled(true);
+        tabbedPane.setEnabled(true);
         setAllStatusText("Idle");
         setup();
         isProcessing = false;
@@ -1268,13 +1268,13 @@ public class pluginTestTopComponent extends TopComponent
                 setStatusText("Idle");
                 resetLayerSelected();
                 setColorCheckBoxEnabled(true);
-//                tabbedPane.setEnabled(true);
+                tabbedPane.setEnabled(true);
             }
         }else if(isProcessing == true){
             consoleSetText("\n\n *** Finished running ***");
             isProcessing = false;
             setStatusText("Idle");
-//            tabbedPane.setEnabled(true);
+            tabbedPane.setEnabled(true);
         }
     }
 
@@ -1314,26 +1314,9 @@ public class pluginTestTopComponent extends TopComponent
     @Override
     public void onMessage(MessageType messageType, String message) {
         consoleSetText("Received Message:\n" + message);
-        if (message.startsWith("[JSON:") && message.endsWith("]")) {
-//            consoleSetText("Received Message:\n" + message);
-            String jsonString = message.substring(6, message.length() - 1); // remove [JSON: and ]
-            JSONObject json = new JSONObject(jsonString);
-
-            if (json.has("mode")) {
-                String mode = json.getString("mode");
-
-                consoleSetText("Parsed Mode: " + mode);
-                
-                if (null != mode)switch (mode) {
-                    case "pen" -> selectedTab = 0;
-                    case "laser" -> selectedTab = 1;
-                    case "drill" -> selectedTab = 2;
-                    default -> {
-                    }
-                }
-                
-                tabbedPane.setSelectedIndex(selectedTab);
-            }
+        selectedTab = messageHandler.handleMessage(message);
+        if (selectedTab >= 0) {
+            tabbedPane.setSelectedIndex(selectedTab);
         }
     }
 }
