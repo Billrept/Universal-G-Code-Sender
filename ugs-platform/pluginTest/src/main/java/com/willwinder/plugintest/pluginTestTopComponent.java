@@ -1287,29 +1287,19 @@ public class pluginTestTopComponent extends TopComponent
     }
 
     @Override
-    public void commandSkipped(GcodeCommand command) {
-        filler = true;
-    }
+    public void commandSkipped(GcodeCommand command) {}
 
     @Override
-    public void commandSent(GcodeCommand command) {
-        filler = true;
-    }
+    public void commandSent(GcodeCommand command) {}
 
     @Override
-    public void commandComplete(GcodeCommand command) {
-        filler = true;
-    }
+    public void commandComplete(GcodeCommand command) {}
 
     @Override
-    public void probeCoordinates(Position p) {
-        filler = true;
-    }
+    public void probeCoordinates(Position p) {}
 
     @Override
-    public void statusStringListener(ControllerStatus status) {
-        filler = true;
-    }
+    public void statusStringListener(ControllerStatus status) {}
 
     @Override
     public void onMessage(MessageType messageType, String message) {
