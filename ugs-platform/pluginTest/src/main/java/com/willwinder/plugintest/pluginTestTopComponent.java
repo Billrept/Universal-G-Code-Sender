@@ -29,6 +29,7 @@ import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import org.openide.util.Exceptions;
+import org.json.JSONObject;
 
 @ConvertAsProperties(
         dtd = "-//com.willwinder.plugintest//pluginTest//EN",
@@ -60,7 +61,6 @@ public class pluginTestTopComponent extends TopComponent
     private LaserFile lFile;
     private DrillFile dFile;
     private LastFilePathHelper lastFilePathHelper;
-    private JSONMessageHandler messageHandler;
     
     private int currentFileIndex;
     private boolean filler;
@@ -94,7 +94,6 @@ public class pluginTestTopComponent extends TopComponent
         lFile = new LaserFile();
         dFile = new DrillFile();
         lastFilePathHelper = new LastFilePathHelper();
-        messageHandler = new JSONMessageHandler();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -1320,11 +1319,28 @@ public class pluginTestTopComponent extends TopComponent
     }
 
     @Override
-    public void onMessage(MessageType messageType, String message) {
-        consoleSetText("Received Message:\n" + message);
-        selectedTab = messageHandler.handleMessage(message);
-        if (selectedTab >= 0) {
-            tabbedPane.setSelectedIndex(selectedTab);
+     public void onMessage(MessageType messageType, String message) {
+         consoleSetText("Received Message:\n" + message);
+         if (message.startsWith("[JSON:") && message.endsWith("]")) {
+ //            consoleSetText("Received Message:\n" + message);
+             String jsonString = message.substring(6, message.length() - 1); // remove [JSON: and ]
+             JSONObject json = new JSONObject(jsonString);
+ 
+             if (json.has("mode")) {
+                 String mode = json.getString("mode");
+ 
+                 consoleSetText("Parsed Mode: " + mode);
+                 
+                 if (null != mode)switch (mode) {
+                     case "pen" -> selectedTab = 0;
+                     case "laser" -> selectedTab = 1;
+                     case "drill" -> selectedTab = 2;
+                     default -> {
+                     }
+                 }
+                 
+                 tabbedPane.setSelectedIndex(selectedTab);
+            }
         }
     }
 
