@@ -48,9 +48,9 @@ import org.json.JSONObject;
         preferredID = "pluginTestTopComponent"
 )
 @Messages({
-    "CTL_pluginTestAction=pluginTest",
-    "CTL_pluginTestTopComponent=pluginTest Window",
-    "HINT_pluginTestTopComponent=This is a pluginTest window"
+    "CTL_pluginTestAction=MultiCNC",
+    "CTL_pluginTestTopComponent=MultiCNC Window",
+    "HINT_pluginTestTopComponent=This is a MultiCNC window"
 })
 public class pluginTestTopComponent extends TopComponent
     implements UGSEventListener, ControllerListener, MessageListener, Connection{
@@ -1291,29 +1291,19 @@ public class pluginTestTopComponent extends TopComponent
     }
 
     @Override
-    public void commandSkipped(GcodeCommand command) {
-        filler = true;
-    }
+    public void commandSkipped(GcodeCommand command) {}
 
     @Override
-    public void commandSent(GcodeCommand command) {
-        filler = true;
-    }
+    public void commandSent(GcodeCommand command) {}
 
     @Override
-    public void commandComplete(GcodeCommand command) {
-        filler = true;
-    }
+    public void commandComplete(GcodeCommand command) {}
 
     @Override
-    public void probeCoordinates(Position p) {
-        filler = true;
-    }
+    public void probeCoordinates(Position p) {}
 
     @Override
-    public void statusStringListener(ControllerStatus status) {
-        filler = true;
-    }
+    public void statusStringListener(ControllerStatus status) {}
 
     @Override
      public void onMessage(MessageType messageType, String message) {
@@ -1341,14 +1331,10 @@ public class pluginTestTopComponent extends TopComponent
     }
 
     @Override
-    public void addListener(IConnectionListener connectionListener) {
-        filler = true;
-    }
+    public void addListener(IConnectionListener connectionListener) {}
 
     @Override
-    public void setUri(String uri) {
-        filler = true;
-    }
+    public void setUri(String uri) {}
 
     @Override
     public boolean openPort() throws Exception {
