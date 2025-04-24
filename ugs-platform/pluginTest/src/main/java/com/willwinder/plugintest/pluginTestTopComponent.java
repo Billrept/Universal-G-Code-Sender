@@ -73,8 +73,8 @@ public class pluginTestTopComponent extends TopComponent
     private Folder.Bounds lBounds;
     private Folder.Bounds dBounds;
     private String[] gcodeBounds = new String[5];
-    private final int X_LIMITS = 999; //Change to actual x limits of machine
-    private final int Y_LIMITS = 999; //Change to actual y limits of machine
+    private int X_LIMITS = 999; //Change to actual x limits of machine
+    private int Y_LIMITS = 999; //Change to actual y limits of machine
     private boolean isOutOfBounds = false;
     
     private int selectedTab = 0;
@@ -937,9 +937,7 @@ public class pluginTestTopComponent extends TopComponent
     }
     
     private void openFileChooser() throws IOException{
-        consoleSetText("1");
         if(backend.isIdle() && isProcessing == false){
-            consoleSetText("2");
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             lastPath = lastFilePathHelper.loadLastFilePath();
@@ -948,7 +946,6 @@ public class pluginTestTopComponent extends TopComponent
             }
             int returnVal = fileChooser.showOpenDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                consoleSetText("3");
                 switch (selectedTab){
                     case 0:
                         cFile.setup(fileChooser.getSelectedFile());
@@ -1017,7 +1014,7 @@ public class pluginTestTopComponent extends TopComponent
     }
     
     private void runFile(){
-        if (isOutOfBounds){
+        if (!isOutOfBounds){
             switch (selectedTab){
                 case 0:
                     if(backend.isIdle() && isProcessing == false && !cFile.isEmptyGcodeFiles()){
@@ -1320,9 +1317,8 @@ public class pluginTestTopComponent extends TopComponent
 
     @Override
      public void onMessage(MessageType messageType, String message) {
-         consoleSetText("Received Message:\n" + message);
          if (message.startsWith("[JSON:") && message.endsWith("]")) {
- //            consoleSetText("Received Message:\n" + message);
+             consoleSetText("Received Message:\n" + message);
              String jsonString = message.substring(6, message.length() - 1); // remove [JSON: and ]
              JSONObject json = new JSONObject(jsonString);
  
