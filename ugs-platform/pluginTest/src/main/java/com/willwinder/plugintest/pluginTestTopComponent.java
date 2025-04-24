@@ -18,10 +18,14 @@ import com.willwinder.universalgcodesender.listeners.MessageType;
 import com.willwinder.universalgcodesender.model.Alarm;
 import com.willwinder.universalgcodesender.model.Position;
 import com.willwinder.universalgcodesender.types.GcodeCommand;
+import com.willwinder.universalgcodesender.connection.Connection;
+import com.willwinder.universalgcodesender.connection.IConnectionDevice;
+import com.willwinder.universalgcodesender.connection.IConnectionListener;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import org.openide.util.Exceptions;
@@ -48,7 +52,7 @@ import org.openide.util.Exceptions;
     "HINT_pluginTestTopComponent=This is a pluginTest window"
 })
 public class pluginTestTopComponent extends TopComponent
-    implements UGSEventListener, ControllerListener, MessageListener{
+    implements UGSEventListener, ControllerListener, MessageListener, Connection{
     
     private final Settings settings;
     public final BackendAPI backend;
@@ -584,7 +588,8 @@ public class pluginTestTopComponent extends TopComponent
     private void processGcode() throws Exception{
         switch(selectedTab){
             case 0:
-                backend.sendGcodeCommand(cFile.colorChangeCommand[currentFileIndex]);
+//                backend.sendGcodeCommand(cFile.colorChangeCommand[currentFileIndex]);
+                sendStringToComm(cFile.colorChangeCommand[currentFileIndex]);
                 consoleSetText("\n\nPen changed");
                 cFile.sendGcode(cFile.gcodeFiles[currentFileIndex]);
                 consoleSetText("\n\nFile " + cFile.gcodeFiles[currentFileIndex] + " loaded");
@@ -828,6 +833,7 @@ public class pluginTestTopComponent extends TopComponent
         } else {
             powerSlider.setEnabled(false);
         }
+        
     }//GEN-LAST:event_laserPowerCheckBoxActionPerformed
 
     private void drillSpeedLevelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_drillSpeedLevelActionPerformed
@@ -1308,5 +1314,58 @@ public class pluginTestTopComponent extends TopComponent
         if (selectedTab >= 0) {
             tabbedPane.setSelectedIndex(selectedTab);
         }
+    }
+
+    @Override
+    public void addListener(IConnectionListener connectionListener) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void setUri(String uri) {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public boolean openPort() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void closePort() throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void sendByteImmediately(byte b) throws Exception {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void sendStringToComm(String command) throws Exception {}
+
+    @Override
+    public boolean isOpen() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public List<String> getPortNames() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public List<IConnectionDevice> getDevices() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public byte[] xmodemReceive() throws IOException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
+    @Override
+    public void xmodemSend(byte[] data) throws IOException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }
