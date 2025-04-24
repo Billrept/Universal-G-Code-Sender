@@ -938,7 +938,9 @@ public class pluginTestTopComponent extends TopComponent
     }
     
     private void openFileChooser() throws IOException{
+        consoleSetText("1");
         if(backend.isIdle() && isProcessing == false){
+            consoleSetText("2");
             JFileChooser fileChooser = new JFileChooser();
             fileChooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
             lastPath = lastFilePathHelper.loadLastFilePath();
@@ -947,7 +949,7 @@ public class pluginTestTopComponent extends TopComponent
             }
             int returnVal = fileChooser.showOpenDialog(this);
             if (returnVal == JFileChooser.APPROVE_OPTION) {
-                
+                consoleSetText("3");
                 switch (selectedTab){
                     case 0:
                         cFile.setup(fileChooser.getSelectedFile());
@@ -1293,19 +1295,29 @@ public class pluginTestTopComponent extends TopComponent
     }
 
     @Override
-    public void commandSkipped(GcodeCommand command) {}
+    public void commandSkipped(GcodeCommand command) {
+        filler = true;
+    }
 
     @Override
-    public void commandSent(GcodeCommand command) {}
+    public void commandSent(GcodeCommand command) {
+        filler = true;
+    }
 
     @Override
-    public void commandComplete(GcodeCommand command) {}
+    public void commandComplete(GcodeCommand command) {
+        filler = true;
+    }
 
     @Override
-    public void probeCoordinates(Position p) {}
+    public void probeCoordinates(Position p) {
+        filler = true;
+    }
 
     @Override
-    public void statusStringListener(ControllerStatus status) {}
+    public void statusStringListener(ControllerStatus status) {
+        filler = true;
+    }
 
     @Override
     public void onMessage(MessageType messageType, String message) {
@@ -1318,12 +1330,12 @@ public class pluginTestTopComponent extends TopComponent
 
     @Override
     public void addListener(IConnectionListener connectionListener) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        filler = true;
     }
 
     @Override
     public void setUri(String uri) {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        filler = true;
     }
 
     @Override
