@@ -18,9 +18,12 @@ import com.willwinder.universalgcodesender.listeners.MessageType;
 import com.willwinder.universalgcodesender.model.Alarm;
 import com.willwinder.universalgcodesender.model.Position;
 import com.willwinder.universalgcodesender.types.GcodeCommand;
+import com.willwinder.universalgcodesender.services.MessageService;
+import com.willwinder.universalgcodesender.uielements.components.CommandTextArea;
 import com.willwinder.universalgcodesender.connection.Connection;
 import com.willwinder.universalgcodesender.connection.IConnectionDevice;
 import com.willwinder.universalgcodesender.connection.IConnectionListener;
+import com.willwinder.universalgcodesender.connection.JSerialCommConnection;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
@@ -53,7 +56,7 @@ import org.json.JSONObject;
     "HINT_pluginTestTopComponent=This is a MultiCNC window"
 })
 public class pluginTestTopComponent extends TopComponent
-    implements UGSEventListener, ControllerListener, MessageListener, Connection{
+    implements UGSEventListener, ControllerListener, MessageListener{
     
     private final Settings settings;
     public final BackendAPI backend;
@@ -61,6 +64,8 @@ public class pluginTestTopComponent extends TopComponent
     private LaserFile lFile;
     private DrillFile dFile;
     private LastFilePathHelper lastFilePathHelper;
+    public JSerialCommConnection conn;
+    public MessageService msgSrv;
     
     private int currentFileIndex;
     private boolean filler;
@@ -94,6 +99,8 @@ public class pluginTestTopComponent extends TopComponent
         lFile = new LaserFile();
         dFile = new DrillFile();
         lastFilePathHelper = new LastFilePathHelper();
+        conn = new JSerialCommConnection();
+        msgSrv = new MessageService();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -123,6 +130,7 @@ public class pluginTestTopComponent extends TopComponent
         yellowCheckBox = new javax.swing.JCheckBox();
         blackCheckBox = new javax.swing.JCheckBox();
         showLimitButton = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         laserPanel = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jScrollPane5 = new javax.swing.JScrollPane();
@@ -312,6 +320,14 @@ public class pluginTestTopComponent extends TopComponent
             }
         });
         jPanel3.add(showLimitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 230, -1, -1));
+
+        org.openide.awt.Mnemonics.setLocalizedText(jButton1, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jButton1.text")); // NOI18N
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 200, -1, -1));
 
         drawingPanel.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 11, 588, 440));
 
@@ -587,19 +603,18 @@ public class pluginTestTopComponent extends TopComponent
     private void processGcode() throws Exception{
         switch(selectedTab){
             case 0:
-//                backend.sendGcodeCommand(cFile.colorChangeCommand[currentFileIndex]);
-                sendStringToComm(cFile.colorChangeCommand[currentFileIndex]);
-                consoleSetText("\n\nPen changed");
+                backend.dispatchMessage(MessageType.INFO, cFile.colorChangeCommand[currentFileIndex]);
+                backend.dispatchMessage(MessageType.INFO, "\n\nPen changed");
                 cFile.sendGcode(cFile.gcodeFiles[currentFileIndex]);
-                consoleSetText("\n\nFile " + cFile.gcodeFiles[currentFileIndex] + " loaded");
+                backend.dispatchMessage(MessageType.INFO,"\n\nFile " + cFile.gcodeFiles[currentFileIndex] + " loaded");
                 break;
             case 1:
                 lFile.sendGcode(lFile.gcodeFiles);
-                consoleSetText("\n\nFile " + lFile.gcodeFiles + " loaded");
+                backend.dispatchMessage(MessageType.INFO, "\n\nFile " + lFile.gcodeFiles + " loaded");
                 break;
             case 2:
                 dFile.sendGcode(dFile.gcodeFiles);
-                consoleSetText("\n\nFile " + dFile.gcodeFiles + " loaded");
+                backend.dispatchMessage(MessageType.INFO, "\n\nFile " + dFile.gcodeFiles + " loaded");
                 break;
         }
         progressBarUpdater();
@@ -755,22 +770,22 @@ public class pluginTestTopComponent extends TopComponent
 
     private void magentaCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_magentaCheckBoxActionPerformed
         cFile.magentaSelected = magentaCheckBox.isSelected();
-        consoleSetText("\nMagenta layer is set to " + cFile.magentaSelected.toString());
+        backend.dispatchMessage(MessageType.INFO, "\nMagenta layer is set to " + cFile.magentaSelected.toString());
     }//GEN-LAST:event_magentaCheckBoxActionPerformed
 
     private void blackCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_blackCheckBoxActionPerformed
         cFile.blackSelected = blackCheckBox.isSelected();
-        consoleSetText("\nBlack layer is set to " + cFile.blackSelected.toString());
+        backend.dispatchMessage(MessageType.INFO,"\nBlack layer is set to " + cFile.blackSelected.toString());
     }//GEN-LAST:event_blackCheckBoxActionPerformed
 
     private void cyanCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cyanCheckBoxActionPerformed
         cFile.cyanSelected = cyanCheckBox.isSelected();
-        consoleSetText("\nCyan layer is set to " + cFile.cyanSelected.toString());
+        backend.dispatchMessage(MessageType.INFO,"\nCyan layer is set to " + cFile.cyanSelected.toString());
     }//GEN-LAST:event_cyanCheckBoxActionPerformed
 
     private void yellowCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_yellowCheckBoxActionPerformed
         cFile.yellowSelected = yellowCheckBox.isSelected();
-        consoleSetText("\nYellow layer is set to " + cFile.yellowSelected.toString());
+        backend.dispatchMessage(MessageType.INFO,"\nYellow layer is set to " + cFile.yellowSelected.toString());
     }//GEN-LAST:event_yellowCheckBoxActionPerformed
 
     private void tabbedPanePropertyChange(java.beans.PropertyChangeEvent evt) {//GEN-FIRST:event_tabbedPanePropertyChange
@@ -781,8 +796,8 @@ public class pluginTestTopComponent extends TopComponent
         try {
             openFileChooser();
         } catch (IOException ex) {
-            consoleSetText(ex.toString());
-            consoleSetText("\nError occurred");
+            backend.dispatchMessage(MessageType.ERROR,ex.toString());
+            backend.dispatchMessage(MessageType.ERROR,"\nError occurred");
         }
     }//GEN-LAST:event_laserUploadButtonActionPerformed
 
@@ -814,7 +829,7 @@ public class pluginTestTopComponent extends TopComponent
         try {
             previewGcode();
         } catch (Exception ex) {
-            consoleSetText("\nError previewing gcode\n" + ex);
+            backend.dispatchMessage(MessageType.ERROR,"\nError previewing gcode\n" + ex);
         }
     }//GEN-LAST:event_laserPreviewButtonActionPerformed
 
@@ -822,7 +837,7 @@ public class pluginTestTopComponent extends TopComponent
         try {
             previewGcode();
         } catch (Exception ex) {
-            consoleSetText("\nError previewing gcode\n" + ex);
+            backend.dispatchMessage(MessageType.ERROR,"\nError previewing gcode\n" + ex);
         }
     }//GEN-LAST:event_drillPreviewButtonActionPerformed
 
@@ -855,7 +870,7 @@ public class pluginTestTopComponent extends TopComponent
         try {
             previewGcode();
         } catch (Exception ex) {
-            consoleSetText("\nError previewing gcode\n" + ex);
+            backend.dispatchMessage(MessageType.ERROR,"\nError previewing gcode\n" + ex);
         }
     }//GEN-LAST:event_colorPreviewButtonActionPerformed
 
@@ -883,15 +898,23 @@ public class pluginTestTopComponent extends TopComponent
             
             backend.sendGcodeCommand(gcode.toString());
         } catch (Exception ex) {
-            consoleSetText("Unable to show limits");
+            backend.dispatchMessage(MessageType.ERROR,"Unable to show limits");
         }
     }//GEN-LAST:event_showLimitButtonActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+        try {
+            backend.dispatchMessage(MessageType.INFO,"\n[JSON:{\"move\":45}]");
+        } catch (Exception ex) {
+            backend.dispatchMessage(MessageType.ERROR, ex.toString());
+        }
+    }//GEN-LAST:event_jButton1ActionPerformed
 
     private boolean checkColorChangeCommand(){
         for(int i = 0; i <= 3; i++){
             String colorChangeCommand = colorChangeTable.getValueAt(i, 1) + "";
             if((!cFile.gcodeIsValid(colorChangeCommand)) && changeCommandCheckBox.isSelected() == true){
-                consoleSetText("\n\nUnable to run\nPlease make sure pen change command is valid ");
+                backend.dispatchMessage(MessageType.ERROR,"\n\nUnable to run\nPlease make sure pen change command is valid ");
                 return false;
             }
             cFile.colorChangeCommand[i] = colorChangeCommand;
@@ -954,7 +977,7 @@ public class pluginTestTopComponent extends TopComponent
                         try {
                             cFile.scaleImage(fileChooser.getSelectedFile(), PREVIEW_WIDTH, PREVIEW_HEIGHT);
                         } catch (IOException ex) {
-                            consoleSetText("\nError trying to scale image");
+                            backend.dispatchMessage(MessageType.ERROR,"\nError trying to scale image");
                         }
                         colorPreviewLabel.setIcon(cFile.getScaledImage());
                         colorPreviewLabel.setText("Preview");
@@ -970,7 +993,7 @@ public class pluginTestTopComponent extends TopComponent
                         try {
                             lFile.scaleImage(fileChooser.getSelectedFile(), PREVIEW_WIDTH, PREVIEW_HEIGHT);
                         } catch (IOException ex) {
-                            consoleSetText("\nError trying to scale image");
+                            backend.dispatchMessage(MessageType.ERROR,"\nError trying to scale image");
                         }
                         laserPreviewLabel.setIcon(lFile.getScaledImage());
                         laserPreviewLabel.setText("Preview");
@@ -986,7 +1009,7 @@ public class pluginTestTopComponent extends TopComponent
                         try {
                             dFile.scaleImage(fileChooser.getSelectedFile(), PREVIEW_WIDTH, PREVIEW_HEIGHT);
                         } catch (IOException ex) {
-                            consoleSetText("\nError trying to scale image");
+                            backend.dispatchMessage(MessageType.ERROR,"\nError trying to scale image");
                         }
                         drillPreviewLabel.setIcon(dFile.getScaledImage());
                         drillPreviewLabel.setText("Preview");
@@ -997,13 +1020,13 @@ public class pluginTestTopComponent extends TopComponent
                         
                 }
                 if (isOutOfBounds){
-                    consoleSetText("\n\n *** Gcode is out of bounds *** ");
+                    backend.dispatchMessage(MessageType.ERROR,"\n\n *** Gcode is out of bounds *** ");
                 }
             }else {
-                consoleSetText("\n\nFile chooser canceled");
+                backend.dispatchMessage(MessageType.INFO,"\n\nFile chooser canceled");
             }
         }else{
-            consoleSetText("\n\nUnable to upload file");
+            backend.dispatchMessage(MessageType.ERROR,"\n\nUnable to upload file");
         }
     }
     
@@ -1029,18 +1052,18 @@ public class pluginTestTopComponent extends TopComponent
                                 try {
                                     processGcode();
                                 } catch (Exception ex) {
-                                    consoleSetText("Error occurred trying to draw Gcode");
+                                    backend.dispatchMessage(MessageType.ERROR,"\nError occurred trying to draw Gcode");
                                     currentFileIndex = 3;
                                     isProcessing = false;
                                 }
                             }else{
-                                consoleSetText("\n\nUnable to run\nPlease make sure to enter valid pen color change commands in the settings tabbbbb");
+                                backend.dispatchMessage(MessageType.ERROR,"\n\nUnable to run\nPlease make sure to enter valid pen color change commands in the settings tabbbbb");
                             }
                         }else {
-                            consoleSetText("\n\nUnable to run\nPlease make sure to select a layer");
+                            backend.dispatchMessage(MessageType.ERROR,"\n\nUnable to run\nPlease make sure to select a layer");
                         }
                     }else{
-                        consoleSetText("\n\nUnable to run\nPlease make sure the machine is in idle mode and folder is loaded");
+                        backend.dispatchMessage(MessageType.ERROR,"\n\nUnable to run\nPlease make sure the machine is in idle mode and folder is loaded");
                     }
                     break;
 
@@ -1051,7 +1074,7 @@ public class pluginTestTopComponent extends TopComponent
                         try {
                             processGcode();
                         } catch (Exception ex) {
-                            consoleSetText("Error occurred trying to draw Gcode");
+                            backend.dispatchMessage(MessageType.ERROR,"\nError occurred trying to draw Gcode");
                             isProcessing = false;
                         }
                     }
@@ -1063,14 +1086,14 @@ public class pluginTestTopComponent extends TopComponent
                         try {
                             processGcode();
                         } catch (Exception ex) {
-                            consoleSetText("Error occurred trying to draw Gcode");
+                            backend.dispatchMessage(MessageType.ERROR,"\nError occurred trying to draw Gcode");
                             isProcessing = false;
                         }
                     }
                     break;
             }
         } else {
-            consoleSetText("\n\n *** Gcode is out of bounds *** ");
+            backend.dispatchMessage(MessageType.ERROR,"\n\n *** Gcode is out of bounds *** ");
         }
     }
     
@@ -1095,11 +1118,11 @@ public class pluginTestTopComponent extends TopComponent
 //        backend.performHomingCycle();
         if(backend.isIdle() == true && isProcessing == false){
             for(int i = 0; i < 5; i++){
-                consoleSetText("\n" + gcodeBounds[i]);
+                backend.dispatchMessage(MessageType.INFO,"\n" + gcodeBounds[i]);
                 backend.sendGcodeCommand(gcodeBounds[i]);
             }
         } else{
-            consoleSetText("\nCurrently unable to preview file");
+            backend.dispatchMessage(MessageType.ERROR,"\nCurrently unable to preview file");
         }
     }
     
@@ -1135,6 +1158,7 @@ public class pluginTestTopComponent extends TopComponent
     public javax.swing.JTextArea drillTextArea;
     private javax.swing.JButton drillUploadButton;
     private javax.swing.JPanel drillingPanel;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel12;
     public javax.swing.JPanel jPanel15;
@@ -1261,13 +1285,14 @@ public class pluginTestTopComponent extends TopComponent
     public void streamComplete() {
         if(isProcessing == true && selectedTab == 0){
             if((cFile.cyanSelected || cFile.magentaSelected || cFile.yellowSelected || cFile.blackSelected) == true){
-                consoleSetText("\nFinished drawing layer " + cFile.gcodeFiles[currentFileIndex] + "\nSending next file");
+                backend.dispatchMessage(MessageType.INFO,"\nFinished drawing layer " + cFile.gcodeFiles[currentFileIndex] + "\nSending next file");
                 setCurrentFileIndex();
                 try {
+                    backend.performHomingCycle();
                     processGcode();
                 } catch (Exception ex) {}
             }else{
-                consoleSetText("\n\n *** Finished drawing the last file ***");
+                backend.dispatchMessage(MessageType.INFO,"\n\n *** Finished drawing the last file ***");
                 isProcessing = false;
                 setStatusText("Idle");
                 resetLayerSelected();
@@ -1275,7 +1300,7 @@ public class pluginTestTopComponent extends TopComponent
                 tabbedPane.setEnabled(true);
             }
         }else if(isProcessing == true){
-            consoleSetText("\n\n *** Finished running ***");
+            backend.dispatchMessage(MessageType.INFO,"\n\n *** Finished running ***");
             isProcessing = false;
             setStatusText("Idle");
             tabbedPane.setEnabled(true);
@@ -1307,75 +1332,38 @@ public class pluginTestTopComponent extends TopComponent
 
     @Override
      public void onMessage(MessageType messageType, String message) {
-         if (message.startsWith("[JSON:") && message.endsWith("]")) {
-             consoleSetText("Received Message:\n" + message);
+         if (message.startsWith("[JSON:")){
+//             backend.dispatchMessage(MessageType.INFO,"\nReceived Message:\n" + message);
              String jsonString = message.substring(6, message.length() - 1); // remove [JSON: and ]
              JSONObject json = new JSONObject(jsonString);
  
              if (json.has("mode")) {
                  String mode = json.getString("mode");
  
-                 consoleSetText("Parsed Mode: " + mode);
+//                 backend.dispatchMessage(MessageType.INFO,"\nParsed Mode: " + mode);
                  
                  if (null != mode)switch (mode) {
-                     case "pen" -> selectedTab = 0;
+                     case "drawing" -> selectedTab = 0;
                      case "laser" -> selectedTab = 1;
-                     case "drill" -> selectedTab = 2;
+                     case "spindle" -> selectedTab = 2;
                      default -> {
                      }
                  }
-                 
+                 if (selectedTab == 1) {
+                     try {
+                         backend.sendGcodeCommand("$32=1");
+                     } catch (Exception ex) {
+                         backend.dispatchMessage(MessageType.ERROR, ex.toString());
+                     }
+                 } else {
+                     try {
+                         backend.sendGcodeCommand("$32=0");
+                     } catch (Exception ex) {
+                         backend.dispatchMessage(MessageType.ERROR, ex.toString());
+                     }
+                 }
                  tabbedPane.setSelectedIndex(selectedTab);
             }
         }
-    }
-
-    @Override
-    public void addListener(IConnectionListener connectionListener) {}
-
-    @Override
-    public void setUri(String uri) {}
-
-    @Override
-    public boolean openPort() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void closePort() throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void sendByteImmediately(byte b) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void sendStringToComm(String command) throws Exception {}
-
-    @Override
-    public boolean isOpen() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public List<String> getPortNames() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public List<IConnectionDevice> getDevices() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public byte[] xmodemReceive() throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public void xmodemSend(byte[] data) throws IOException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 }

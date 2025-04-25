@@ -19,6 +19,7 @@ public class ColorFile extends Folder{
     public String fileList;
     public BackendAPI backend;
     public Boolean cyanSelected, magentaSelected, yellowSelected, blackSelected;
+    public String[] colorChangeString = new String[4] ;
 
     
     public void setup(java.io.File folderPath){
@@ -35,6 +36,10 @@ public class ColorFile extends Folder{
             gcodeFiles[i] = fileArr[i].toString();
         }
         fileList = getFileList(gcodeFiles);
+        this.colorChangeString[0] = "[JSON:{“move”:”45”}]";
+        this.colorChangeString[1] = "[JSON:{“move”:”45”}]";
+        this.colorChangeString[2] = "[JSON:{“move”:”45”}]";
+        this.colorChangeString[3] = "[JSON:{“move”:”45”}]";
     }
     
     public void sortGcodeFiles(java.io.File[] gcodeFiles){
