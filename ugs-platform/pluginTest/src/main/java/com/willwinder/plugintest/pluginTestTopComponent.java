@@ -21,9 +21,15 @@ import com.willwinder.universalgcodesender.types.GcodeCommand;
 import com.willwinder.universalgcodesender.services.MessageService;
 import com.willwinder.universalgcodesender.connection.JSerialCommConnection;
 import java.awt.Desktop;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.HashMap;
 import java.util.Map;
 import javax.swing.JLabel;
@@ -79,6 +85,7 @@ public class pluginTestTopComponent extends TopComponent
     private int Y_LIMITS = 999; //Change to actual y limits of machine
     private boolean isOutOfBounds = false;
     private Map<String, String> grblSettings;
+    private Path patched;
     
     private int selectedTab = 0;
 
@@ -528,11 +535,13 @@ public class pluginTestTopComponent extends TopComponent
                 backend.dispatchMessage(MessageType.INFO,"\n\nFile " + cFile.gcodeFiles[currentFileIndex] + " loaded");
                 break;
             case 1:
-                lFile.sendGcode(overridePower(lFile.gcodeFiles));
+                patched = patchGcodeFile(lFile.gcodeFiles);
+                lFile.sendGcode(patched.toString());
                 backend.dispatchMessage(MessageType.INFO, "\n\nFile " + lFile.gcodeFiles + " loaded");
                 break;
             case 2:
-                dFile.sendGcode(overridePower(dFile.gcodeFiles));
+                patched = patchGcodeFile(dFile.gcodeFiles);
+                dFile.sendGcode(patched.toString());
                 backend.dispatchMessage(MessageType.INFO, "\n\nFile " + dFile.gcodeFiles + " loaded");
                 break;
         }
@@ -1041,40 +1050,63 @@ public class pluginTestTopComponent extends TopComponent
         return false;
     }
     
-    private String overridePower(String line) {
-    // Laser Mode (Tab 1)
-    backend.dispatchMessage(MessageType.INFO, String.valueOf(line.length()));
-    backend.dispatchMessage(MessageType.INFO, "\nCurrent File: \n" + line);
-    if (selectedTab == 1 && laserPowerCheckBox.isSelected()) {
-        if (line.matches(".*M3\\s+S\\d+.*")) {  // safer match for M3 Sxxx
-            int overriddenPower = powerSlider.getValue() * 10; // scale to 0–1000
-            backend.dispatchMessage(MessageType.INFO, "Laser Power Overridden to S" + overriddenPower);
-            return line.replaceAll("S\\d+", "S" + overriddenPower);
+    public Path patchGcodeFile(String inputPath) {
+        Path src   = Paths.get(inputPath);
+        Path patched = src.resolveSibling(src.getFileName() + ".patched");
+
+        try (BufferedReader  in  = Files.newBufferedReader(src);
+             BufferedWriter  out = Files.newBufferedWriter(patched,
+                    StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING,
+                    StandardOpenOption.WRITE)) {
+
+            String line;
+            while ((line = in.readLine()) != null) {
+                out.write(overridePowerLine(line));  // ⬅ line-level logic
+                out.newLine();
+            }
+
+        } catch (IOException ex) {
+            backend.dispatchMessage(MessageType.ERROR,
+                    "G-code patching failed: " + ex.getMessage());
+            return null;
         }
+
+        backend.dispatchMessage(MessageType.INFO,
+                "Patched file saved to: " + patched.toString());
+        return patched;
     }
 
-    // Drill Mode (Tab 2)
-    else if (selectedTab == 2 && drillSpeedLevel.isSelected()) {
-        if (line.matches(".*M3\\s+S\\d+.*")) {
-            String maxSpindleStr = grblSettings.get("$30"); // $30 is max spindle speed
-            if (maxSpindleStr != null) {
+    /* ---------------------------------------------------------------
+     * Override a *single* G-code line.  You already had most of this;
+     * just moved to a helper so the file loop can call it repeatedly.
+     * ------------------------------------------------------------- */
+    private String overridePowerLine(String line) {
+        // LASER TAB
+        if (selectedTab == 1 && laserPowerCheckBox.isSelected()
+                && line.matches(".*M3\\s+S\\d+.*")) {
+
+            int newPwm = powerSlider.getValue() * 10;   // 0-1000 scale
+            return line.replaceAll("S\\d+", "S" + newPwm);
+        }
+
+        // DRILL TAB
+        if (selectedTab == 2 && drillSpeedLevel.isSelected()
+                && line.matches(".*M3\\s+S\\d+.*")) {
+
+            String maxStr = grblSettings.get("$30");     // max spindle RPM
+            if (maxStr != null) {
                 try {
-                    int maxSpindle = Integer.parseInt(maxSpindleStr.trim());
-                    int overriddenSpeed = speedSlider.getValue() * maxSpindle / 100;
-                    backend.dispatchMessage(MessageType.INFO, "Drill Speed Overridden to S" + overriddenSpeed);
-                    return line.replaceAll("S\\d+", "S" + overriddenSpeed);
-                } catch (NumberFormatException e) {
-                    backend.dispatchMessage(MessageType.ERROR, "Invalid $30 value: " + maxSpindleStr);
-                }
-            } else {
-                backend.dispatchMessage(MessageType.ERROR, "$30 not found in GRBL settings.");
+                    int max = Integer.parseInt(maxStr.trim());
+                    int newRpm = speedSlider.getValue() * max / 100;
+                    return line.replaceAll("S\\d+", "S" + newRpm);
+                } catch (NumberFormatException ignored) { }
             }
         }
-    }
 
-    // No override
-    return line;
-}
+        // No change
+        return line;
+    }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox blackCheckBox;
