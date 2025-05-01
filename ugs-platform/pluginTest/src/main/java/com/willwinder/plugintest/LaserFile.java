@@ -1,6 +1,7 @@
 package com.willwinder.plugintest;
 
 import com.willwinder.ugs.nbp.lib.lookup.CentralLookup;
+import com.willwinder.universalgcodesender.listeners.MessageType;
 import com.willwinder.universalgcodesender.model.BackendAPI;
 import java.io.File;
 import java.io.FilenameFilter;

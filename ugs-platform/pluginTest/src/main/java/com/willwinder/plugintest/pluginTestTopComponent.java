@@ -19,16 +19,13 @@ import com.willwinder.universalgcodesender.model.Alarm;
 import com.willwinder.universalgcodesender.model.Position;
 import com.willwinder.universalgcodesender.types.GcodeCommand;
 import com.willwinder.universalgcodesender.services.MessageService;
-import com.willwinder.universalgcodesender.uielements.components.CommandTextArea;
-import com.willwinder.universalgcodesender.connection.Connection;
-import com.willwinder.universalgcodesender.connection.IConnectionDevice;
-import com.willwinder.universalgcodesender.connection.IConnectionListener;
 import com.willwinder.universalgcodesender.connection.JSerialCommConnection;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import javax.swing.JLabel;
 import javax.swing.SwingUtilities;
 import org.openide.util.Exceptions;
@@ -81,6 +78,7 @@ public class pluginTestTopComponent extends TopComponent
     private int X_LIMITS = 999; //Change to actual x limits of machine
     private int Y_LIMITS = 999; //Change to actual y limits of machine
     private boolean isOutOfBounds = false;
+    private Map<String, String> grblSettings;
     
     private int selectedTab = 0;
 
@@ -101,6 +99,7 @@ public class pluginTestTopComponent extends TopComponent
         lastFilePathHelper = new LastFilePathHelper();
         conn = new JSerialCommConnection();
         msgSrv = new MessageService();
+        grblSettings = new HashMap<>();
     }
 
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
@@ -109,8 +108,6 @@ public class pluginTestTopComponent extends TopComponent
         tabbedPane = new javax.swing.JTabbedPane();
         drawingPanel = new javax.swing.JPanel();
         jPanel3 = new javax.swing.JPanel();
-        jScrollPane1 = new javax.swing.JScrollPane();
-        colorTextArea = new javax.swing.JTextArea();
         jPanel5 = new javax.swing.JPanel();
         magentaProgress = new javax.swing.JProgressBar();
         blackProgress = new javax.swing.JProgressBar();
@@ -133,8 +130,6 @@ public class pluginTestTopComponent extends TopComponent
         jButton1 = new javax.swing.JButton();
         laserPanel = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
-        jScrollPane5 = new javax.swing.JScrollPane();
-        laserTextArea = new javax.swing.JTextArea();
         jPanel15 = new javax.swing.JPanel();
         laserStatusText = new javax.swing.JTextField();
         laserProgress = new javax.swing.JProgressBar();
@@ -148,8 +143,6 @@ public class pluginTestTopComponent extends TopComponent
         laserPreviewLabel = new javax.swing.JLabel();
         drillingPanel = new javax.swing.JPanel();
         jPanel17 = new javax.swing.JPanel();
-        jScrollPane6 = new javax.swing.JScrollPane();
-        drillTextArea = new javax.swing.JTextArea();
         jPanel18 = new javax.swing.JPanel();
         drillStatusText = new javax.swing.JTextField();
         drillProgress = new javax.swing.JProgressBar();
@@ -162,9 +155,6 @@ public class pluginTestTopComponent extends TopComponent
         jPanel19 = new javax.swing.JPanel();
         drillPreviewLabel = new javax.swing.JLabel();
         settingsPanel = new javax.swing.JPanel();
-        jScrollPane3 = new javax.swing.JScrollPane();
-        colorChangeTable = new javax.swing.JTable();
-        changeCommandCheckBox = new javax.swing.JCheckBox();
 
         tabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -180,15 +170,6 @@ public class pluginTestTopComponent extends TopComponent
         drawingPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-
-        colorTextArea.setEditable(false);
-        colorTextArea.setColumns(20);
-        colorTextArea.setRows(5);
-        colorTextArea.setAutoscrolls(false);
-        colorTextArea.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jScrollPane1.setViewportView(colorTextArea);
-
-        jPanel3.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 298, 574, 119));
 
         jPanel5.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -338,14 +319,6 @@ public class pluginTestTopComponent extends TopComponent
         jPanel12.setPreferredSize(new java.awt.Dimension(588, 443));
         jPanel12.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        laserTextArea.setEditable(false);
-        laserTextArea.setColumns(20);
-        laserTextArea.setRows(5);
-        laserTextArea.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jScrollPane5.setViewportView(laserTextArea);
-
-        jPanel12.add(jScrollPane5, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 298, 574, 119));
-
         jPanel15.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         laserStatusText.setEditable(false);
@@ -388,6 +361,11 @@ public class pluginTestTopComponent extends TopComponent
 
         powerSlider.setValue(100);
         powerSlider.setEnabled(false);
+        powerSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                powerSliderStateChanged(evt);
+            }
+        });
         jPanel15.add(powerSlider, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 135, 290, 20));
 
         org.openide.awt.Mnemonics.setLocalizedText(laserPreviewButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.laserPreviewButton.text")); // NOI18N
@@ -431,14 +409,6 @@ public class pluginTestTopComponent extends TopComponent
 
         jPanel17.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        drillTextArea.setEditable(false);
-        drillTextArea.setColumns(20);
-        drillTextArea.setRows(5);
-        drillTextArea.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        jScrollPane6.setViewportView(drillTextArea);
-
-        jPanel17.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(9, 298, 574, 119));
-
         jPanel18.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         drillStatusText.setEditable(false);
@@ -481,6 +451,11 @@ public class pluginTestTopComponent extends TopComponent
 
         speedSlider.setValue(100);
         speedSlider.setEnabled(false);
+        speedSlider.addChangeListener(new javax.swing.event.ChangeListener() {
+            public void stateChanged(javax.swing.event.ChangeEvent evt) {
+                speedSliderStateChanged(evt);
+            }
+        });
         jPanel18.add(speedSlider, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 135, 290, 20));
 
         org.openide.awt.Mnemonics.setLocalizedText(drillPreviewButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillPreviewButton.text")); // NOI18N
@@ -520,57 +495,15 @@ public class pluginTestTopComponent extends TopComponent
 
         tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillingPanel.TabConstraints.tabTitle"), drillingPanel); // NOI18N
 
-        colorChangeTable.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {"Cyan", ""},
-                {"Magenta", null},
-                {"Yellow", null},
-                {"Black", null}
-            },
-            new String [] {
-                "Color", "Command"
-            }
-        ) {
-            Class[] types = new Class [] {
-                java.lang.String.class, java.lang.String.class
-            };
-
-            public Class getColumnClass(int columnIndex) {
-                return types [columnIndex];
-            }
-        });
-        jScrollPane3.setViewportView(colorChangeTable);
-        if (colorChangeTable.getColumnModel().getColumnCount() > 0) {
-            colorChangeTable.getColumnModel().getColumn(0).setHeaderValue(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorChangeTable.columnModel.title0")); // NOI18N
-            colorChangeTable.getColumnModel().getColumn(1).setHeaderValue(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorChangeTable.columnModel.title1")); // NOI18N
-        }
-
-        org.openide.awt.Mnemonics.setLocalizedText(changeCommandCheckBox, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.changeCommandCheckBox.text")); // NOI18N
-        changeCommandCheckBox.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                changeCommandCheckBoxActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout settingsPanelLayout = new javax.swing.GroupLayout(settingsPanel);
         settingsPanel.setLayout(settingsPanelLayout);
         settingsPanelLayout.setHorizontalGroup(
             settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(settingsPanelLayout.createSequentialGroup()
-                .addGap(24, 24, 24)
-                .addGroup(settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(changeCommandCheckBox)
-                    .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 526, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(50, Short.MAX_VALUE))
+            .addGap(0, 600, Short.MAX_VALUE)
         );
         settingsPanelLayout.setVerticalGroup(
             settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(settingsPanelLayout.createSequentialGroup()
-                .addGap(22, 22, 22)
-                .addComponent(changeCommandCheckBox)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 134, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(278, Short.MAX_VALUE))
+            .addGap(0, 460, Short.MAX_VALUE)
         );
 
         tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.settingsPanel.TabConstraints.tabTitle"), settingsPanel); // NOI18N
@@ -603,29 +536,21 @@ public class pluginTestTopComponent extends TopComponent
     private void processGcode() throws Exception{
         switch(selectedTab){
             case 0:
-                backend.dispatchMessage(MessageType.INFO, cFile.colorChangeCommand[currentFileIndex]);
+                backend.dispatchMessage(MessageType.INFO, cFile.colorChangeString[currentFileIndex]);
                 backend.dispatchMessage(MessageType.INFO, "\n\nPen changed");
                 cFile.sendGcode(cFile.gcodeFiles[currentFileIndex]);
                 backend.dispatchMessage(MessageType.INFO,"\n\nFile " + cFile.gcodeFiles[currentFileIndex] + " loaded");
                 break;
             case 1:
-                lFile.sendGcode(lFile.gcodeFiles);
+                lFile.sendGcode(overridePower(lFile.gcodeFiles));
                 backend.dispatchMessage(MessageType.INFO, "\n\nFile " + lFile.gcodeFiles + " loaded");
                 break;
             case 2:
-                dFile.sendGcode(dFile.gcodeFiles);
+                dFile.sendGcode(overridePower(dFile.gcodeFiles));
                 backend.dispatchMessage(MessageType.INFO, "\n\nFile " + dFile.gcodeFiles + " loaded");
                 break;
         }
         progressBarUpdater();
-    }
-    
-    public void consoleSetText(String message){
-        switch (selectedTab){
-            case 0 -> SwingUtilities.invokeLater(() -> colorTextArea.append(message));
-            case 1 -> SwingUtilities.invokeLater(() -> laserTextArea.append(message));
-            case 2 -> SwingUtilities.invokeLater(() -> drillTextArea.append(message));
-        }
     }
     
     private void progressBarUpdater(){
@@ -741,6 +666,11 @@ public class pluginTestTopComponent extends TopComponent
                 drillProgress.setString("Progress : 0%");
                 break;
         }
+        try {
+            backend.sendGcodeCommand("$$");
+        } catch (Exception ex) {
+            backend.dispatchMessage(MessageType.ERROR, ex.toString());
+        }
     }
     
     private void setStatusText(String status){
@@ -765,7 +695,7 @@ public class pluginTestTopComponent extends TopComponent
     }//GEN-LAST:event_colorRunButtonActionPerformed
 
     private void tabbedPaneStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_tabbedPaneStateChanged
-
+        selectedTab = tabbedPane.getSelectedIndex();
     }//GEN-LAST:event_tabbedPaneStateChanged
 
     private void magentaCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_magentaCheckBoxActionPerformed
@@ -797,7 +727,7 @@ public class pluginTestTopComponent extends TopComponent
             openFileChooser();
         } catch (IOException ex) {
             backend.dispatchMessage(MessageType.ERROR,ex.toString());
-            backend.dispatchMessage(MessageType.ERROR,"\nError occurred");
+            backend.dispatchMessage(MessageType.ERROR,"\nError occurred while uploading file");
         }
     }//GEN-LAST:event_laserUploadButtonActionPerformed
 
@@ -858,14 +788,6 @@ public class pluginTestTopComponent extends TopComponent
         }
     }//GEN-LAST:event_drillSpeedLevelActionPerformed
 
-    private void changeCommandCheckBoxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_changeCommandCheckBoxActionPerformed
-        if (changeCommandCheckBox.isSelected()){
-            colorChangeTable.setEnabled(true);
-        } else {
-            colorChangeTable.setEnabled(false);
-        }
-    }//GEN-LAST:event_changeCommandCheckBoxActionPerformed
-
     private void colorPreviewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorPreviewButtonActionPerformed
         try {
             previewGcode();
@@ -905,23 +827,25 @@ public class pluginTestTopComponent extends TopComponent
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         try {
             backend.dispatchMessage(MessageType.INFO,"\n[JSON:{\"move\":45}]");
+            backend.dispatchMessage(MessageType.INFO, ("\n" + grblSettings.toString()));
+            backend.dispatchMessage(MessageType.INFO, grblSettings.get("$32"));
         } catch (Exception ex) {
             backend.dispatchMessage(MessageType.ERROR, ex.toString());
         }
     }//GEN-LAST:event_jButton1ActionPerformed
 
-    private boolean checkColorChangeCommand(){
-        for(int i = 0; i <= 3; i++){
-            String colorChangeCommand = colorChangeTable.getValueAt(i, 1) + "";
-            if((!cFile.gcodeIsValid(colorChangeCommand)) && changeCommandCheckBox.isSelected() == true){
-                backend.dispatchMessage(MessageType.ERROR,"\n\nUnable to run\nPlease make sure pen change command is valid ");
-                return false;
-            }
-            cFile.colorChangeCommand[i] = colorChangeCommand;
-        }
-        return true;
-    }
-    
+    private void powerSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_powerSliderStateChanged
+//        if (!powerSlider.getValueIsAdjusting()) {
+            backend.dispatchMessage(MessageType.INFO, "\nLaser power changed to " + String.valueOf(powerSlider.getValue() * 10));
+//        }
+    }//GEN-LAST:event_powerSliderStateChanged
+
+    private void speedSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedSliderStateChanged
+//        if (!powerSlider.getValueIsAdjusting()) {
+            backend.dispatchMessage(MessageType.INFO, "\nDrill power changed to " + String.valueOf(speedSlider.getValue() * Integer.parseInt(grblSettings.get("$30"))));
+//        }
+    }//GEN-LAST:event_speedSliderStateChanged
+  
     private void setSelectedFiles(){
         cFile.magentaSelected = magentaCheckBox.isSelected();
         cFile.blackSelected = blackCheckBox.isSelected();
@@ -995,6 +919,7 @@ public class pluginTestTopComponent extends TopComponent
                         } catch (IOException ex) {
                             backend.dispatchMessage(MessageType.ERROR,"\nError trying to scale image");
                         }
+                        backend.dispatchMessage(MessageType.INFO, "3");
                         laserPreviewLabel.setIcon(lFile.getScaledImage());
                         laserPreviewLabel.setText("Preview");
                         lBounds = Folder.getGcodeBounds(lFile.gcodeFiles);
@@ -1023,7 +948,7 @@ public class pluginTestTopComponent extends TopComponent
                     backend.dispatchMessage(MessageType.ERROR,"\n\n *** Gcode is out of bounds *** ");
                 }
             }else {
-                backend.dispatchMessage(MessageType.INFO,"\n\nFile chooser canceled");
+                backend.dispatchMessage(MessageType.INFO,"\n\nFile chooser cancelled");
             }
         }else{
             backend.dispatchMessage(MessageType.ERROR,"\n\nUnable to upload file");
@@ -1043,7 +968,6 @@ public class pluginTestTopComponent extends TopComponent
                     if(backend.isIdle() && isProcessing == false && !cFile.isEmptyGcodeFiles()){
                         setSelectedFiles();
                         if((cFile.cyanSelected || cFile.magentaSelected || cFile.yellowSelected || cFile.blackSelected) == true){
-                            if(checkColorChangeCommand()){
                                 isProcessing = true;
                                 setCurrentFileIndex();
                                 setup();
@@ -1052,13 +976,10 @@ public class pluginTestTopComponent extends TopComponent
                                 try {
                                     processGcode();
                                 } catch (Exception ex) {
-                                    backend.dispatchMessage(MessageType.ERROR,"\nError occurred trying to draw Gcode");
+                                    backend.dispatchMessage(MessageType.ERROR,"\nError occurred trying to process Gcode");
                                     currentFileIndex = 3;
                                     isProcessing = false;
                                 }
-                            }else{
-                                backend.dispatchMessage(MessageType.ERROR,"\n\nUnable to run\nPlease make sure to enter valid pen color change commands in the settings tabbbbb");
-                            }
                         }else {
                             backend.dispatchMessage(MessageType.ERROR,"\n\nUnable to run\nPlease make sure to select a layer");
                         }
@@ -1074,7 +995,7 @@ public class pluginTestTopComponent extends TopComponent
                         try {
                             processGcode();
                         } catch (Exception ex) {
-                            backend.dispatchMessage(MessageType.ERROR,"\nError occurred trying to draw Gcode");
+                            backend.dispatchMessage(MessageType.ERROR,"\nError occurred trying to process Gcode");
                             isProcessing = false;
                         }
                     }
@@ -1086,7 +1007,7 @@ public class pluginTestTopComponent extends TopComponent
                         try {
                             processGcode();
                         } catch (Exception ex) {
-                            backend.dispatchMessage(MessageType.ERROR,"\nError occurred trying to draw Gcode");
+                            backend.dispatchMessage(MessageType.ERROR,"\nError occurred trying to process Gcode");
                             isProcessing = false;
                         }
                     }
@@ -1133,17 +1054,27 @@ public class pluginTestTopComponent extends TopComponent
         return false;
     }
     
+    private String overridePower(String line) {
+        if (selectedTab == 1 && laserPowerCheckBox.isSelected()) {
+            if (line.contains("S")) {
+                return line.replaceAll("S\\d+", "S" + (powerSlider.getValue() * 10));
+            }
+        } else if (selectedTab == 2 && drillSpeedLevel.isSelected()) {
+            if (line.contains("S")) {
+                return line.replaceAll("S\\d+", "S" + (speedSlider.getValue() * Integer.parseInt(grblSettings.get("$30"))));
+            }
+        }
+        return line;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox blackCheckBox;
     public javax.swing.JProgressBar blackProgress;
-    private javax.swing.JCheckBox changeCommandCheckBox;
-    private javax.swing.JTable colorChangeTable;
     private javax.swing.JButton colorPreviewButton;
     private javax.swing.JLabel colorPreviewLabel;
     private javax.swing.JButton colorRunButton;
     private javax.swing.JTextField colorStatusText;
     private javax.swing.JButton colorSvgButton;
-    public javax.swing.JTextArea colorTextArea;
     private javax.swing.JButton colorUploadButton;
     private javax.swing.JCheckBox cyanCheckBox;
     public javax.swing.JProgressBar cyanProgress;
@@ -1155,7 +1086,6 @@ public class pluginTestTopComponent extends TopComponent
     private javax.swing.JCheckBox drillSpeedLevel;
     private javax.swing.JTextField drillStatusText;
     private javax.swing.JButton drillSvgButton;
-    public javax.swing.JTextArea drillTextArea;
     private javax.swing.JButton drillUploadButton;
     private javax.swing.JPanel drillingPanel;
     private javax.swing.JButton jButton1;
@@ -1170,10 +1100,6 @@ public class pluginTestTopComponent extends TopComponent
     public javax.swing.JPanel jPanel5;
     private javax.swing.JPanel jPanel6;
     private javax.swing.JPanel jPanel7;
-    public javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane3;
-    public javax.swing.JScrollPane jScrollPane5;
-    public javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JPanel laserPanel;
     private javax.swing.JCheckBox laserPowerCheckBox;
     private javax.swing.JButton laserPreviewButton;
@@ -1182,7 +1108,6 @@ public class pluginTestTopComponent extends TopComponent
     private javax.swing.JButton laserRunButton;
     private javax.swing.JTextField laserStatusText;
     private javax.swing.JButton laserSvgButton;
-    public javax.swing.JTextArea laserTextArea;
     private javax.swing.JButton laserUploadButton;
     private javax.swing.JCheckBox magentaCheckBox;
     public javax.swing.JProgressBar magentaProgress;
@@ -1290,7 +1215,9 @@ public class pluginTestTopComponent extends TopComponent
                 try {
                     backend.performHomingCycle();
                     processGcode();
-                } catch (Exception ex) {}
+                } catch (Exception ex) {
+                    backend.dispatchMessage(MessageType.ERROR, ex.toString());
+                }
             }else{
                 backend.dispatchMessage(MessageType.INFO,"\n\n *** Finished drawing the last file ***");
                 isProcessing = false;
@@ -1363,6 +1290,19 @@ public class pluginTestTopComponent extends TopComponent
                      }
                  }
                  tabbedPane.setSelectedIndex(selectedTab);
+            }
+        }else if (message.startsWith("$")) {
+            String[] parts = message.split("=");
+
+            if (parts.length == 2) {
+                String key = parts[0].trim();
+                String rawValue = parts[1].trim();
+
+                String[] valueParts = rawValue.split("[\\s(]+");
+                if (valueParts.length > 0) {
+                    String value = valueParts[0];
+                    grblSettings.put(key, value);
+                }
             }
         }
     }
