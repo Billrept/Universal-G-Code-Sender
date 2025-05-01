@@ -154,7 +154,6 @@ public class pluginTestTopComponent extends TopComponent
         drillSpeedLevel = new javax.swing.JCheckBox();
         jPanel19 = new javax.swing.JPanel();
         drillPreviewLabel = new javax.swing.JLabel();
-        settingsPanel = new javax.swing.JPanel();
 
         tabbedPane.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
@@ -495,19 +494,6 @@ public class pluginTestTopComponent extends TopComponent
 
         tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drillingPanel.TabConstraints.tabTitle"), drillingPanel); // NOI18N
 
-        javax.swing.GroupLayout settingsPanelLayout = new javax.swing.GroupLayout(settingsPanel);
-        settingsPanel.setLayout(settingsPanelLayout);
-        settingsPanelLayout.setHorizontalGroup(
-            settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 600, Short.MAX_VALUE)
-        );
-        settingsPanelLayout.setVerticalGroup(
-            settingsPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 460, Short.MAX_VALUE)
-        );
-
-        tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.settingsPanel.TabConstraints.tabTitle"), settingsPanel); // NOI18N
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -835,15 +821,15 @@ public class pluginTestTopComponent extends TopComponent
     }//GEN-LAST:event_jButton1ActionPerformed
 
     private void powerSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_powerSliderStateChanged
-//        if (!powerSlider.getValueIsAdjusting()) {
+        if (!powerSlider.getValueIsAdjusting()) {
             backend.dispatchMessage(MessageType.INFO, "\nLaser power changed to " + String.valueOf(powerSlider.getValue() * 10));
-//        }
+        }
     }//GEN-LAST:event_powerSliderStateChanged
 
     private void speedSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_speedSliderStateChanged
-//        if (!powerSlider.getValueIsAdjusting()) {
+        if (!powerSlider.getValueIsAdjusting()) {
             backend.dispatchMessage(MessageType.INFO, "\nDrill power changed to " + String.valueOf(speedSlider.getValue() * Integer.parseInt(grblSettings.get("$30"))));
-//        }
+        }
     }//GEN-LAST:event_speedSliderStateChanged
   
     private void setSelectedFiles(){
@@ -919,7 +905,6 @@ public class pluginTestTopComponent extends TopComponent
                         } catch (IOException ex) {
                             backend.dispatchMessage(MessageType.ERROR,"\nError trying to scale image");
                         }
-                        backend.dispatchMessage(MessageType.INFO, "3");
                         laserPreviewLabel.setIcon(lFile.getScaledImage());
                         laserPreviewLabel.setText("Preview");
                         lBounds = Folder.getGcodeBounds(lFile.gcodeFiles);
@@ -993,6 +978,7 @@ public class pluginTestTopComponent extends TopComponent
                         isProcessing = true;
                         tabbedPane.setEnabled(false);
                         try {
+                            backend.sendGcodeCommand("$32 = 1");
                             processGcode();
                         } catch (Exception ex) {
                             backend.dispatchMessage(MessageType.ERROR,"\nError occurred trying to process Gcode");
@@ -1005,6 +991,7 @@ public class pluginTestTopComponent extends TopComponent
                         isProcessing = true;
                         tabbedPane.setEnabled(false);
                         try {
+                            backend.sendGcodeCommand("$32 = 0");
                             processGcode();
                         } catch (Exception ex) {
                             backend.dispatchMessage(MessageType.ERROR,"\nError occurred trying to process Gcode");
@@ -1055,17 +1042,39 @@ public class pluginTestTopComponent extends TopComponent
     }
     
     private String overridePower(String line) {
-        if (selectedTab == 1 && laserPowerCheckBox.isSelected()) {
-            if (line.contains("S")) {
-                return line.replaceAll("S\\d+", "S" + (powerSlider.getValue() * 10));
-            }
-        } else if (selectedTab == 2 && drillSpeedLevel.isSelected()) {
-            if (line.contains("S")) {
-                return line.replaceAll("S\\d+", "S" + (speedSlider.getValue() * Integer.parseInt(grblSettings.get("$30"))));
+    // Laser Mode (Tab 1)
+    backend.dispatchMessage(MessageType.INFO, String.valueOf(line.length()));
+    backend.dispatchMessage(MessageType.INFO, "\nCurrent File: \n" + line);
+    if (selectedTab == 1 && laserPowerCheckBox.isSelected()) {
+        if (line.matches(".*M3\\s+S\\d+.*")) {  // safer match for M3 Sxxx
+            int overriddenPower = powerSlider.getValue() * 10; // scale to 0–1000
+            backend.dispatchMessage(MessageType.INFO, "Laser Power Overridden to S" + overriddenPower);
+            return line.replaceAll("S\\d+", "S" + overriddenPower);
+        }
+    }
+
+    // Drill Mode (Tab 2)
+    else if (selectedTab == 2 && drillSpeedLevel.isSelected()) {
+        if (line.matches(".*M3\\s+S\\d+.*")) {
+            String maxSpindleStr = grblSettings.get("$30"); // $30 is max spindle speed
+            if (maxSpindleStr != null) {
+                try {
+                    int maxSpindle = Integer.parseInt(maxSpindleStr.trim());
+                    int overriddenSpeed = speedSlider.getValue() * maxSpindle / 100;
+                    backend.dispatchMessage(MessageType.INFO, "Drill Speed Overridden to S" + overriddenSpeed);
+                    return line.replaceAll("S\\d+", "S" + overriddenSpeed);
+                } catch (NumberFormatException e) {
+                    backend.dispatchMessage(MessageType.ERROR, "Invalid $30 value: " + maxSpindleStr);
+                }
+            } else {
+                backend.dispatchMessage(MessageType.ERROR, "$30 not found in GRBL settings.");
             }
         }
-        return line;
     }
+
+    // No override
+    return line;
+}
     
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox blackCheckBox;
@@ -1112,7 +1121,6 @@ public class pluginTestTopComponent extends TopComponent
     private javax.swing.JCheckBox magentaCheckBox;
     public javax.swing.JProgressBar magentaProgress;
     private javax.swing.JSlider powerSlider;
-    private javax.swing.JPanel settingsPanel;
     private javax.swing.JButton showLimitButton;
     private javax.swing.JSlider speedSlider;
     public javax.swing.JTabbedPane tabbedPane;
