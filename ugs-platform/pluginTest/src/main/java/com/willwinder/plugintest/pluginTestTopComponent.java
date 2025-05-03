@@ -968,6 +968,7 @@ public class pluginTestTopComponent extends TopComponent
                                 tabbedPane.setEnabled(false);
                                 setColorCheckBoxEnabled(false);
                                 try {
+                                    backend.sendGcodeCommand("$32 = 0");
                                     processGcode();
                                 } catch (Exception ex) {
                                     backend.dispatchMessage(MessageType.ERROR,"\nError occurred trying to process Gcode");
@@ -1314,19 +1315,6 @@ public class pluginTestTopComponent extends TopComponent
                      case "laser" -> selectedTab = 1;
                      case "spindle" -> selectedTab = 2;
                      default -> {
-                     }
-                 }
-                 if (selectedTab == 1) {
-                     try {
-                         backend.sendGcodeCommand("$32=1");
-                     } catch (Exception ex) {
-                         backend.dispatchMessage(MessageType.ERROR, ex.toString());
-                     }
-                 } else {
-                     try {
-                         backend.sendGcodeCommand("$32=0");
-                     } catch (Exception ex) {
-                         backend.dispatchMessage(MessageType.ERROR, ex.toString());
                      }
                  }
                  tabbedPane.setSelectedIndex(selectedTab);
