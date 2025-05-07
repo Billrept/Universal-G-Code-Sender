@@ -128,7 +128,8 @@ public class pluginTestTopComponent extends TopComponent
         colorUploadButton = new javax.swing.JButton();
         colorRunButton = new javax.swing.JButton();
         colorSvgButton = new javax.swing.JButton();
-        colorPreviewButton = new javax.swing.JButton();
+        calibrationButton = new javax.swing.JButton();
+        showLimitButton = new javax.swing.JButton();
         jPanel6 = new javax.swing.JPanel();
         colorPreviewLabel = new javax.swing.JLabel();
         jPanel7 = new javax.swing.JPanel();
@@ -137,8 +138,6 @@ public class pluginTestTopComponent extends TopComponent
         magentaCheckBox = new javax.swing.JCheckBox();
         yellowCheckBox = new javax.swing.JCheckBox();
         blackCheckBox = new javax.swing.JCheckBox();
-        showLimitButton = new javax.swing.JButton();
-        jButton1 = new javax.swing.JButton();
         laserPanel = new javax.swing.JPanel();
         jPanel12 = new javax.swing.JPanel();
         jPanel15 = new javax.swing.JPanel();
@@ -226,7 +225,7 @@ public class pluginTestTopComponent extends TopComponent
                 colorRunButtonActionPerformed(evt);
             }
         });
-        jPanel5.add(colorRunButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(11, 227, 89, -1));
+        jPanel5.add(colorRunButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 220, 89, -1));
 
         org.openide.awt.Mnemonics.setLocalizedText(colorSvgButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorSvgButton.text")); // NOI18N
         colorSvgButton.addActionListener(new java.awt.event.ActionListener() {
@@ -236,15 +235,23 @@ public class pluginTestTopComponent extends TopComponent
         });
         jPanel5.add(colorSvgButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(118, 186, 88, -1));
 
-        org.openide.awt.Mnemonics.setLocalizedText(colorPreviewButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.colorPreviewButton.text")); // NOI18N
-        colorPreviewButton.addActionListener(new java.awt.event.ActionListener() {
+        org.openide.awt.Mnemonics.setLocalizedText(calibrationButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.calibrationButton.text")); // NOI18N
+        calibrationButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                colorPreviewButtonActionPerformed(evt);
+                calibrationButtonActionPerformed(evt);
             }
         });
-        jPanel5.add(colorPreviewButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(118, 227, 89, 23));
+        jPanel5.add(calibrationButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 260, -1, -1));
 
-        jPanel3.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, -1, -1));
+        org.openide.awt.Mnemonics.setLocalizedText(showLimitButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.showLimitButton.text")); // NOI18N
+        showLimitButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                showLimitButtonActionPerformed(evt);
+            }
+        });
+        jPanel5.add(showLimitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 220, -1, -1));
+
+        jPanel3.add(jPanel5, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 6, 210, 300));
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 255));
         jPanel6.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -302,25 +309,9 @@ public class pluginTestTopComponent extends TopComponent
         });
         jPanel7.add(blackCheckBox, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 153, 70, -1));
 
-        jPanel3.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(236, 6, 77, 190));
+        jPanel3.add(jPanel7, new org.netbeans.lib.awtextra.AbsoluteConstraints(236, 6, 77, 180));
 
-        org.openide.awt.Mnemonics.setLocalizedText(showLimitButton, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.showLimitButton.text")); // NOI18N
-        showLimitButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                showLimitButtonActionPerformed(evt);
-            }
-        });
-        jPanel3.add(showLimitButton, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 230, -1, -1));
-
-        org.openide.awt.Mnemonics.setLocalizedText(jButton1, org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.jButton1.text")); // NOI18N
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
-            }
-        });
-        jPanel3.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(230, 200, -1, -1));
-
-        drawingPanel.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 11, 588, 440));
+        drawingPanel.add(jPanel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 11, 588, 310));
 
         tabbedPane.addTab(org.openide.util.NbBundle.getMessage(pluginTestTopComponent.class, "pluginTestTopComponent.drawingPanel.TabConstraints.tabTitle"), drawingPanel); // NOI18N
 
@@ -517,8 +508,8 @@ public class pluginTestTopComponent extends TopComponent
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(30, 30, 30)
-                .addComponent(tabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 495, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(29, Short.MAX_VALUE))
+                .addComponent(tabbedPane, javax.swing.GroupLayout.PREFERRED_SIZE, 366, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(158, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
@@ -787,14 +778,6 @@ public class pluginTestTopComponent extends TopComponent
         }
     }//GEN-LAST:event_drillSpeedLevelActionPerformed
 
-    private void colorPreviewButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_colorPreviewButtonActionPerformed
-        try {
-            previewGcode();
-        } catch (Exception ex) {
-            backend.dispatchMessage(MessageType.ERROR,"\nError previewing gcode\n" + ex);
-        }
-    }//GEN-LAST:event_colorPreviewButtonActionPerformed
-
     private void showLimitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showLimitButtonActionPerformed
         try {
             StringBuilder gcode = new StringBuilder();
@@ -823,7 +806,7 @@ public class pluginTestTopComponent extends TopComponent
         }
     }//GEN-LAST:event_showLimitButtonActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void calibrationButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_calibrationButtonActionPerformed
         try {
             // Load from resource
             InputStream is = getClass().getResourceAsStream("/calibration.gcode");
@@ -851,7 +834,7 @@ public class pluginTestTopComponent extends TopComponent
         } catch (Exception ex) {
             backend.dispatchMessage(MessageType.ERROR, ex.toString());
         }
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_calibrationButtonActionPerformed
 
     private void powerSliderStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_powerSliderStateChanged
         if (!powerSlider.getValueIsAdjusting()) {
@@ -1136,7 +1119,7 @@ public class pluginTestTopComponent extends TopComponent
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JCheckBox blackCheckBox;
     public javax.swing.JProgressBar blackProgress;
-    private javax.swing.JButton colorPreviewButton;
+    private javax.swing.JButton calibrationButton;
     private javax.swing.JLabel colorPreviewLabel;
     private javax.swing.JButton colorRunButton;
     private javax.swing.JTextField colorStatusText;
@@ -1154,7 +1137,6 @@ public class pluginTestTopComponent extends TopComponent
     private javax.swing.JButton drillSvgButton;
     private javax.swing.JButton drillUploadButton;
     private javax.swing.JPanel drillingPanel;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel12;
     public javax.swing.JPanel jPanel15;
